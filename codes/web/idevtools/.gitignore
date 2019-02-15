@@ -2,6 +2,10 @@
 # date    2019-02-01
 # version 1
 
+# special files
+generator-config.xml
+jdbc-dev.properties
+
 # common
 *.class
 .settings/
