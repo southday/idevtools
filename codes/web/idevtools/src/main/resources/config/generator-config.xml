@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="MysqlTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- jdbc链接信息 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://idevtools.cn:3306/idevtools_dev?
+                        autoReconnect=true&amp;utoReconnectForPools=true&amp;
+                        useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;
+                        serverTimezone=UTC"
+                        userId="idtlcx"
+                        password="lcx!@idt">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成PO类的位置 -->
+        <javaModelGenerator targetPackage="cn.idevtools.po"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- mapper接口生成的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="cn.idevtools.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 指定要生成的表 -->
+        <table tableName="admin_t" />
+        <table tableName="collections_t" />
+        <table tableName="downloads_t" />
+        <table tableName="lookup_type_t" />
+        <table tableName="lookup_value_t" />
+        <table tableName="manage_history_t" />
+        <table tableName="message_t" />
+        <table tableName="recommendations_t" />
+        <table tableName="suggestions_t" />
+        <table tableName="tool_t" />
+        <table tableName="tool_tag_rel_t" />
+        <table tableName="tool_tag_t" />
+        <table tableName="user_t" />
+        <table tableName="user_tag_rel_t" />
+        <table tableName="user_tag_t" />
+    </context>
+</generatorConfiguration>
