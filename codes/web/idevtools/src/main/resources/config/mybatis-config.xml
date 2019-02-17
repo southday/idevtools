@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--通过这个配置文件，完成mybatis与数据库的连接  -->
+<configuration>
+    <!-- pojo的映射文件UserMapper引入到配入到配置文件中 -->
+    <mappers>
+        <mapper resource="mapper/AdminTMapper.xml" />
+        <mapper resource="mapper/CollectionsTMapper.xml" />
+        <mapper resource="mapper/DownloadsTMapper.xml" />
+        <mapper resource="mapper/LookupTypeTMapper.xml" />
+        <mapper resource="mapper/LookupValueTMapper.xml" />
+        <mapper resource="mapper/ManageHistoryTMapper.xml" />
+        <mapper resource="mapper/MessageTMapper.xml" />
+        <mapper resource="mapper/RecommendationsTMapper.xml" />
+        <mapper resource="mapper/SuggestionsTMapper.xml" />
+        <mapper resource="mapper/ToolTagRelTMapper.xml" />
+        <mapper resource="mapper/ToolTagTMapper.xml" />
+        <mapper resource="mapper/ToolTMapper.xml" />
+        <mapper resource="mapper/UserTagRelTMapper.xml" />
+        <mapper resource="mapper/UserTagTMapper.xml" />
+        <mapper resource="mapper/UserTMapper.xml" />
+    </mappers>
+</configuration>

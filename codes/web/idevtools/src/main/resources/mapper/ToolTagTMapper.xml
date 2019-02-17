@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.ToolTagTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.ToolTagT" >
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="parent_tag_id" property="parentTagId" jdbcType="INTEGER" />
+    <result column="tag_code" property="tagCode" jdbcType="VARCHAR" />
+    <result column="tag_meaning" property="tagMeaning" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    tag_id, parent_tag_id, tag_code, tag_meaning, description
+  </sql>
+</mapper>
