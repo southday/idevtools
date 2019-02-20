@@ -10,9 +10,105 @@
     <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
     <result column="actived" property="actived" jdbcType="TINYINT" />
     <result column="valid" property="valid" jdbcType="TINYINT" />
+    <!--一个用户持有多个标签,注意这里是ofType，如果设置为javaType会报错-->
+    <collection property="userTags" ofType="cn.idevtools.po.UserTagT">
+      <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+      <result column="parent_tag_id" property="parentTagId" jdbcType="INTEGER" />
+      <result column="tag_code" property="tagCode" jdbcType="VARCHAR" />
+      <result column="tag_meaning" property="tagMeaning" jdbcType="VARCHAR" />
+      <result column="description" property="description" jdbcType="VARCHAR" />
+    </collection>
   </resultMap>
 
   <sql id="Base_Column_List" >
     user_id, user_name, email, password, intro, img_path, actived, valid
   </sql>
+  <!--用户基本信息-->
+  <sql id="Base_User_List" >
+    user_id, user_name, email, password,actived, valid
+  </sql>
+  <!--标签的基本属性-->
+  <sql id="Tag_List" >
+    tag_id, parent_tag_id, tag_code, tag_meaning, description
+  </sql>
+
+  <!--查询用户基本信息-->
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_User_List"/>
+    from user_t
+  </select>
+
+  <!--调用存储过程，根据页面号与每页显示的数量查询user信息-->
+  <select id="selectUserPage" resultMap="BaseResultMap" statementType="CALLABLE">
+    {
+      call proc_select_user_page(
+        #{pageNum,mode=IN},
+        #{pageSize,mode=IN},
+        #{total,mode=OUT,jdbcType=BIGINT}
+      )
+    }
+  </select>
+  
+  <!--根据用户id，将用户的valid字段设置为0，表示该用户已经被删除-->
+  <update id="updateUserValidById">
+    update user_t
+    set valid=0
+    where user_id=#{user.userId}
+  </update>
+  
+  <!--查询符合条件的用户的基本信息-->
+  <select id="selectUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_User_List"/>
+    from user_t
+    <where>
+      <if test="userId != null">
+        and user_id=#{userId}
+      </if>
+      <if test="userName != null and userName != ''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="email != null and email != ''">
+        and email like concat('%',#{email},'%')
+      </if>
+      <if test="password != null and password != ''">
+        and password like concat('%',#{password},'%')
+      </if>
+      <if test="actived != null">
+        and actived=#{actived}
+      </if>
+      <if test="valid != null">
+        and valid=#{valid}
+      </if>
+    </where>
+  </select>
+
+  <!--根据userId更新用户基本信息,userId与userName不能更新-->
+  <update id="updateUser">
+    update user_t
+    <set >
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="actived != null" >
+        actived = #{actived},
+      </if>
+      <if test="valid != null" >
+        valid=#{valid},
+      </if>
+    </set>
+    where user_id=#{userId}
+  </update>
+
+  <!--查询某用户详细信息(附带标签信息)-->
+  <select id="selectUserDetailWithTagById" resultMap="BaseResultMap">
+    select * from
+    (select * from user_t WHERE user_id=#{userId}) u
+    NATURAL JOIN user_tag_rel_t
+    NATURAL JOIN user_tag_t
+  </select>
 </mapper>

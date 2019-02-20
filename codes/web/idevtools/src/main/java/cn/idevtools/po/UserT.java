@@ -1,5 +1,7 @@
 package cn.idevtools.po;
 
+import java.util.List;
+
 public class UserT {
     private Integer userId;
 
@@ -16,6 +18,19 @@ public class UserT {
     private Byte actived;
 
     private Byte valid;
+
+    /**
+     * 一个用户持有多个标签
+     */
+    private List<UserTagT> userTags;
+
+    public List<UserTagT> getUserTags() {
+        return userTags;
+    }
+
+    public void setUserTags(List<UserTagT> userTags) {
+        this.userTags = userTags;
+    }
 
     public Integer getUserId() {
         return userId;

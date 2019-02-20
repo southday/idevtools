@@ -165,6 +165,12 @@
       <artifactId>jackson-core</artifactId>
       <version>2.9.0</version>
     </dependency>
+    <!--mybatis分页插件-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>5.1.4</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -224,7 +230,7 @@
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
               <!-- mysql-8 需要 Connector/J 8.0.9 or higher -->
-              <version>8.0.11</version>
+              <version>8.0.13</version>
             </dependency>
           </dependencies>
         </plugin>

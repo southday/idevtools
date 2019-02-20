@@ -9,5 +9,8 @@
         <module name="idevtools" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="idevtools" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
