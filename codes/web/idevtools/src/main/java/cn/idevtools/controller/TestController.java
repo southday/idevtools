@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * 用于进行一些临时的测试
+ * 用于进行一些临时的测试，如表单的提交处理状况等,无实际用途
  * 测试对象:userTMapper
  *
  * @author 王沁宽
