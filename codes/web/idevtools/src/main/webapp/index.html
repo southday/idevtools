@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>IDevTools</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="./css/my/navbar-fixed-top.css">
 </head>
+
 <body>
-    <p>Welcome to IDevTools</p>
+<!-- navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a style="font-weight:bold; color:white" class="navbar-brand" href="#">IDevTools</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#">推荐工具</a>
+                </li>
+                <li>
+                    <a href="#">意见反馈</a>
+                </li>
+                <li>
+                    <a href="#">个人中心</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- main content -->
+<div id="idevtools" class="container">
+    <!-- search & view tab -->
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#search">Search</a>
+        </li>
+        <li><a href="#view">View</a></li>
+    </ul>
+    <!-- search box -->
+    <div class="navbar-form navbar-middle text-center">
+        <input class="form-control" type="text" placeholder="输入关键字">
+        <button class="btn btn-link">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </div>
+    <!-- show tools info -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>工具名</th>
+            <th>版本号</th>
+            <th>下载地址</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="tool in tools">
+            <td>{{ tool.toolName }}</td>
+            <td>{{ tool.versionNumber }}</td>
+            <td>{{ tool.downloadLinks }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/vue.min.js"></script>
+<!-- my js -->
+<script src="./js/my/false-data.js"></script>
 </body>
 </html>
