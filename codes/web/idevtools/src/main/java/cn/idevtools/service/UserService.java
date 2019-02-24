@@ -2,13 +2,16 @@ package cn.idevtools.service;
 
 
 import cn.idevtools.po.UserT;
+import cn.idevtools.po.UserTagVO;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
-
+import cn.idevtools.service.impl.UserServiceImpl;
 /**
  * 管理员用户管理模块的接口.
+ * 具体实现见
+ * @see UserServiceImpl
  *
  * @author 王沁宽
  */
@@ -74,6 +77,19 @@ public interface UserService {
      *
      * @param userId 用户id
      */
-    UserT getUserDetailWithTagById(Integer userId);
-
+    UserTagVO getUserDetailWithTagById(Integer userId);
+    /**
+     * 根据用户id与标签id为相应的用户添加标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:添加失败 1:添加成功
+     */
+    int addTagForUser(Integer userId,Integer tagId);
+    /**
+     * 根据用户id与标签id为对应用户删除标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:失败 1:成功
+     */
+    int removeTagForUser(Integer userId,Integer tagId);
 }

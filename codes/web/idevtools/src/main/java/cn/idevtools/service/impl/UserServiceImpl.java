@@ -2,7 +2,9 @@ package cn.idevtools.service.impl;
 
 
 import cn.idevtools.mapper.UserTMapper;
+import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
+import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserTMapper userTMapper;
+
+    @Autowired
+    UserTagRelTMapper userTagRelTMapper;
 
     /**
      * 调用UserTMapper中的selectUserPage得到分页查询用户信息     *
@@ -92,7 +97,29 @@ public class UserServiceImpl implements UserService {
      * @return 附带标签信息的单个用户详细信息
      */
     @Override
-    public UserT getUserDetailWithTagById(Integer userId) {
+    public UserTagVO getUserDetailWithTagById(Integer userId) {
         return userTMapper.selectUserDetailWithTagById(userId);
+    }
+
+    /**
+     * 根据用户id与标签id为相应的用户添加标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:添加失败 1:添加成功
+     */
+    @Override
+    public int addTagForUser(Integer userId, Integer tagId) {
+        return userTagRelTMapper.insertUserTagRel(userId,tagId);
+    }
+
+    /**
+     * 根据用户id与标签id为对应用户删除标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:失败 1:成功
+     */
+    @Override
+    public int removeTagForUser(Integer userId, Integer tagId) {
+        return userTagRelTMapper.deleteUserTagRelByTagIdAndUserId(userId,tagId);
     }
 }

@@ -1,6 +1,7 @@
 package cn.idevtools.mapper;
 
 import cn.idevtools.po.UserT;
+import cn.idevtools.po.UserTagVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -50,5 +51,5 @@ public interface UserTMapper {
      * 根据userId查询附带标签信息的用户详细信息，包含用户的全部字段以及用户对应标签的全部字段
      * @param userId 用户id
      */
-    UserT selectUserDetailWithTagById(Integer userId);
+    UserTagVO selectUserDetailWithTagById(Integer userId);
 }

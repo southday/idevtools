@@ -10,6 +10,17 @@
     <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
     <result column="actived" property="actived" jdbcType="TINYINT" />
     <result column="valid" property="valid" jdbcType="TINYINT" />
+  </resultMap>
+  <!--附带标签信息的用户结果集,对应UserTagVO类-->
+  <resultMap id="UserTagVOResultMap" type="cn.idevtools.po.UserTagVO" >
+    <id column="user_id" property="user.userId" jdbcType="INTEGER" />
+    <result column="user_name" property="user.userName" jdbcType="VARCHAR" />
+    <result column="email" property="user.email" jdbcType="VARCHAR" />
+    <result column="password" property="user.password" jdbcType="VARCHAR" />
+    <result column="intro" property="user.intro" jdbcType="VARCHAR" />
+    <result column="img_path" property="user.imgPath" jdbcType="VARCHAR" />
+    <result column="actived" property="user.actived" jdbcType="TINYINT" />
+    <result column="valid" property="user.valid" jdbcType="TINYINT" />
     <!--一个用户持有多个标签,注意这里是ofType，如果设置为javaType会报错-->
     <collection property="userTags" ofType="cn.idevtools.po.UserTagT">
       <id column="tag_id" property="tagId" jdbcType="INTEGER" />
@@ -58,11 +69,12 @@
   </update>
   
   <!--查询符合条件的用户的基本信息-->
-  <select id="selectUser" resultMap="BaseResultMap">
+  <select id="selectUsers" resultMap="BaseResultMap">
     select
     <include refid="Base_User_List"/>
     from user_t
     <where>
+        1=1
       <if test="userId != null">
         and user_id=#{userId}
       </if>
@@ -98,14 +110,14 @@
         actived = #{actived},
       </if>
       <if test="valid != null" >
-        valid=#{valid},
+        valid = #{valid},
       </if>
     </set>
-    where user_id=#{userId}
+    where user_id = #{userId}
   </update>
 
   <!--查询某用户详细信息(附带标签信息)-->
-  <select id="selectUserDetailWithTagById" resultMap="BaseResultMap">
+  <select id="selectUserDetailWithTagById" resultMap="UserTagVOResultMap">
     select * from
     (select * from user_t WHERE user_id=#{userId}) u
     NATURAL JOIN user_tag_rel_t

@@ -9,5 +9,9 @@
         <root level="error">
             <appender-ref ref="Console"/>
         </root>
+        <!--指定mapper包,打印sql-->
+        <Logger name="cn.idevtools.mapper" level="TRACE" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
     </loggers>
 </configuration>
