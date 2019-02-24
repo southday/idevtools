@@ -5,7 +5,7 @@
     <title>IDevTools</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <!-- my css -->
-    <link rel="stylesheet" href="./css/my/navbar-fixed-top.css">
+    <link rel="stylesheet" href="./css/my/index.css">
 </head>
 
 <body>
@@ -52,17 +52,51 @@
         <tr>
             <th>工具名</th>
             <th>版本号</th>
-            <th>下载地址</th>
+            <th>版本代号</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="tool in tools">
-            <td>{{ tool.toolName }}</td>
-            <td>{{ tool.versionNumber }}</td>
-            <td>{{ tool.downloadLinks }}</td>
+            <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
+            <td><a href="javascript:;" @click="showToolInfo(tool)">{{ tool.toolName }}</a></td>
+            <td>{{ tool.toolVersion }}</td>
+            <td>{{ tool.codeName }}</td>
         </tr>
         </tbody>
     </table>
+</div>
+
+<div id="tool-info">
+    <!-- 侧边栏内容 -->
+    <transition name="slide-fade">
+        <div class="modal-dialog r2l-nav" v-if="show">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" @click="show = !show">&times;</button>
+                    <h4 class="modal-title">工具详情</h4>
+                </div>
+                <div class="modal-body">
+                    <p>工具名：{{ tool.toolName }}</p>
+                    <p>版本号：{{ tool.toolVersion }}</p>
+                    <p>版本代号：{{ tool.codeName }}</p>
+                    <p>工具描述：{{ tool.description }}</p>
+                    <p>官网：<a :href="tool.website" target="view_window">{{ tool.website }}</a></p>
+                    <p>下载链接：</p>
+                    <ul v-for="(value, key) in downloadLinks">
+                        <div v-if="!Array.isArray(value)">
+                            <li>{{ key }}：<a :href="value" target="view_window">{{ value }}</a></li>
+                        </div>
+                        <div v-else>
+                            <li>{{ key }}：</li>
+                            <ul v-for="item in value">
+                                <li><a :href="item" target="view_window">{{ item }}</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </transition>
 </div>
 
 <script src="./js/jquery-3.3.1.min.js"></script>
@@ -70,6 +104,6 @@
 <script src="./js/axios.min.js"></script>
 <script src="./js/vue.min.js"></script>
 <!-- my js -->
-<script src="./js/my/false-data.js"></script>
+<script src="./js/my/index.js"></script>
 </body>
 </html>
