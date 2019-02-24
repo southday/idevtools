@@ -2,6 +2,7 @@ package cn.idevtools.controller;
 
 
 import cn.idevtools.po.UserT;
+import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * 该类用于实现管理员用户管理模块.
  * 主要用于管理员用户的增删改查
+ * @see UserService
  *
  * @author 王沁宽
  */
@@ -81,8 +83,31 @@ public class UserController {
      */
     @ResponseJSONP
     @RequestMapping("/userDetailWithTag.json/{userId}")
-    public UserT getUserDetailWithTagById(@PathVariable Integer userId){
+    public UserTagVO getUserDetailWithTagById(@PathVariable Integer userId){
         return userService.getUserDetailWithTagById(userId);
     }
 
+    /**
+     * 根据用户id与标签id为相应的用户添加标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:添加失败 1:添加成功
+     */
+    @ResponseJSONP
+    @RequestMapping("/addTagForUser/{userId}/{tagId}")
+    public int addTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
+        return userService.addTagForUser(userId,tagId);
+    }
+
+    /**
+     * 根据用户id与标签id为相应的用户删除对应标签
+     * @param userId 用户id
+     * @param tagId 标签id
+     * @return 0:失败 1:成功
+     */
+    @ResponseJSONP
+    @RequestMapping("/removeTagForUser/{userId}/{tagId}")
+    public int removeTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
+        return userService.removeTagForUser(userId,tagId);
+    }
 }
