@@ -19,18 +19,7 @@ public class UserT {
 
     private Byte valid;
 
-    /**
-     * 一个用户持有多个标签
-     */
-    private List<UserTagT> userTags;
 
-    public List<UserTagT> getUserTags() {
-        return userTags;
-    }
-
-    public void setUserTags(List<UserTagT> userTags) {
-        this.userTags = userTags;
-    }
 
     public Integer getUserId() {
         return userId;

@@ -12,4 +12,21 @@
   <sql id="Base_Column_List" >
     tag_id, parent_tag_id, tag_code, tag_meaning, description
   </sql>
+
+  <!--插入标签(tagCode不得重复)-->
+  <insert id="insertUserTag">
+    insert into user_tag_t(parent_tag_id,tag_code,tag_meaning,description)
+    select #{parentTagId},#{tagCode},#{tagMeaning},#{description}
+    from DUAL
+    where not exists
+    (select tag_id
+    from user_tag_t
+    where tag_code=#{tagCode})
+  </insert>
+
+  <!--根据标签id删除标签-->
+  <delete id="deleteUserTagById">
+    delete from user_tag_t
+    where tag_id=#{tagId}
+  </delete>
 </mapper>
