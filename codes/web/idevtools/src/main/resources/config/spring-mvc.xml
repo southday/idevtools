@@ -30,7 +30,6 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    <!-- <mvc:default-servlet-handler/> -->
     <!--  自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器  -->
     <context:component-scan base-package="cn.idevtools.controller, cn.idevtools.swagger">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
