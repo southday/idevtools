@@ -99,7 +99,7 @@
   <!--根据userId更新用户基本信息,userId与userName不能更新-->
   <update id="updateUser">
     update user_t
-    <set >
+    <set>
       <if test="email != null" >
         email = #{email},
       </if>

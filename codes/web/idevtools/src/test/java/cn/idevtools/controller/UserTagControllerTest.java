@@ -1,0 +1,29 @@
+package cn.idevtools.controller;
+
+import cn.idevtools.CommonTest;
+import cn.idevtools.po.UserTagT;
+import org.junit.Test;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+/**
+ * 使用MockMvc 对UserTagController的方法进行测试
+ * @see cn.idevtools.controller.UserTagController
+ * @author 王沁宽
+ */
+public class UserTagControllerTest extends CommonTest {
+    /**
+     * 测试方法{@link UserTagController#addUserTag(UserTagT)}
+     * 打印返回的json
+     */
+    @Test
+    public void addUserTagTest() throws Exception{
+        MvcResult mvcResult=mockMvc.perform(
+                MockMvcRequestBuilders.post("/userTag/add")
+                        .param("tagCode","testcode")
+                        .param("tagMeaning","testmean")
+                        .param("description","null")
+        ).andReturn();
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+}

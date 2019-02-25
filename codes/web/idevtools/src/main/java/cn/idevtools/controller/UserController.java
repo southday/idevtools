@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -71,7 +72,7 @@ public class UserController {
      * @param pageId 页号
      */
     @ResponseJSONP
-    @RequestMapping("/searchUserInfo.json/page/{pageId}")
+    @RequestMapping(value = "/searchUserInfo.json/page/{pageId}",method = RequestMethod.POST)
     public List<UserT> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
         PageInfo<UserT> userPage=userService.getUsersPage(user,pageId,pageSize);
         return userPage.getList();
