@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
 import cn.idevtools.service.impl.UserServiceImpl;
+import org.springframework.stereotype.Service;
+
 /**
  * 管理员用户管理模块的接口.
  * 具体实现见
@@ -15,6 +17,7 @@ import cn.idevtools.service.impl.UserServiceImpl;
  *
  * @author 王沁宽
  */
+@Service
 public interface UserService {
 
     /**
@@ -92,4 +95,11 @@ public interface UserService {
      * @return 0:失败 1:成功
      */
     int removeTagForUser(Integer userId,Integer tagId);
+
+    /**
+     * 根据userName判断用户是否存在 southday 2019.02.26
+     * @param userName
+     * @return
+     */
+    boolean isUserExists(String userName);
 }

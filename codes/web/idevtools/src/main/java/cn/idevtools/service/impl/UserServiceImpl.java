@@ -122,4 +122,9 @@ public class UserServiceImpl implements UserService {
     public int removeTagForUser(Integer userId, Integer tagId) {
         return userTagRelTMapper.deleteUserTagRelByTagIdAndUserId(userId,tagId);
     }
+
+    @Override
+    public boolean isUserExists(String userName) {
+        return userTMapper.selectUserByUserName(userName) != null;
+    }
 }

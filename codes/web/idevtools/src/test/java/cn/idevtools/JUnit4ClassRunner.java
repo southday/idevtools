@@ -8,8 +8,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 
 /**
- * Author southday
- * Date   2019/2/24
+ * 提供log支持
+ * @author southday
+ * @date   2019/2/24
  */
 public class JUnit4ClassRunner extends SpringJUnit4ClassRunner {
     static {
