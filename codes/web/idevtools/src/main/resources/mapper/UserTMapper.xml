@@ -31,9 +31,6 @@
     </collection>
   </resultMap>
 
-  <sql id="Base_Column_List" >
-    user_id, user_name, email, password, intro, img_path, actived, valid
-  </sql>
   <!--用户基本信息-->
   <sql id="Base_User_List" >
     user_id, user_name, email, password,actived, valid
@@ -122,5 +119,12 @@
     (select * from user_t WHERE user_id=#{userId}) u
     NATURAL JOIN user_tag_rel_t
     NATURAL JOIN user_tag_t
+  </select>
+
+  <!-- 根据userName查询指定用户 southday 2019.02.26 -->
+  <select id="selectUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT <include refid="Base_User_List"/>
+      FROM user_t
+     WHERE user_name = #{userName}
   </select>
 </mapper>
