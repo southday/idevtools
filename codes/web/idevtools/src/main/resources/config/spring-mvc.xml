@@ -47,4 +47,17 @@
     <mvc:cors>
         <mvc:mapping path="/**" />
     </mvc:cors>
+    
+    <!-- 拦截器配置 southday 2019.02.26 -->
+    <mvc:interceptors>
+        <!-- JWT 身份验证拦截器，针对用户需要先进行登陆后才能操作的请求进行拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/u/**"/>
+            <mvc:mapping path="/a/**"/>
+            <mvc:exclude-mapping path="/u/login"/>
+            <mvc:exclude-mapping path="/u/join"/>
+            <mvc:exclude-mapping path="/a/login"/>
+            <bean class="cn.idevtools.interceptor.JWTVerifyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
