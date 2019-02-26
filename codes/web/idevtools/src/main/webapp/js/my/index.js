@@ -1,5 +1,5 @@
 // index.html 模拟数据
-var vmIDevTools = new Vue({
+let vmIDevTools = new Vue({
     el: '#idevtools',
     data: {
         tools: [
@@ -33,7 +33,7 @@ var vmIDevTools = new Vue({
 })
 
 // tool-info 右侧边栏
-var vmToolInfo = new Vue({
+let vmToolInfo = new Vue({
     el: "#tool-info",
     data: {
         show: false,

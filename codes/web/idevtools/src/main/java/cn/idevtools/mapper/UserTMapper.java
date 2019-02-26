@@ -52,4 +52,11 @@ public interface UserTMapper {
      * @param userId 用户id
      */
     UserTagVO selectUserDetailWithTagById(Integer userId);
+
+    /**
+     * 根据userName查询用户信息 southday 2019.02.26
+     * @param userName
+     * @return
+     */
+    UserT selectUserByUserName(String userName);
 }

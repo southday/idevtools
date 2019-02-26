@@ -1,6 +1,8 @@
 package cn.idevtools.service;
 import cn.idevtools.po.UserTagT;
 import cn.idevtools.service.impl.UserTagServiceImpl;
+import org.springframework.stereotype.Service;
+
 /**
  * 管理员用户标签管理模块的接口.
  * 具体实现见
@@ -8,6 +10,7 @@ import cn.idevtools.service.impl.UserTagServiceImpl;
  *
  * @author 王沁宽
  */
+@Service
 public interface UserTagService {
     /**
      * 新建用户标签
