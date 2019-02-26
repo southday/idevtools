@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
      * 根据用户id，将其valid字段改为0，标记为无效
      */
     @Override
-    public int deleteUser(UserT user) {
-        return userTMapper.updateUserValidById(user);
+    public int deleteUser(Integer userId) {
+        return userTMapper.updateUserValidById(userId);
     }
 
     /**
