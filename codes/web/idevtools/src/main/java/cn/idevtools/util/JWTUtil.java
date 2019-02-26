@@ -14,10 +14,10 @@ import java.util.Map;
 /**
  * JWT权限验证工具<br>
  * 参考网址：
- * <blockquto><pre>
+ * <blockquote><pre>
  *     <a href="https://blog.csdn.net/a1203177935/article/details/80875562">https://blog.csdn.net/a1203177935/article/details/80875562"</a>
  *     <a href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a>
- * </pre></blockquto>
+ * </pre></blockquote>
  * @author southday
  * @date   2019/2/26
  */
