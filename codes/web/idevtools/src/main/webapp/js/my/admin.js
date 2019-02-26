@@ -1,30 +1,34 @@
+let ret = {}
 // 1.管理员登录
 let vmAdminLogin = new Vue({
     el: "#admin-login",
     data: {
         adminName: '',
-        password: ''
+        password: '',
+        jcaptcha: '',
+        jcaptchaURL: '/idevtools/jcaptcha.jpg'
     },
     methods: {
         login: function() {
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/idevtools/a/login',
+                url: '/idevtools/a/login',
                 params: {
                     adminName: vmAdminLogin.adminName,
-                    password: vmAdminLogin.password
+                    password: vmAdminLogin.password,
+                    jcaptcha: vmAdminLogin.jcaptcha
                 }
             }).then(function(resp) {
-                if (resp.data == null || resp.data.length === 0)
-                    alert("登陆失败，用户名或密码错误")
-                else {
-                    console.log(resp.data)
-                    let cookie = document.cookie
-                    console.log(cookie)
-                }
+                ret = resp.data
+                console.log(ret)
+                console.log(document.cookie)
+                vmAdminLogin.changeVerifyCode()
             }).catch(function(error) {
                 console.log(error)
             })
+        },
+        changeVerifyCode: function() {
+            vmAdminLogin.jcaptchaURL = '/idevtools/jcaptcha.jpg?r=' + (Math.random())
         }
     }
 })

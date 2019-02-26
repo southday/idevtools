@@ -66,6 +66,16 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <!-- jcapthca 验证码支持 southday 2019.02.26 -->
+  <servlet>
+    <servlet-name>jcaptcha</servlet-name>
+    <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jcaptcha</servlet-name>
+    <url-pattern>/jcaptcha.jpg</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

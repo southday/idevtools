@@ -220,7 +220,7 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
     </dependency>
-    <!-- swagger2，用于构建RESTful API -->
+    <!-- swagger2，用于构建RESTful API southday 2019.02.25-->
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger2</artifactId>
@@ -231,7 +231,7 @@
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.9.2</version>
     </dependency>
-    <!-- 使用JWT（jjwt包）来做权限验证，满足RESTful API设计的无状态性 -->
+    <!-- 使用JWT（jjwt包）来做权限验证，满足RESTful API设计的无状态性 southday 2019.02.26 -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
@@ -248,6 +248,38 @@
       <artifactId>jjwt-jackson</artifactId>
       <version>0.10.5</version>
       <scope>runtime</scope>
+    </dependency>
+    <!-- JCaptcha 验证码支持 southday 2019.02.26-->
+    <dependency>
+      <groupId>com.octo.captcha</groupId>
+      <artifactId>jcaptcha</artifactId>
+      <version>2.0-alpha-1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.octo.captcha</groupId>
+      <artifactId>jcaptcha-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- jcaptcha-integration-simple-servlet 在好多maven仓库都找不到，只能本地导入jar包 -->
+    <!--<dependency>-->
+      <!--<groupId>com.octo.captcha</groupId>-->
+      <!--<artifactId>jcaptcha-integration-simple-servlet</artifactId>-->
+      <!--<version>2.0-alpha-1-SNAPSHOT</version>-->
+    <!--</dependency>-->
+    <dependency>
+      <groupId>com.jhlabs</groupId>
+      <artifactId>filters</artifactId>
+      <version>2.0.235</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
     </dependency>
   </dependencies>
 
