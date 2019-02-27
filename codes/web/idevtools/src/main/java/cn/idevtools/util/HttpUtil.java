@@ -1,5 +1,6 @@
 package cn.idevtools.util;
 
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,22 +20,4 @@ public class HttpUtil {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    /**
-     * 通过cookie名称获取对应cookie
-     * @param cookieName
-     * @return
-     */
-    public static Cookie getCookieByName(String cookieName){
-        Cookie cookie=null;
-        Cookie[] cookies = getHttpServletRequest().getCookies();
-        if (cookies != null) {
-            for (Cookie c : cookies) {
-                if (cookieName.equals(c.getName())) {
-                    cookie=c;
-                    break;
-                }
-            }
-        }
-        return cookie;
-    }
 }
