@@ -1,0 +1,16 @@
+package cn.idevtools.service;
+
+import cn.idevtools.po.ManageHistoryT;
+
+/**
+ * 你懂的 管理记录模块
+ * @see cn.idevtools.service.impl.ManageHistoryServiceImpl
+ * @author 王沁宽
+ */
+public interface ManageHistoryService {
+    /**
+     * 新建一个管理记录，proTime无须设置，自动为当前时间
+     * @return
+     */
+    int addManageHistory(ManageHistoryT manageHistory);
+}

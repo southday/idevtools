@@ -1,6 +1,8 @@
 package cn.idevtools.controller;
 
 
+import cn.idevtools.common.annotation.AddManageHistory;
+import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
@@ -78,6 +80,8 @@ public class UserController {
      */
     @ResponseJSONP
     @RequestMapping("/userDetailWithTag.json/{userId}")
+    @PrintExecTime
+    @AddManageHistory
     public UserTagVO getUserDetailWithTagById(@PathVariable Integer userId){
         return userService.getUserDetailWithTagById(userId);
     }

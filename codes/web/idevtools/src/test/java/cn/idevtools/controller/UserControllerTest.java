@@ -1,26 +1,30 @@
 package cn.idevtools.controller;
 
 import cn.idevtools.CommonTest;
+import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
  * 使用MockMvc 对UserController的方法进行测试
+ * 测试方法全部回滚,不真正影响数据库
  * @see cn.idevtools.controller.UserController
  * @author 王沁宽
  */
-
+@Transactional
+@Rollback
 public class UserControllerTest extends CommonTest {
     /**
      * 测试方法{@link UserController#getUserDetailWithTagById}
      * 打印返回的json
      */
     @Test
+    @PrintExecTime
     public void getUserDetailWithTagByIdTest() throws Exception{
         //返回userId为1的用户详情
         String resp=mockMvc.perform(

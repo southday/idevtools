@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -107,6 +108,7 @@ public class UserServiceImpl implements UserService {
      * @param tagId 标签id
      * @return 0:添加失败 1:添加成功
      */
+
     @Override
     public int addTagForUser(Integer userId, Integer tagId) {
         return userTagRelTMapper.insertUserTagRel(userId,tagId);

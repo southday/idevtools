@@ -1,5 +1,12 @@
 package cn.idevtools.mapper;
 
-public interface ManageHistoryTMapper {
+import cn.idevtools.po.ManageHistoryT;
 
+public interface ManageHistoryTMapper {
+    /**
+     * 插入操作日志，日期自动设置为now()
+     * @param manageHistory
+     * @return 成功1失败0
+     */
+    int insertManageHistory(ManageHistoryT manageHistory);
 }
