@@ -4,17 +4,14 @@ import cn.idevtools.common.CodeMsg;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
+import cn.idevtools.service.AdminService;
 import cn.idevtools.service.CommonService;
 import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import cn.idevtools.service.AdminService;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
