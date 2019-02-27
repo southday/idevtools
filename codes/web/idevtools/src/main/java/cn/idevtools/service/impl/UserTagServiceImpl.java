@@ -34,7 +34,7 @@ public class UserTagServiceImpl implements UserTagService {
      */
     @Override
     public int updateUserTag(UserTagT userTag) {
-        return 0;
+        return userTagTMapper.updateUserTagById(userTag);
     }
 
     /**

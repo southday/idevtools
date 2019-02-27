@@ -15,4 +15,11 @@ public interface UserTagTMapper {
      * @return 成功1 失败0
      */
     int deleteUserTagById(Integer tagId);
+
+    /**
+     * 根据id更新标签，其中id不能更新，tagCode不得重复
+     * @param userTagT 待修改的用户
+     * @return 成功1 失败0
+     */
+    int updateUserTagById(UserTagT userTagT);
 }

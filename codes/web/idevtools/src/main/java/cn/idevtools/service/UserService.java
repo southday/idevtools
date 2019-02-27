@@ -47,10 +47,10 @@ public interface UserService {
      * 删除用户，但并不做实际的删除，只是将用户的valid字段设置为0表示该用户不再可用，
      * 用于防止用户名的重复
      *
-     * @param user 待删除的用户对象
+     * @param userId 待删除的用户id
      * @return 操作影响的行数，由于用户id为主键，唯一对应一个用户，因此操作成功时，返回1
      */
-    int deleteUser(UserT user);
+    int deleteUser(Integer userId);
 
     /**
      * 修改用户信息

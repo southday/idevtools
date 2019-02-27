@@ -2,6 +2,7 @@ package cn.idevtools.mapper;
 
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,11 +27,11 @@ public interface UserTMapper {
     /**
      * 根据用户id将其valid设置为0，即不可用状态，表示已经被删除
      *
-     * @param user 待修改用户
+     * @param userId 待修改用户Id
      *
      * @return 成功操作的个数，由于用户id为主键，因此成功返回1
      */
-    int updateUserValidById(@Param("user") UserT user);
+    int updateUserValidById(Integer userId);
 
     /**
      * 查询全部用户信息

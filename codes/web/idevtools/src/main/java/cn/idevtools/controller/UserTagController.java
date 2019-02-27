@@ -6,6 +6,7 @@ import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -43,5 +44,16 @@ public class UserTagController {
     @ResponseJSONP
     public int addUserTag(@PathVariable Integer tagId){
         return userTagService.deleteUserTagById(tagId);
+    }
+
+    /**
+     * 更新用户标签
+     * @param userTag 待更新的用户标签，id不能修改，tagCode不能重复
+     * @return 成功1 失败0
+     */
+    @PostMapping("/update")
+    @ResponseJSONP
+    public int updateUserTag(UserTagT userTag){
+        return userTagService.updateUserTag(userTag);
     }
 }
