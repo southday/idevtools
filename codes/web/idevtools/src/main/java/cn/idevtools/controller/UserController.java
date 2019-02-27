@@ -81,7 +81,7 @@ public class UserController {
     @ResponseJSONP
     @RequestMapping("/userDetailWithTag.json/{userId}")
     @PrintExecTime
-    @AddManageHistory
+    @AddManageHistory(ACTION_DESC = "wtf")
     public UserTagVO getUserDetailWithTagById(@PathVariable Integer userId){
         return userService.getUserDetailWithTagById(userId);
     }

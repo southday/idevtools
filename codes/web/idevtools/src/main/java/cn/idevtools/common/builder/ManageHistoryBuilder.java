@@ -30,12 +30,12 @@ public class ManageHistoryBuilder {
     }
 
     public ManageHistoryBuilder setActionTarget(String actionTarget){
-        manageHistory.setActionType(actionTarget);
+        manageHistory.setActionTarget(actionTarget);
         return this;
     }
 
     public ManageHistoryBuilder setActionDesc(String actionDesc){
-        manageHistory.setActionType(actionDesc);
+        manageHistory.setActionDesc(actionDesc);
         return this;
     }
 
