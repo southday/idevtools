@@ -8,4 +8,5 @@ package cn.idevtools.common;
 public interface CommonConst {
     String USER_TYPE_USER = "user";
     String USER_TYPE_ADMIN = "admin";
+    String JCAPTCHA = "jcaptcha";
 }
