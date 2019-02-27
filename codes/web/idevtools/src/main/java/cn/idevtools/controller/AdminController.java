@@ -4,6 +4,7 @@ import cn.idevtools.common.CodeMsg;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
+import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
@@ -36,14 +37,14 @@ public class AdminController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseJSONP
     public Message<AdminT> login(AdminT argAdmin, HttpServletRequest req, HttpServletResponse resp) {
-        String captchaResp = req.getParameter("jcaptcha");
-        System.out.println("验证码：" + captchaResp);
+        String captchaResp = req.getParameter(CommonConst.JCAPTCHA);
         boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(req, captchaResp);
         Message<AdminT> ret = new Message<>();
         if (!captchaPassed) {
             ret.setCodeMsg(CodeMsg.CAPTCHA_ERROR);
             return ret;
         }
+        argAdmin.setPassword(EncryptUtil.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
         if (admin == null) {
             ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);

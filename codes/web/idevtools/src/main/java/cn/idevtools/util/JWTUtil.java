@@ -1,5 +1,6 @@
 package cn.idevtools.util;
 
+import cn.idevtools.common.CommonConst;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,8 +38,8 @@ public class JWTUtil {
         Date expireDate = now.getTime();
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("userName", userName);
-        claims.put("userType", userType);
+        claims.put(CommonConst.USER_NAME, userName);
+        claims.put(CommonConst.USER_TYPE, userType);
         String jws = Jwts.builder()
                 .setClaims(claims)
                 .setNotBefore(startDate)
@@ -55,5 +56,25 @@ public class JWTUtil {
      */
     public static Claims getClaims(String jws) {
         return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
+    }
+
+    /**
+     * 获取具体的claim(由key和valueClass指定)
+     * @param jws token
+     * @param key
+     * @param valueClass
+     * @param <T>
+     * @return
+     */
+    public static <T> T getClaim(String jws, String key, Class<T> valueClass) {
+        return getClaims(jws).get(key, valueClass);
+    }
+
+    public static String getUserName(String jws) {
+        return getClaim(jws, CommonConst.USER_NAME, String.class);
+    }
+
+    public static String getUserType(String jws) {
+        return getClaim(jws, CommonConst.USER_TYPE, String.class);
     }
 }
