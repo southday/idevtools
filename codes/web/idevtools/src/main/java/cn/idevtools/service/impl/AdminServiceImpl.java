@@ -3,6 +3,7 @@ package cn.idevtools.service.impl;
 import cn.idevtools.mapper.AdminTMapper;
 import cn.idevtools.po.AdminT;
 import cn.idevtools.service.AdminService;
+import cn.idevtools.util.ParamValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminT login(AdminT argAdmin) {
+        if (!ParamValidator.notNullString(argAdmin.getAdminName(), argAdmin.getPassword()))
+            return null;
         return adminTMapper.selectAdminByNamePassword(argAdmin);
     }
 }
