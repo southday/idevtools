@@ -1,6 +1,8 @@
 package cn.idevtools.controller;
 
 
+import cn.idevtools.common.annotation.AddManageHistory;
+import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
@@ -8,10 +10,8 @@ import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -39,7 +39,7 @@ public class UserController {
      *
      * @Param pageId 页号.
      */
-    @RequestMapping(value = "/userinfo.json/page/{pageId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/userinfo.json/page/{pageId}")
     @ResponseJSONP
     public List<UserT> getUserInfoJsonByPage(@PathVariable Integer pageId){
 
@@ -59,9 +59,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/delete/{userId}")
     public int deleteUserById(@PathVariable Integer userId){
-        UserT user=new UserT();
-        user.setUserId(userId);
-        return userService.deleteUser(user);
+        return userService.deleteUser(userId);
     }
 
     /**
@@ -70,7 +68,7 @@ public class UserController {
      * @param pageId 页号
      */
     @ResponseJSONP
-    @RequestMapping(value = "/searchUserInfo.json/page/{pageId}",method = RequestMethod.POST)
+    @PostMapping(value = "/searchUserInfo.json/page/{pageId}")
     public List<UserT> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
         PageInfo<UserT> userPage=userService.getUsersPage(user,pageId,pageSize);
         return userPage.getList();
@@ -82,6 +80,8 @@ public class UserController {
      */
     @ResponseJSONP
     @RequestMapping("/userDetailWithTag.json/{userId}")
+    @PrintExecTime
+    @AddManageHistory(ACTION_DESC = "wtf")
     public UserTagVO getUserDetailWithTagById(@PathVariable Integer userId){
         return userService.getUserDetailWithTagById(userId);
     }

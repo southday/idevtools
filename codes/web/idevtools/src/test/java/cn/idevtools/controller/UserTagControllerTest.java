@@ -3,14 +3,18 @@ package cn.idevtools.controller;
 import cn.idevtools.CommonTest;
 import cn.idevtools.po.UserTagT;
 import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 使用MockMvc 对UserTagController的方法进行测试
  * @see cn.idevtools.controller.UserTagController
  * @author 王沁宽
  */
+@Transactional
+@Rollback
 public class UserTagControllerTest extends CommonTest {
     /**
      * 测试方法{@link UserTagController#addUserTag(UserTagT)}

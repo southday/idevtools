@@ -249,6 +249,7 @@
       <version>0.10.5</version>
       <scope>runtime</scope>
     </dependency>
+
     <!-- JCaptcha 验证码支持 southday 2019.02.26-->
     <dependency>
       <groupId>com.octo.captcha</groupId>
@@ -280,6 +281,13 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2.1</version>
+     </dependency>
+
+    <!--aop注解-->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.7.4</version>
     </dependency>
   </dependencies>
 

@@ -26,6 +26,21 @@ public class CookieUtil {
     }
 
     /**
+     * 通过cookie名称获取对应cookie
+     * @param cookieName
+     * @return
+     */
+    public static Cookie getCookieByName(String cookieName){
+        HttpServletRequest req=HttpUtil.getHttpServletRequest();
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null && cookies.length > 0)
+            for (Cookie cookie : req.getCookies())
+                if (cookieName.equals(cookie.getName()))
+                    return cookie;
+        return null;
+    }
+
+    /**
      * 根据cookieName获取指定cookie的value
      * @param req
      * @param cookieName

@@ -62,7 +62,7 @@
   <update id="updateUserValidById">
     update user_t
     set valid=0
-    where user_id=#{user.userId}
+    where user_id=#{userId}
   </update>
   
   <!--查询符合条件的用户的基本信息-->
