@@ -4,6 +4,7 @@ import cn.idevtools.common.CodeMsg;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
+import cn.idevtools.service.CommonService;
 import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
@@ -29,37 +30,31 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/a")
 public class AdminController {
-    private static final Logger logger = LogManager.getLogger(AdminController.class);
-
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    CommonService commonService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseJSONP
     public Message<AdminT> login(AdminT argAdmin, HttpServletRequest req, HttpServletResponse resp) {
-        String captchaResp = req.getParameter(CommonConst.JCAPTCHA);
-        boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(req, captchaResp);
-        Message<AdminT> ret = new Message<>();
-        if (!captchaPassed) {
-            ret.setCodeMsg(CodeMsg.CAPTCHA_ERROR);
-            return ret;
-        }
+        if (!commonService.checkCaptcha(req))
+            return new Message<>(CodeMsg.CAPTCHA_ERROR);
         argAdmin.setPassword(EncryptUtil.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
+        Message<AdminT> ret = new Message<>(CodeMsg.LOGIN_SUCCESS, admin);
         if (admin == null) {
             ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);
         } else {
-            ret.setCodeMsg((CodeMsg.LOGIN_SUCCESS));
-            ret.setData(admin);
             try {
                 String token = JWTUtil.createToken(admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
-                Cookie cookie = new Cookie("token", token);
+                Cookie cookie = new Cookie(CommonConst.TOKEN, token);
                 cookie.setPath("/");
                 resp.addCookie(cookie);
             } catch (Exception e) {
-                ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_TOKEN_ERROR);
                 e.printStackTrace();
-                logger.error("Create token error, [adminName: " + admin.getAdminName() + "]，exception: " + e.getMessage());
+                ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_TOKEN_ERROR);
             }
         }
         return ret;

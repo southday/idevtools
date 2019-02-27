@@ -8,11 +8,21 @@ import java.security.MessageDigest;
  * @date 2019/2/27
  */
 public class EncryptUtil {
+    private static final MessageDigest MD5;
+
     private static final String[] saltList = {
             "0", "s", "L", "x", "e", "9", "a", "2", "T", "A", "p",
             "m", "W", "5", "!", "i", "@", "4", "Y", "R", "r", "#",
             "*", "g", "z", "G", "u", "$", "M", "v", "k", "d", "F"
     };
+
+    static {
+        try {
+            MD5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * 根据[密码]和saltList来制造盐
@@ -36,11 +46,9 @@ public class EncryptUtil {
      * @return
      */
     public static String md5(String plaintext) {
-        MessageDigest md5;
         String ciphertext;
         try {
-            md5 = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = md5.digest(plaintext.getBytes());
+            byte[] md5Bytes = MD5.digest(plaintext.getBytes());
             StringBuilder hexValue = new StringBuilder();
             for (int i = 0; i < md5Bytes.length; i++) {
                 int val = ((int) md5Bytes[i]) & 0xff;

@@ -17,17 +17,21 @@ public class Message<T> {
     private String msg;
     private T data;
 
-    public Message(){}
+    public Message() {
+        this(0, null, null);
+    }
+
+    public Message(CodeMsg codeMsg) {
+        this(codeMsg, null);
+    }
+
+    public Message(CodeMsg codeMsg, T data) {
+        this(codeMsg.getCode(), codeMsg.getMsg(), data);
+    }
 
     public Message(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
-        this.data = data;
-    }
-
-    public Message(CodeMsg codeMsg, T data) {
-        this.code = codeMsg.getCode();
-        this.msg = codeMsg.getMsg();
         this.data = data;
     }
 
