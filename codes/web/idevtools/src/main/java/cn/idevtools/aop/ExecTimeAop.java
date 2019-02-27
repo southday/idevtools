@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
- * 打印方法的执行时间,只对配置了{@link cn.idevtools.common.annotation.PrintExecTime 注解的方法生效}
+ * 打印方法的执行时间,只对配置了{@link cn.idevtools.common.annotation.PrintExecTime} 注解的方法生效
  *
  * @author 王沁宽
  *

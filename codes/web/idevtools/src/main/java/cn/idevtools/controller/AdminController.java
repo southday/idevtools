@@ -8,7 +8,6 @@ import cn.idevtools.service.AdminService;
 import cn.idevtools.service.CommonService;
 import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTUtil;
-import cn.idevtools.util.ParamValidator;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,7 @@ public class AdminController {
             ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);
         } else {
             try {
-                String token = JWTUtil.createToken(admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
+                String token = JWTUtil.createToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
                 Cookie cookie = new Cookie(CommonConst.TOKEN, token);
                 cookie.setPath("/");
                 resp.addCookie(cookie);
