@@ -1,18 +1,21 @@
 package cn.idevtools.controller;
 
+import cn.idevtools.common.CodeMsg;
 import cn.idevtools.common.CommonConst;
+import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
+import cn.idevtools.service.AdminService;
+import cn.idevtools.service.CommonService;
+import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import cn.idevtools.service.AdminService;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -24,28 +27,33 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/a")
 public class AdminController {
-    private static final Logger logger = LogManager.getLogger(AdminController.class);
-
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    CommonService commonService;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseJSONP
-    public AdminT login(AdminT argAdmin, HttpServletResponse resp) {
+    public Message<AdminT> login(AdminT argAdmin, HttpServletRequest req, HttpServletResponse resp) {
+        if (!commonService.checkCaptcha(req))
+            return new Message<>(CodeMsg.CAPTCHA_ERROR);
+        argAdmin.setPassword(EncryptUtil.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
-        if (admin != null) {
+        Message<AdminT> ret = new Message<>(CodeMsg.LOGIN_SUCCESS, admin);
+        if (admin == null) {
+            ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);
+        } else {
             try {
                 String token = JWTUtil.createToken(admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
-                System.out.println("token: " + token);
-                Cookie cookie = new Cookie("token", token);
+                Cookie cookie = new Cookie(CommonConst.TOKEN, token);
                 cookie.setPath("/");
                 resp.addCookie(cookie);
             } catch (Exception e) {
                 e.printStackTrace();
-                logger.error("Create token error, [adminName: " + admin.getAdminName() + "]，exception: " + e.getMessage());
-                admin = null;
+                ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_TOKEN_ERROR);
             }
         }
-        return admin;
+        return ret;
     }
 }

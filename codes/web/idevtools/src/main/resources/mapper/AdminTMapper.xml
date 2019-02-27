@@ -13,7 +13,7 @@
   </resultMap>
 
   <sql id="Base_Admin_List" >
-    admin_id, admin_name, email, password, intro, agent_id, agent_name
+    admin_id, admin_name, email, intro, agent_id, agent_name
   </sql>
 
   <!-- 根据adminName查询指定管理员 southday 2019.02.26 -->

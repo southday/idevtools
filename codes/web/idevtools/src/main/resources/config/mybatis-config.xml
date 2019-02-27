@@ -4,30 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!--通过这个配置文件，完成mybatis与数据库的连接  -->
 <configuration>
-
     <!--myBatis分页插件pageHelper 具体用法:https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md-->
     <plugins>
         <!-- com.github.pagehelper为PageHelper类所在包名 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
         </plugin>
     </plugins>
-    <!-- pojo的映射文件UserMapper引入到配入到配置文件中 -->
-    <mappers>
-        <mapper resource="mapper/AdminTMapper.xml" />
-        <mapper resource="mapper/CollectionsTMapper.xml" />
-        <mapper resource="mapper/DownloadsTMapper.xml" />
-        <mapper resource="mapper/LookupTypeTMapper.xml" />
-        <mapper resource="mapper/LookupValueTMapper.xml" />
-        <mapper resource="mapper/ManageHistoryTMapper.xml" />
-        <mapper resource="mapper/MessageTMapper.xml" />
-        <mapper resource="mapper/RecommendationsTMapper.xml" />
-        <mapper resource="mapper/SuggestionsTMapper.xml" />
-        <mapper resource="mapper/ToolTagRelTMapper.xml" />
-        <mapper resource="mapper/ToolTagTMapper.xml" />
-        <mapper resource="mapper/ToolTMapper.xml" />
-        <mapper resource="mapper/UserTagRelTMapper.xml" />
-        <mapper resource="mapper/UserTagTMapper.xml" />
-        <mapper resource="mapper/UserTMapper.xml" />
-    </mappers>
-
 </configuration>

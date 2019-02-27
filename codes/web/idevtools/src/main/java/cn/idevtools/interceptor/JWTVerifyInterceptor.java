@@ -3,6 +3,7 @@ package cn.idevtools.interceptor;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
+import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.JWTUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,23 +29,14 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
     private AdminService adminService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Cookie[] cookies = request.getCookies();
-        String jws = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    jws = cookie.getValue();
-                    break;
-                }
-            }
-        }
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+        String jws = CookieUtil.getCookieValue(req, CommonConst.TOKEN);
         boolean flag = false;
         if (jws != null && !"".equals(jws.trim())) {
             try {
                 Claims claims = JWTUtil.getClaims(jws);
-                String userName = claims.get("userName", String.class);
-                String userType = claims.get("userType", String.class);
+                String userName = claims.get(CommonConst.USER_NAME, String.class);
+                String userType = claims.get(CommonConst.USER_TYPE, String.class);
                 if (CommonConst.USER_TYPE_ADMIN.equals(userType))
                     flag = adminService.isAdminExists(userName);
                 else if (CommonConst.USER_TYPE_USER.equals(userType))
@@ -56,7 +47,7 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
             }
         }
         if (!flag) // 待完善
-            response.setStatus(401);
+            resp.setStatus(401);
         return flag;
     }
 }
