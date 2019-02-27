@@ -1,6 +1,6 @@
 package cn.idevtools.controller;
 
-import cn.idevtools.common.CodeMsg;
+import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
@@ -37,12 +37,12 @@ public class AdminController {
     @ResponseJSONP
     public Message<AdminT> login(AdminT argAdmin, HttpServletRequest req, HttpServletResponse resp) {
         if (!commonService.checkCaptcha(req))
-            return new Message<>(CodeMsg.CAPTCHA_ERROR);
+            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         argAdmin.setPassword(EncryptUtil.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
-        Message<AdminT> ret = new Message<>(CodeMsg.LOGIN_SUCCESS, admin);
+        Message<AdminT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, admin);
         if (admin == null) {
-            ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);
+            ret.setCodeMsgE(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
         } else {
             try {
                 String token = JWTUtil.createToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
@@ -51,7 +51,7 @@ public class AdminController {
                 resp.addCookie(cookie);
             } catch (Exception e) {
                 e.printStackTrace();
-                ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_TOKEN_ERROR);
+                ret.setCodeMsgE(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
             }
         }
         return ret;

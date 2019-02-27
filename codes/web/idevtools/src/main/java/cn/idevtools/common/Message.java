@@ -1,5 +1,7 @@
 package cn.idevtools.common;
 
+import org.aspectj.apache.bcel.classfile.Code;
+
 /**
  * 将后端返回的消息统一化
  * <pre>
@@ -21,12 +23,20 @@ public class Message<T> {
         this(0, null, null);
     }
 
-    public Message(CodeMsg codeMsg) {
-        this(codeMsg, null);
+    public Message(CodeMsgE codeMsgE) {
+        this(codeMsgE, null);
     }
 
-    public Message(CodeMsg codeMsg, T data) {
-        this(codeMsg.getCode(), codeMsg.getMsg(), data);
+    public Message(CodeMsgE codeMsgE, T data) {
+        this(codeMsgE.getCode(), codeMsgE.getMsg(), data);
+    }
+
+    public Message(CodeMsgC codeMsgC) {
+        this(codeMsgC, null);
+    }
+
+    public Message(CodeMsgC codeMsgC, T data) {
+        this(codeMsgC.getCode(), codeMsgC.getMsg(), data);
     }
 
     public Message(int code, String msg, T data) {
@@ -35,9 +45,14 @@ public class Message<T> {
         this.data = data;
     }
 
-    public void setCodeMsg(CodeMsg codeMsg) {
-        this.code = codeMsg.getCode();
-        this.msg = codeMsg.getMsg();
+    public void setCodeMsgE(CodeMsgE codeMsgE) {
+        this.code = codeMsgE.getCode();
+        this.msg = codeMsgE.getMsg();
+    }
+
+    public void setCodeMsgC(CodeMsgC codeMsgC) {
+        this.code = codeMsgC.getCode();
+        this.msg = codeMsgC.getMsg();
     }
 
     public int getCode() {
