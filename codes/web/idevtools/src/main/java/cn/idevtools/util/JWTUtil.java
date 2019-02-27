@@ -6,8 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,21 +31,17 @@ public class JWTUtil {
      * @param userName
      * @return
      */
-    public static String createToken(String userName, String userType) {
+    public static String createToken(int id, String userName, String userType) {
         Date startDate = new Date();
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR, DURATION);
         Date expireDate = now.getTime();
 
         Map<String, Object> claims = new HashMap<>();
+        claims.put(CommonConst.ID, id);
         claims.put(CommonConst.USER_NAME, userName);
         claims.put(CommonConst.USER_TYPE, userType);
-        String jws = Jwts.builder()
-                .setClaims(claims)
-                .setNotBefore(startDate)
-                .setExpiration(expireDate)
-                .signWith(KEY)
-                .compact();
+        String jws = Jwts.builder().setClaims(claims).setNotBefore(startDate).setExpiration(expireDate).signWith(KEY).compact();
         return jws;
     }
 
