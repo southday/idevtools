@@ -7,7 +7,6 @@ import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
-import cn.idevtools.util.ParamValidator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,30 +122,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserExists(String userName) {
-        return userTMapper.selectUserByUserName(userName) != null;
+        return userTMapper.selectUserCountByName(userName) != 0;
+    }
+
+    @Override
+    public boolean isUserNameExists(String userName) {
+        return userTMapper.selectUserCountByName(userName) != 0;
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return userTMapper.selectUserCountByEmail(email) != 0;
     }
 
     @Override
     public UserT login(UserT argUser) {
-        if (!ParamValidator.notNullString(argUser.getUserName(), argUser.getPassword()))
-            return null;
         return userTMapper.selectUserByNamePassword(argUser);
     }
 
     @Override
     public CodeMsgE join(UserT argUser) {
-        if (!ParamValidator.notNullString(argUser.getUserName(), argUser.getPassword()))
-            return CodeMsgE.JOIN_FAILURE_INPUT_NULL;
-        if (!ParamValidator.isEmailValid(argUser.getEmail()))
-            return CodeMsgE.JOIN_FAILURE_EMAIL_ERROR;
-        /*
-         * 因为要验证：用户名是否被使用，邮箱是否被使用，所以要使用<select>调用存储过程来做，效率高一些？
-         * 如果不使用存储过程，那要执行3次数据库操作：
-         * 1) 判断用户名是否被占用
-         * 2) 判断邮箱是否被占用
-         * 3) 插入操作
-         * southday 2019.02.28 02:21
-         */
         userTMapper.insertUser(argUser);
         return null;
     }

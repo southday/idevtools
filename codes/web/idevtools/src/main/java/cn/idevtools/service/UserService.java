@@ -98,6 +98,20 @@ public interface UserService {
     boolean isUserExists(String userName);
 
     /**
+     * 判断用户名是否已存在 southday 2019.03.01
+     * @param userName
+     * @return
+     */
+    boolean isUserNameExists(String userName);
+
+    /**
+     * 判断邮箱是否已存在 southday 2019.03.01
+     * @param email
+     * @return
+     */
+    boolean isEmailExists(String email);
+
+    /**
      * 用户登陆(userName, password) southday 2019.02.28
      * @param argUser
      * @return

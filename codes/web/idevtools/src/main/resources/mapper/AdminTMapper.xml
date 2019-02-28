@@ -23,6 +23,13 @@
      WHERE admin_name = #{adminName}
   </select>
 
+  <!-- 根据adminName查询指定管理的数目 southday 2019.03.01 -->
+  <select id="selectAdminCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM admin_t
+     WHERE admin_name = #{adminName}
+  </select>
+
   <!-- 根据adminName和password查询指定管理员 southday 2019.02.26 -->
   <select id="selectAdminByNamePassword" parameterType="cn.idevtools.po.AdminT" resultMap="BaseResultMap">
     SELECT <include refid="Base_Admin_List"/>

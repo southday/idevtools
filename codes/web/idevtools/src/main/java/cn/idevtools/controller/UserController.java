@@ -2,20 +2,25 @@ package cn.idevtools.controller;
 
 
 import cn.idevtools.common.CodeMsgE;
+import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
+import cn.idevtools.util.CookieUtil;
+import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -26,7 +31,7 @@ import java.util.List;
  * @author 王沁宽
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/u")
 public class UserController {
 
     @Autowired
@@ -128,5 +133,65 @@ public class UserController {
                         CodeMsgE.DELETE_FAILURE :
                         CodeMsgE.DELETE_SUCCESS
         );
+    }
+
+    /**
+     * 用户登陆 southday 2019.02.28
+     * @param argUser
+     * @param bindingResult
+     * @return
+     */
+    @ResponseJSONP
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Message<?> login(@Valid UserT argUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
+        if (!ValidUtil.isPassCaptcha())
+            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
+        argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
+        UserT user = userService.login(argUser);
+        Message<UserT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, user);
+        if (user == null) {
+            ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
+        } else {
+            boolean success = CookieUtil.addLoginedToken(user.getUserId(), user.getUserName(), CommonConst.USER_TYPE_USER);
+            if (!success)
+                ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
+        }
+        return ret;
+    }
+
+    /**
+     * 用户注册 southday 2019.02.28
+     * @param argUser
+     * @param bindingResult
+     * @return
+     */
+    @ResponseJSONP
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public Message<?> join(@Valid UserT argUser, BindingResult bindingResult, HttpServletRequest req) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
+        if (!ValidUtil.isPassCaptcha(req))
+            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
+        String password2 = req.getParameter("password2");
+        if (!argUser.getPassword().equals(password2))
+            return new Message<>(-1, "注册失败，两次密码不一致");
+        boolean userNameExists = userService.isUserNameExists(argUser.getUserName());
+        boolean emailExists = userService.isEmailExists(argUser.getEmail());
+        String msg = null;
+        if (userNameExists && !emailExists)
+            msg = "注册失败，用户名已被注册";
+        else if (!userNameExists && emailExists)
+            msg = "注册失败，邮箱已被注册";
+        else if (userNameExists && emailExists)
+            msg = "注册失败，用户名和邮箱均已被注册";
+        if (msg != null)
+            return new Message<>(-1, msg);
+        else {
+            userService.join(argUser);
+            CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+            return new Message<UserT>(1, "注册成功", argUser);
+        }
     }
 }
