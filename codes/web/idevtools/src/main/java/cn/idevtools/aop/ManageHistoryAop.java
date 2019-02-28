@@ -15,7 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
 import java.lang.reflect.Method;
 
 /**
@@ -36,26 +35,25 @@ public class ManageHistoryAop {
 
     @Around("manageHistoryPointCut()")
     public Object addManageHistory(ProceedingJoinPoint joinPoint){
-        Object result=null;
-        Cookie cookie= CookieUtil.getCookieByName("token");
+        Object result = null;
         ManageHistoryBuilder manageHistoryBuilder=new ManageHistoryBuilder();
         try{
-            result= joinPoint.proceed();
-            if(cookie!=null){
-                String jwt=cookie.getValue();
-                //判断是否为管理员，只为管理员写入操作历史
-                if(JWTUtil.getUserType(jwt).equals(CommonConst.USER_TYPE_ADMIN)){
-                    Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
-                    //获取注解信息
-                    AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
-                    //构建操作历史对象
-                    ManageHistoryT manageHistory=manageHistoryBuilder.setAdminName(JWTUtil.getUserName(jwt))
-                            .setActionDesc(addManageHistory.ACTION_DESC())
-                            .setActionType(addManageHistory.ACTION_TYPE().toString())
-                            .setActionTarget(method.getName())
-                            .buildManageHistory();
-                    manageHistoryService.addManageHistory(manageHistory);
-                }
+            result = joinPoint.proceed();
+            String jws = CookieUtil.getCookieValue(CommonConst.TOKEN);
+            Claims claims = JWTUtil.getClaims(jws);
+            //判断是否为管理员，只为管理员写入操作历史
+            if(CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
+                Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+                //获取注解信息
+                AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
+                //构建操作历史对象
+                ManageHistoryT manageHistory = manageHistoryBuilder.setAdminId(claims.get(CommonConst.ID, Integer.class))
+                        .setAdminName(claims.get(CommonConst.USER_NAME, String.class))
+                        .setActionDesc(addManageHistory.ACTION_DESC())
+                        .setActionType(addManageHistory.ACTION_TYPE().toString())
+                        .setActionTarget(method.getName())
+                        .buildManageHistory();
+                manageHistoryService.addManageHistory(manageHistory);
             }
         }catch (Throwable e){
             e.printStackTrace();

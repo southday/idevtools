@@ -45,7 +45,7 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
                 logger.error("权限验证失败，[token=" + jws + "]，异常：" + e.getMessage());
             }
         }
-        if (!flag) // 待完善
+        if (!flag)
             resp.setStatus(401);
         return flag;
     }

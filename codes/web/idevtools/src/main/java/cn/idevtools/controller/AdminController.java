@@ -45,7 +45,7 @@ public class AdminController {
             ret.setCodeMsg(CodeMsg.LOGIN_FAILURE_INPUT_ERROR);
         } else {
             try {
-                String token = JWTUtil.createToken(admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
+                String token = JWTUtil.createToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
                 Cookie cookie = new Cookie(CommonConst.TOKEN, token);
                 cookie.setPath("/");
                 resp.addCookie(cookie);

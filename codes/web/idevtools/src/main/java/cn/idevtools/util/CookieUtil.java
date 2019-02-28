@@ -30,14 +30,8 @@ public class CookieUtil {
      * @param cookieName
      * @return
      */
-    public static Cookie getCookieByName(String cookieName){
-        HttpServletRequest req=HttpUtil.getHttpServletRequest();
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null && cookies.length > 0)
-            for (Cookie cookie : req.getCookies())
-                if (cookieName.equals(cookie.getName()))
-                    return cookie;
-        return null;
+    public static Cookie getCookie(String cookieName){
+        return getCookie(HttpUtil.getHttpServletRequest(), cookieName);
     }
 
     /**
@@ -49,5 +43,14 @@ public class CookieUtil {
     public static String getCookieValue(HttpServletRequest req, String cookieName) {
         Cookie cookie = getCookie(req, cookieName);
         return cookie != null ? cookie.getValue() : null;
+    }
+
+    /**
+     * 根据cookieName获取指定cookie的value
+     * @param cookieName
+     * @return
+     */
+    public static String getCookieValue(String cookieName) {
+        return getCookieValue(HttpUtil.getHttpServletRequest(), cookieName);
     }
 }
