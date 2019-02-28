@@ -16,4 +16,11 @@ public interface AdminTMapper {
      * @return
      */
     AdminT selectAdminByNamePassword(AdminT argAdmin);
+
+    /**
+     * 根据adminName查询指定管理的数目 southday 2019.03.01
+     * @param adminName
+     * @return
+     */
+    int selectAdminCountByName(String adminName);
 }

@@ -74,4 +74,18 @@ public interface UserTMapper {
      * @return
      */
     int insertUser(UserT user);
+
+    /**
+     * 根据userName查询指定用户的数目 southday 2019.03.01
+     * @param userName
+     * @return
+     */
+    int selectUserCountByName(String userName);
+
+    /**
+     * 根据email查询指定用户的数目 southday 2019.03.01
+     * @param email
+     * @return
+     */
+    int selectUserCountByEmail(String email);
 }
