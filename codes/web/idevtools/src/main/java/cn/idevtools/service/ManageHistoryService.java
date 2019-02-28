@@ -3,7 +3,7 @@ package cn.idevtools.service;
 import cn.idevtools.po.ManageHistoryT;
 
 /**
- * 你懂的 管理记录模块
+ * 你懂的 管理记录模块 {大家懂才是真的懂 :-)}
  * @see cn.idevtools.service.impl.ManageHistoryServiceImpl
  * @author 王沁宽
  */

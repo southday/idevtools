@@ -1,7 +1,6 @@
 package cn.idevtools.common.annotation;
 
 
-import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.commonEnum.ManageHistoryActionType;
 
 import java.lang.annotation.ElementType;
