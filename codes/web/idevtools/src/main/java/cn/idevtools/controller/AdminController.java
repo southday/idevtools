@@ -42,7 +42,7 @@ public class AdminController {
         AdminT admin = adminService.login(argAdmin);
         Message<AdminT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, admin);
         if (admin == null) {
-            ret.setCodeMsgE(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
+            ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
         } else {
             try {
                 String token = JWTUtil.createToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
@@ -51,7 +51,7 @@ public class AdminController {
                 resp.addCookie(cookie);
             } catch (Exception e) {
                 e.printStackTrace();
-                ret.setCodeMsgE(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
+                ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
             }
         }
         return ret;

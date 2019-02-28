@@ -1,6 +1,7 @@
 package cn.idevtools.service;
 
 
+import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import com.github.pagehelper.PageInfo;
@@ -59,13 +60,6 @@ public interface UserService {
      * @return 操作影响的行数，由于用户id为主键，唯一对应一个用户，因此操作成功时，返回1
      */
     int updateUser(UserT user);
-    /**
-     * 新建用户
-     *
-     * @param user 待新建的用户对象
-     * @return 操作影响的行数，由于用户id为主键，唯一对应一个用户，因此操作成功时，返回1
-     */
-    int createUser(UserT user);
 
     /**
      * 分页查询用户信息
@@ -102,4 +96,18 @@ public interface UserService {
      * @return
      */
     boolean isUserExists(String userName);
+
+    /**
+     * 用户登陆(userName, password) southday 2019.02.28
+     * @param argUser
+     * @return
+     */
+    UserT login(UserT argUser);
+
+    /**
+     * 用户注册(userName, password, email) southday 2019.02.28
+     * @param argUser
+     * @return
+     */
+    CodeMsgE join(UserT argUser);
 }

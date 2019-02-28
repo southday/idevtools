@@ -45,12 +45,12 @@ public class Message<T> {
         this.data = data;
     }
 
-    public void setCodeMsgE(CodeMsgE codeMsgE) {
+    public void setCodeMsg(CodeMsgE codeMsgE) {
         this.code = codeMsgE.getCode();
         this.msg = codeMsgE.getMsg();
     }
 
-    public void setCodeMsgC(CodeMsgC codeMsgC) {
+    public void setCodeMsg(CodeMsgC codeMsgC) {
         this.code = codeMsgC.getCode();
         this.msg = codeMsgC.getMsg();
     }
