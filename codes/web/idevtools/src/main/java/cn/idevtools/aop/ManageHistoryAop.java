@@ -41,21 +41,24 @@ public class ManageHistoryAop {
         try{
             result = joinPoint.proceed();
             String jws = CookieUtil.getCookieValue(CommonConst.TOKEN);
-            Claims claims = JWTUtil.getClaims(jws);
-            //判断是否为管理员，只为管理员写入操作历史
-            if(CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
-                Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
-                //获取注解信息
-                AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
-                //构建操作历史对象
-                ManageHistoryT manageHistory = manageHistoryBuilder.setAdminId(claims.get(CommonConst.ID, Integer.class))
-                        .setAdminName(claims.get(CommonConst.USER_NAME, String.class))
-                        .setActionDesc(addManageHistory.ACTION_DESC())
-                        .setActionType(addManageHistory.ACTION_TYPE().toString())
-                        .setActionTarget(method.getName())
-                        .buildManageHistory();
-                manageHistoryService.addManageHistory(manageHistory);
+            if(jws != null){
+                Claims claims = JWTUtil.getClaims(jws);
+                //判断是否为管理员，只为管理员写入操作历史
+                if(CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
+                    Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+                    //获取注解信息
+                    AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
+                    //构建操作历史对象
+                    ManageHistoryT manageHistory = manageHistoryBuilder.setAdminId(claims.get(CommonConst.ID, Integer.class))
+                            .setAdminName(claims.get(CommonConst.USER_NAME, String.class))
+                            .setActionDesc(addManageHistory.ACTION_DESC())
+                            .setActionType(addManageHistory.ACTION_TYPE().toString())
+                            .setActionTarget(method.getName())
+                            .buildManageHistory();
+                    manageHistoryService.addManageHistory(manageHistory);
+                }
             }
+
         }catch (Throwable e){
             e.printStackTrace();
         }

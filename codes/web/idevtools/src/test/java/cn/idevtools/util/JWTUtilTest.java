@@ -11,7 +11,7 @@ class JWTUtilTest {
 
     @Test
     public void foo() {
-        String jws = JWTUtil.createToken("southday", "user");
+        String jws = JWTUtil.createToken(123,"southday", "user");
         System.out.println(jws);
         Claims claims = JWTUtil.getClaims(jws);
         String userName = claims.get("userName", String.class);

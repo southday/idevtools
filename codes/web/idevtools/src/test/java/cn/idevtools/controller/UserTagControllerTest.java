@@ -7,6 +7,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 /**
  * 使用MockMvc 对UserTagController的方法进行测试
@@ -17,14 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Rollback
 public class UserTagControllerTest extends CommonTest {
     /**
-     * 测试方法{@link UserTagController#addUserTag(UserTagT)}
+     * 测试方法{@link UserTagController#addUserTag(UserTagT, BindingResult)} )}
      * 打印返回的json
      */
     @Test
     public void addUserTagTest() throws Exception{
         MvcResult mvcResult=mockMvc.perform(
                 MockMvcRequestBuilders.post("/userTag/add")
-                        .param("tagCode","testcode")
                         .param("tagMeaning","testmean")
                         .param("description","null")
         ).andReturn();

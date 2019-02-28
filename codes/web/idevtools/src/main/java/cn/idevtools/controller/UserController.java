@@ -1,13 +1,14 @@
 package cn.idevtools.controller;
 
 
+import cn.idevtools.common.CodeMsg;
+import cn.idevtools.common.Message;
 import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +42,11 @@ public class UserController {
      */
     @RequestMapping(value = "/userinfo.json/page/{pageId}")
     @ResponseJSONP
-    public List<UserT> getUserInfoJsonByPage(@PathVariable Integer pageId){
+    public Message<List<UserT>> getUserInfoJsonByPage(@PathVariable Integer pageId){
 
-        PageInfo<UserT> userPage=userService.getAllUserPage(pageId,pageSize);
-
-        return userPage.getList();
+        return new Message<>(
+                CodeMsg.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
+        );
     }
 
 
@@ -54,12 +55,16 @@ public class UserController {
      *
      * @Param userId 用户id.
      *
-     * @return 删除成功则返回1
+     * @return
      */
     @ResponseBody
     @RequestMapping("/delete/{userId}")
-    public int deleteUserById(@PathVariable Integer userId){
-        return userService.deleteUser(userId);
+    public Message deleteUserById(@PathVariable Integer userId){
+        return new Message(
+                userService.deleteUser(userId) == 0 ?
+                        CodeMsg.DELETE_FAILURE :
+                        CodeMsg.DELETE_SUCCESS
+        );
     }
 
     /**
@@ -69,9 +74,11 @@ public class UserController {
      */
     @ResponseJSONP
     @PostMapping(value = "/searchUserInfo.json/page/{pageId}")
-    public List<UserT> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
-        PageInfo<UserT> userPage=userService.getUsersPage(user,pageId,pageSize);
-        return userPage.getList();
+    public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
+        return new Message<>(
+                CodeMsg.QUERY_SUCCESS,
+                userService.getUsersPage(user,pageId,pageSize).getList()
+        );
     }
 
     /**
@@ -81,21 +88,27 @@ public class UserController {
     @ResponseJSONP
     @RequestMapping("/userDetailWithTag.json/{userId}")
     @PrintExecTime
-    @AddManageHistory(ACTION_DESC = "wtf")
-    public UserTagVO getUserDetailWithTagById(@PathVariable Integer userId){
-        return userService.getUserDetailWithTagById(userId);
+    @AddManageHistory(ACTION_DESC = "王无敌到此一游")
+    public Message<UserTagVO> getUserDetailWithTagById(@PathVariable Integer userId){
+        return new Message<>(
+                CodeMsg.QUERY_SUCCESS,userService.getUserDetailWithTagById(userId)
+        );
     }
 
     /**
      * 根据用户id与标签id为相应的用户添加标签
      * @param userId 用户id
      * @param tagId 标签id
-     * @return 0:添加失败 1:添加成功
+     * @return
      */
     @ResponseJSONP
     @RequestMapping("/addTagForUser/{userId}/{tagId}")
-    public int addTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
-        return userService.addTagForUser(userId,tagId);
+    public Message addTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
+        return new Message(
+                userService.addTagForUser(userId,tagId) == 0 ?
+                        CodeMsg.INSERT_FAILURE :
+                        CodeMsg.INSERT_SUCCESS
+        );
     }
 
     /**
@@ -106,7 +119,11 @@ public class UserController {
      */
     @ResponseJSONP
     @RequestMapping("/removeTagForUser/{userId}/{tagId}")
-    public int removeTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
-        return userService.removeTagForUser(userId,tagId);
+    public Message removeTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
+        return new Message(
+                userService.removeTagForUser(userId,tagId) == 0 ?
+                        CodeMsg.DELETE_FAILURE :
+                        CodeMsg.DELETE_SUCCESS
+        );
     }
 }
