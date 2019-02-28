@@ -1,7 +1,10 @@
 package cn.idevtools.util;
 
+import cn.idevtools.common.CommonConst;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Cookie处理工具类
@@ -52,5 +55,26 @@ public class CookieUtil {
      */
     public static String getCookieValue(String cookieName) {
         return getCookieValue(HttpUtil.getHttpServletRequest(), cookieName);
+    }
+
+    /**
+     * 用户登陆成功后，在cookie中添加token southday 2019.02.28
+     * @param id
+     * @param userName
+     * @param userType
+     * @return
+     */
+    public static boolean addLoginedToken(int id, String userName, String userType) {
+        try {
+            HttpServletResponse resp = HttpUtil.getHttpServletResponse();
+            String token = JWTUtil.createToken(id, userName, userType);
+            Cookie cookie = new Cookie(CommonConst.TOKEN, token);
+            cookie.setPath("/");
+            resp.addCookie(cookie);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

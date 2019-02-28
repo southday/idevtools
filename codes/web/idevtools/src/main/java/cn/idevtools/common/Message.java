@@ -39,6 +39,10 @@ public class Message<T> {
         this(codeMsgC.getCode(), codeMsgC.getMsg(), data);
     }
 
+    public Message(int code, String msg) {
+        this(code, msg, null);
+    }
+
     public Message(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
