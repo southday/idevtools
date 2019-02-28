@@ -16,4 +16,13 @@ public class ParamValidatorTest {
         System.out.println(ParamValidator.notNullString("", "", ""));
         System.out.println(ParamValidator.notNullString("aa", "a", "a"));
     }
+
+    @Test
+    public void emailCheckTest() {
+        System.out.println(ParamValidator.isEmailValid("slkj*#@lkj.com")); // false
+        System.out.println(ParamValidator.isEmailValid("lichaoxi7@qq.com")); // true
+        System.out.println(ParamValidator.isEmailValid("")); // false
+        System.out.println(ParamValidator.isEmailValid(null)); // false
+        System.out.println(ParamValidator.isEmailValid("lk.sd.223.sd@164.coms.2n")); // true
+    }
 }
