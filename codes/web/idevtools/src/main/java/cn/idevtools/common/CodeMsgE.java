@@ -15,7 +15,17 @@ public enum CodeMsgE {
     JOIN_FAILURE_INPUT_NULL(-4, "注册失败，参数为空"),
     JOIN_FAILURE_EMAIL_ERROR(-5, "注册失败，Email非法"),
     JOIN_FAILURE_EMAIL_EXISTS(-6, "注册失败，Email已被使用"),
-    JOIN_FAILURE_USERN_EXISTS(-7, "注册失败，用户名已被使用");
+    JOIN_FAILURE_USERN_EXISTS(-7, "注册失败，用户名已被使用"),
+
+    VALID_ERROR(-8,"表单校验失败"),
+
+    QUERY_SUCCESS(20,"查询成功"),
+    INSERT_SUCCESS(21,"插入成功"),
+    DELETE_SUCCESS(22,"删除成功"),
+    UPDATE_SUCCESS(23,"更新成功"),
+    INSERT_FAILURE(-21,"插入失败"),
+    DELETE_FAILURE(-22,"删除失败"),
+    UPDATE_FAILURE(-23,"更新失败");
 
     private int code;
     private String msg;

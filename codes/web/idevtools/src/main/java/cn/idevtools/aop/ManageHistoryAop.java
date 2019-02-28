@@ -41,10 +41,10 @@ public class ManageHistoryAop {
         try{
             result = joinPoint.proceed();
             String jws = CookieUtil.getCookieValue(CommonConst.TOKEN);
-            if(jws != null){
+            if(jws != null && jws.trim().length() > 0){
                 Claims claims = JWTUtil.getClaims(jws);
                 //判断是否为管理员，只为管理员写入操作历史
-                if(CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
+                if(claims != null && CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
                     Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
                     //获取注解信息
                     AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
@@ -58,7 +58,6 @@ public class ManageHistoryAop {
                     manageHistoryService.addManageHistory(manageHistory);
                 }
             }
-
         }catch (Throwable e){
             e.printStackTrace();
         }

@@ -1,6 +1,6 @@
 package cn.idevtools.controller;
 
-import cn.idevtools.common.CodeMsg;
+import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.UserTagT;
 import cn.idevtools.service.UserTagService;
@@ -40,13 +40,13 @@ public class UserTagController {
     public Message addUserTag(@Valid UserTagT userTag, BindingResult bindingResult){
         Message message;
         if(bindingResult.hasErrors()){
-            message = new Message<>(CodeMsg.VALID_ERROR,ValidUtil.convertBindingResultToValidMsg(bindingResult));
+            message = new Message<>(CodeMsgE.VALID_ERROR,ValidUtil.toValidMsgs(bindingResult));
         }
         else{
             message = new Message<>(
                     userTagService.addUserTag(userTag) == 0 ?
-                            CodeMsg.INSERT_FAILURE :
-                            CodeMsg.INSERT_SUCCESS
+                            CodeMsgE.INSERT_FAILURE :
+                            CodeMsgE.INSERT_SUCCESS
                     );
         }
         return message;
@@ -62,8 +62,8 @@ public class UserTagController {
     public Message addUserTag(@PathVariable Integer tagId){
         return new Message(
             userTagService.deleteUserTagById(tagId) == 0 ?
-                    CodeMsg.INSERT_FAILURE :
-                    CodeMsg.INSERT_SUCCESS
+                    CodeMsgE.INSERT_FAILURE :
+                    CodeMsgE.INSERT_SUCCESS
         );
     }
 
@@ -77,8 +77,8 @@ public class UserTagController {
     public Message updateUserTag(UserTagT userTag){
         return new Message(
                 userTagService.updateUserTag(userTag) == 0 ?
-                        CodeMsg.UPDATE_FAILURE :
-                        CodeMsg.UPDATE_SUCCESS
+                        CodeMsgE.UPDATE_FAILURE :
+                        CodeMsgE.UPDATE_SUCCESS
         );
     }
 }

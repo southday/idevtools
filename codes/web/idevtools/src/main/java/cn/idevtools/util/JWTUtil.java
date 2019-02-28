@@ -73,4 +73,8 @@ public class JWTUtil {
     public static String getUserType(String jws) {
         return getClaim(jws, CommonConst.USER_TYPE, String.class);
     }
+
+    public static int getId(String jws) {
+        return getClaim(jws, CommonConst.ID, Integer.class);
+    }
 }

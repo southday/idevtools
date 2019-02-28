@@ -1,7 +1,7 @@
 package cn.idevtools.controller;
 
 
-import cn.idevtools.common.CodeMsg;
+import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.annotation.PrintExecTime;
@@ -11,7 +11,10 @@ import cn.idevtools.service.UserService;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -45,7 +48,7 @@ public class UserController {
     public Message<List<UserT>> getUserInfoJsonByPage(@PathVariable Integer pageId){
 
         return new Message<>(
-                CodeMsg.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
+                CodeMsgE.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
         );
     }
 
@@ -62,8 +65,8 @@ public class UserController {
     public Message deleteUserById(@PathVariable Integer userId){
         return new Message(
                 userService.deleteUser(userId) == 0 ?
-                        CodeMsg.DELETE_FAILURE :
-                        CodeMsg.DELETE_SUCCESS
+                        CodeMsgE.DELETE_FAILURE :
+                        CodeMsgE.DELETE_SUCCESS
         );
     }
 
@@ -76,7 +79,7 @@ public class UserController {
     @PostMapping(value = "/searchUserInfo.json/page/{pageId}")
     public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
         return new Message<>(
-                CodeMsg.QUERY_SUCCESS,
+                CodeMsgE.QUERY_SUCCESS,
                 userService.getUsersPage(user,pageId,pageSize).getList()
         );
     }
@@ -91,7 +94,7 @@ public class UserController {
     @AddManageHistory(ACTION_DESC = "王无敌到此一游")
     public Message<UserTagVO> getUserDetailWithTagById(@PathVariable Integer userId){
         return new Message<>(
-                CodeMsg.QUERY_SUCCESS,userService.getUserDetailWithTagById(userId)
+                CodeMsgE.QUERY_SUCCESS,userService.getUserDetailWithTagById(userId)
         );
     }
 
@@ -106,8 +109,8 @@ public class UserController {
     public Message addTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
         return new Message(
                 userService.addTagForUser(userId,tagId) == 0 ?
-                        CodeMsg.INSERT_FAILURE :
-                        CodeMsg.INSERT_SUCCESS
+                        CodeMsgE.INSERT_FAILURE :
+                        CodeMsgE.INSERT_SUCCESS
         );
     }
 
@@ -122,8 +125,8 @@ public class UserController {
     public Message removeTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
         return new Message(
                 userService.removeTagForUser(userId,tagId) == 0 ?
-                        CodeMsg.DELETE_FAILURE :
-                        CodeMsg.DELETE_SUCCESS
+                        CodeMsgE.DELETE_FAILURE :
+                        CodeMsgE.DELETE_SUCCESS
         );
     }
 }
