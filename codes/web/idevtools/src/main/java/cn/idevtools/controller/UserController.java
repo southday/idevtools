@@ -190,8 +190,10 @@ public class UserController {
             return new Message<>(-1, msg);
         else {
             userService.join(argUser);
-            CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
-            return new Message<UserT>(1, "注册成功", argUser);
+            boolean success = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+            return success ?
+                    new Message<>(1, "注册成功", argUser) :
+                    new Message<>(-1, "注册失败", "Token创建异常");
         }
     }
 }
