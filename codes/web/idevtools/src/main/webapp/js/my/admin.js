@@ -1,4 +1,5 @@
 let ret = {}
+let ck = ''
 // 1.管理员登录
 let vmAdminLogin = new Vue({
     el: "#admin-login",
@@ -6,13 +7,13 @@ let vmAdminLogin = new Vue({
         adminName: '',
         password: '',
         jcaptcha: '',
-        jcaptchaURL: '/idevtools/jcaptcha.jpg'
+        jcaptchaURL: 'http://localhost:8080/idevtools/jcaptcha.jpg'
     },
     methods: {
         login: function() {
             axios({
                 method: 'post',
-                url: '/idevtools/a/login',
+                url: 'http://localhost:8080/idevtools/a/login',
                 params: {
                     adminName: vmAdminLogin.adminName,
                     password: vmAdminLogin.password,
@@ -21,14 +22,14 @@ let vmAdminLogin = new Vue({
             }).then(function(resp) {
                 ret = resp.data
                 console.log(ret)
-                console.log(document.cookie)
-                vmAdminLogin.changeVerifyCode()
+                ck = document.cookie
+                console.log(ck)
             }).catch(function(error) {
                 console.log(error)
             })
         },
         changeVerifyCode: function() {
-            vmAdminLogin.jcaptchaURL = '/idevtools/jcaptcha.jpg?r=' + (Math.random())
+            vmAdminLogin.jcaptchaURL = 'http://localhost:8080/idevtools/jcaptcha.jpg?r=' + (Math.random())
         }
     }
 })
