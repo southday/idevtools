@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>IDevTools</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/toastr.min.css">
     <!-- my css -->
     <link rel="stylesheet" href="./css/my/index.css">
 </head>
@@ -23,8 +24,16 @@
                 <li>
                     <a href="#">意见反馈</a>
                 </li>
-                <li v-if="logined">
-                    <a href="#">个人中心</a>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ userName }}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a :href="userURL">个人中心</a></li>
+                        <li><a href="#tools">我的工具</a></li>
+                        <li><a href="#news">我的消息</a></li>
+                        <li><a href="javascript:;" @click="logout">退出</a></li>
+                    </ul>
                 </li>
                 <li v-if="!logined">
                     <a href="javascript:;" data-toggle="modal" data-target="#user-login-modal">登录</a>
@@ -108,7 +117,7 @@
 <div id="user">
     <!-- 用户登录模态框 -->
     <div id="user-login-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-login-label" aria-hidden="true">
-        <form class="modal-dialog login-frame">
+        <div class="modal-dialog login-frame">
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -119,19 +128,19 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">用户名</label>
                             <div class="col-sm-6">
-                                <input v-model="userName" type="text" class="form-control" placeholder="用户名" required>
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">密码</label>
                             <div class="col-sm-6">
-                                <input v-model="password" type="password" class="form-control" placeholder="密码" required>
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="jcaptcha" class="col-sm-3 control-label">验证码</label>
+                            <label class="col-sm-3 control-label">验证码</label>
                             <div class="col-sm-4">
-                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码" required>
+                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
                             </div>
                             <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
                         </div>
@@ -143,11 +152,11 @@
                     </div>
                 </div>
             </div>
-        </form><!-- form -->
+        </div><!-- form -->
     </div>
     <!-- 用户注册模态框 -->
     <div id="user-join-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-join-label" aria-hidden="true">
-        <form class="modal-dialog join-frame">
+        <div class="modal-dialog join-frame">
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -158,31 +167,31 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">用户名</label>
                             <div class="col-sm-6">
-                                <input v-model="userName" type="text" class="form-control" placeholder="用户名" required>
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">邮箱</label>
                             <div class="col-sm-6">
-                                <input v-model="email" type="text" class="form-control" placeholder="邮箱" required>
+                                <input v-model="email" type="email" class="form-control" placeholder="邮箱" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">密码</label>
                             <div class="col-sm-6">
-                                <input v-model="password" type="password" class="form-control" placeholder="密码" required>
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">密码确认</label>
                             <div class="col-sm-6">
-                                <input v-model="password2" type="password" class="form-control" placeholder="密码确认" required>
+                                <input v-model="password2" type="password" class="form-control" placeholder="密码确认">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="jcaptcha" class="col-sm-3 control-label">验证码</label>
+                            <label class="col-sm-3 control-label">验证码</label>
                             <div class="col-sm-4">
-                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码" required>
+                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
                             </div>
                             <img id="jcaptcha" class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
                         </div>
@@ -193,26 +202,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </form><!-- form -->
-    </div>
-</div>
-<!-- 提醒模态框 -->
-<div id="remind-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="remind-label" aria-hidden="true">
-    <div class="modal-dialog remind-frame">
-        <div class="modal-content bg-danger">
-            <div class="modal-header text center">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                <h4 style="color: red" class="modal-title">{{ remindInfo }}</h4>
-            </div>
+            </div><!-- form -->
         </div>
     </div>
-</div>
 </div>
 <script src="./js/jquery-3.3.1.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/axios.min.js"></script>
 <script src="./js/vue.min.js"></script>
+<script src="./js/toastr.min.js"></script>
 <!-- my js -->
 <script src="./js/my/common.js"></script>
 <script src="./js/my/index.js"></script>

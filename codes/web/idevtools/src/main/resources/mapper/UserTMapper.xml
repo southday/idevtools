@@ -146,7 +146,7 @@
   <select id="selectUserByNamePassword" parameterType="cn.idevtools.po.UserT" resultMap="BaseResultMap">
     SELECT <include refid="Base_User_List"/>
       FROM user_t
-     WHERE user_name = #{uesrName}
+     WHERE user_name = #{userName}
        AND password = #{password}
        AND valid = 1
   </select>
