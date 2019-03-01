@@ -7,13 +7,13 @@ let vmAdminLogin = new Vue({
         adminName: '',
         password: '',
         jcaptcha: '',
-        jcaptchaURL: 'http://localhost:8080/idevtools/jcaptcha.jpg'
+        jcaptchaURL: cookurl('/idevtools/jcaptcha.jpg')
     },
     methods: {
         login: function() {
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/idevtools/a/login',
+                url: cookurl('/idevtools/a/login'),
                 params: {
                     adminName: vmAdminLogin.adminName,
                     password: vmAdminLogin.password,
@@ -27,9 +27,23 @@ let vmAdminLogin = new Vue({
             }).catch(function(error) {
                 console.log(error)
             })
+            this.changeVerifyCode()
         },
         changeVerifyCode: function() {
-            vmAdminLogin.jcaptchaURL = 'http://localhost:8080/idevtools/jcaptcha.jpg?r=' + (Math.random())
+            vmAdminLogin.jcaptchaURL = cookurl('/idevtools/jcaptcha.jpg?r=' + (Math.random()))
+        },
+        logout: function() {
+            axios({
+                method: 'post',
+                url: cookurl('/idevtools/a/logout')
+            }).then(function(resp) {
+                ret = resp.data
+                console.log(ret)
+                ck = document.cookie
+                console.log(ck)
+            }).catch(function(error) {
+                console.log(error)
+            })
         }
     }
 })

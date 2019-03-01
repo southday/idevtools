@@ -29,8 +29,8 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseJSONP
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Message<?> login(@Valid AdminT argAdmin, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
@@ -47,5 +47,11 @@ public class AdminController {
                 ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
         }
         return ret;
+    }
+
+    @ResponseJSONP
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Message<?> logout() {
+        return adminService.logout();
     }
 }

@@ -67,8 +67,26 @@ public class CookieUtil {
     public static boolean addLoginedToken(int id, String userName, String userType) {
         try {
             HttpServletResponse resp = HttpUtil.getHttpServletResponse();
-            String token = JWTer.createLoginedToken(id, userName, userType);
-            Cookie cookie = new Cookie(CommonConst.TOKEN, token);
+            String jws = JWTer.createLoginedToken(id, userName, userType);
+            Cookie cookie = new Cookie(CommonConst.TOKEN, jws);
+            cookie.setPath("/");
+            resp.addCookie(cookie);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 用户退出登录，使token无效化 southday 2019.03.01
+     * @return
+     */
+    public static boolean disableLoginedToken() {
+        try {
+            HttpServletResponse resp = HttpUtil.getHttpServletResponse();
+            String jws = JWTer.disabledLoginedToken();
+            Cookie cookie = new Cookie(CommonConst.TOKEN, jws);
             cookie.setPath("/");
             resp.addCookie(cookie);
         } catch (Exception e) {

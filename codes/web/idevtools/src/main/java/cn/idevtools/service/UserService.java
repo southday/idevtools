@@ -2,6 +2,7 @@ package cn.idevtools.service;
 
 
 import cn.idevtools.common.CodeMsgE;
+import cn.idevtools.common.Message;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import com.github.pagehelper.PageInfo;
@@ -124,4 +125,10 @@ public interface UserService {
      * @return
      */
     boolean join(UserT argUser);
+
+    /**
+     * 用户退出登录 southday 2019.03.01
+     * @return
+     */
+    Message<?> logout();
 }

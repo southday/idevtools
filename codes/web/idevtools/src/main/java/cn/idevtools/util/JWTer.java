@@ -55,22 +55,22 @@ public class JWTer {
     }
 
     /**
-     * 使登陆token无效 southday 2019.03.01
+     * 生成无效的token southday 2019.03.01
      * @return
      */
-    public static String disableLoginedToken() {
+    public static String disabledLoginedToken() {
         JWTer jwter = new JWTer(CookieUtil.getCookieValue(CommonConst.TOKEN));
-        return disableLoginedToken(jwter.getId(), jwter.getUserName(), jwter.getUserType());
+        return disabledLoginedToken(jwter.getId(), jwter.getUserName(), jwter.getUserType());
     }
 
     /**
-     * 使登陆token无效 southday 2019.03.01
+     * 生成无效的登陆token southday 2019.03.01
      * @param id
      * @param userName
      * @param userType
      * @return
      */
-    public static String disableLoginedToken(int id, String userName, String userType) {
+    public static String disabledLoginedToken(int id, String userName, String userType) {
         Date startDate = new Date();
         Map<String, Object> claims = argClaims(id, userName, userType);
         String jws = Jwts.builder().setClaims(claims).setNotBefore(startDate).setExpiration(startDate).signWith(KEY).compact();

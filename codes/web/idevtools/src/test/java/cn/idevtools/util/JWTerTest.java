@@ -21,7 +21,7 @@ public class JWTerTest {
 
     @Test
     public void unUseTest() {
-        String jws = JWTer.disableLoginedToken(123, "southday", "user");
+        String jws = JWTer.disabledLoginedToken(123, "southday", "user");
         JWTer jwter = new JWTer(jws);
         String userName = jwter.getUserName();
         String userType = jwter.getUserType();
