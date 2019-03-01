@@ -18,3 +18,11 @@ function cookurl(url) {
 function changeVerifyCode() {
     return cookurl('/idevtools/jcaptcha.jpg?r=' + (Math.random()))
 }
+
+/* code = -8，表单验证失败，提示消息
+ * southday 2019.03.01
+ */
+function showValidMsgs(validMsgs) {
+    for (i = 0, len = validMsgs.length; i < len; i++)
+        toastr.warning(validMsgs[i].errorMsg)
+}

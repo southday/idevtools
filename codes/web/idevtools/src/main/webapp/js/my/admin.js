@@ -39,11 +39,12 @@ let vmAdminLogin = new Vue({
             }).then(function(resp) {
                 ret = resp.data
                 console.log(ret)
-                ck = document.cookie
-                console.log(ck)
             }).catch(function(error) {
                 console.log(error)
             })
+        },
+        showToastr: function() {
+            toastr.warning('你有新消息了！');
         }
     }
 })
