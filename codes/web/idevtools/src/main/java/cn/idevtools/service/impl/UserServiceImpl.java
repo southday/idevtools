@@ -2,11 +2,13 @@ package cn.idevtools.service.impl;
 
 
 import cn.idevtools.common.CodeMsgE;
+import cn.idevtools.common.Message;
 import cn.idevtools.mapper.UserTMapper;
 import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
+import cn.idevtools.util.CookieUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(pageNum,pageSize);
         List<UserT> user=userTMapper.selectAllUser();
 
-        return new PageInfo<UserT>(user);
+        return new PageInfo<>(user);
     }
 
     /**
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public PageInfo<UserT> getUsersPage(UserT user, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<UserT> users=userTMapper.selectUsers(user);
-        return new PageInfo<UserT>(users);
+        return new PageInfo<>(users);
     }
 
     /**
@@ -141,8 +143,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CodeMsgE join(UserT argUser) {
-        userTMapper.insertUser(argUser);
-        return null;
+    public boolean join(UserT argUser) {
+        return userTMapper.insertUser(argUser) == 1;
+    }
+
+    @Override
+    public Message<?> logout() {
+        return CookieUtil.disableLoginedToken() ?
+                new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
+                new Message<>(CodeMsgE.LOGOUT_ERROR);
     }
 }

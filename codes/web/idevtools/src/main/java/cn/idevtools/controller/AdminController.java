@@ -7,7 +7,6 @@ import cn.idevtools.po.AdminT;
 import cn.idevtools.service.AdminService;
 import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.EncryptUtil;
-import cn.idevtools.util.JWTUtil;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 管理员相关业务模块 Controller
@@ -34,8 +29,8 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseJSONP
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Message<?> login(@Valid AdminT argAdmin, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
@@ -52,5 +47,11 @@ public class AdminController {
                 ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
         }
         return ret;
+    }
+
+    @ResponseJSONP
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Message<?> logout() {
+        return adminService.logout();
     }
 }

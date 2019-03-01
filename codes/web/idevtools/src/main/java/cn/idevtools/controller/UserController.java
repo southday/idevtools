@@ -19,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -56,7 +55,6 @@ public class UserController {
                 CodeMsgE.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
         );
     }
-
 
     /**
      * 根据用户id删除用户（不做真实删除，只标记valid为0）.
@@ -186,14 +184,26 @@ public class UserController {
             msg = "注册失败，邮箱已被注册";
         else if (userNameExists && emailExists)
             msg = "注册失败，用户名和邮箱均已被注册";
-        if (msg != null)
+        if (msg != null) {
             return new Message<>(-1, msg);
-        else {
-            userService.join(argUser);
-            boolean success = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
-            return success ?
-                    new Message<>(1, "注册成功", argUser) :
-                    new Message<>(-1, "注册失败", "Token创建异常");
+        } else {
+            argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
+            boolean joinSuccess = userService.join(argUser);
+            if (!joinSuccess) {
+                return new Message<>(-1, "注册失败，请稍后重试");
+            } else {
+                argUser.setPassword(null);
+                boolean addTokenSuccess = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+                return addTokenSuccess ?
+                        new Message<>(1, "注册成功", argUser) :
+                        new Message<>(-1, "注册失败", "Token创建异常");
+            }
         }
+    }
+
+    @ResponseJSONP
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Message<?> logout() {
+        return userService.logout();
     }
 }

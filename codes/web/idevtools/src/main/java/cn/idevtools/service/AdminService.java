@@ -1,5 +1,6 @@
 package cn.idevtools.service;
 
+import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,10 @@ public interface AdminService {
      * @return
      */
     AdminT login(AdminT argAdmin);
+
+    /**
+     * 管理员退出登录 southday 2019.03.01
+     * @return
+     */
+    Message<?> logout();
 }

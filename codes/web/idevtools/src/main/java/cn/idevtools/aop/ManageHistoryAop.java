@@ -6,7 +6,7 @@ import cn.idevtools.common.builder.ManageHistoryBuilder;
 import cn.idevtools.po.ManageHistoryT;
 import cn.idevtools.service.ManageHistoryService;
 import cn.idevtools.util.CookieUtil;
-import cn.idevtools.util.JWTUtil;
+import cn.idevtools.util.JWTer;
 import io.jsonwebtoken.Claims;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -42,15 +42,15 @@ public class ManageHistoryAop {
             result = joinPoint.proceed();
             String jws = CookieUtil.getCookieValue(CommonConst.TOKEN);
             if(jws != null && jws.trim().length() > 0){
-                Claims claims = JWTUtil.getClaims(jws);
+                JWTer jwter = new JWTer(jws);
                 //判断是否为管理员，只为管理员写入操作历史
-                if(claims != null && CommonConst.USER_TYPE_ADMIN.equals(claims.get(CommonConst.USER_TYPE, String.class))){
+                if(CommonConst.USER_TYPE_ADMIN.equals(jwter.getUserType())){
                     Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
                     //获取注解信息
                     AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
                     //构建操作历史对象
-                    ManageHistoryT manageHistory = manageHistoryBuilder.setAdminId(claims.get(CommonConst.ID, Integer.class))
-                            .setAdminName(claims.get(CommonConst.USER_NAME, String.class))
+                    ManageHistoryT manageHistory = manageHistoryBuilder.setAdminId(jwter.getId())
+                            .setAdminName(jwter.getUserName())
                             .setActionDesc(addManageHistory.ACTION_DESC())
                             .setActionType(addManageHistory.ACTION_TYPE().toString())
                             .setActionTarget(method.getName())

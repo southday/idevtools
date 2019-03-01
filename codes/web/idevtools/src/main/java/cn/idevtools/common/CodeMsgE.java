@@ -23,7 +23,9 @@ public enum CodeMsgE {
     UPDATE_SUCCESS(1,"更新成功"),
     INSERT_FAILURE(-1,"插入失败"),
     DELETE_FAILURE(-1,"删除失败"),
-    UPDATE_FAILURE(-1,"更新失败");
+    UPDATE_FAILURE(-1,"更新失败"),
+    LOGOUT_SUCCESS(1, "退出登录成功"),
+    LOGOUT_ERROR(-1, "退出登录异常");
 
     private int code;
     private String msg;
