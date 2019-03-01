@@ -8,7 +8,14 @@
 let vmIndexNavbar = new Vue({
     el: "#index-navbar",
     data: {
-        logined: false
+        logined: false,
+        userURL: '#',
+        userName: ''
+    },
+    methods: {
+        logout: function() {
+            vmUser.logout()
+        }
     }
 })
 
