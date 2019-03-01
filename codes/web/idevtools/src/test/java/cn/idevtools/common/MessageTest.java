@@ -20,7 +20,7 @@ public class MessageTest {
         user.setUserId(1);
         user.setPassword("sss");
         user.setEmail("lll@qq.com");
-        Message<UserT> ret = new Message<>(CodeMsg.CAPTCHA_ERROR, user);
+        Message<UserT> ret = new Message<>(CodeMsgE.CAPTCHA_ERROR, user);
         String json = JSON.toJSONString(ret);
         System.out.println(json);
     }

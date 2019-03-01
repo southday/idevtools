@@ -1,14 +1,22 @@
 package cn.idevtools.po;
 
-import java.util.List;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class UserT {
     private Integer userId;
 
+    @NotEmpty(message = "用户名不能为空")
+    @Length(max = 20, message = "用户名长度需小于20个字符")
     private String userName;
 
+    @Email(message = "Email非法")
     private String email;
 
+    @NotEmpty(message = "密码不能为空")
+    @Length(max = 20, message = "密码长度需小于20个字符")
     private String password;
 
     private String intro;
@@ -18,8 +26,6 @@ public class UserT {
     private Byte actived;
 
     private Byte valid;
-
-
 
     public Integer getUserId() {
         return userId;

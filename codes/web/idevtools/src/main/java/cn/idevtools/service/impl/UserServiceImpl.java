@@ -1,6 +1,7 @@
 package cn.idevtools.service.impl;
 
 
+import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.mapper.UserTMapper;
 import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
@@ -10,7 +11,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -71,11 +71,6 @@ public class UserServiceImpl implements UserService {
         return userTMapper.updateUser(user);
     }
 
-    @Override
-    public int createUser(UserT user) {
-        return 0;
-    }
-
     /**
      * 查询符合条件的用户并分页
      * @param user 待查询的用户对象
@@ -127,6 +122,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserExists(String userName) {
-        return userTMapper.selectUserByUserName(userName) != null;
+        return userTMapper.selectUserCountByName(userName) != 0;
+    }
+
+    @Override
+    public boolean isUserNameExists(String userName) {
+        return userTMapper.selectUserCountByName(userName) != 0;
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return userTMapper.selectUserCountByEmail(email) != 0;
+    }
+
+    @Override
+    public UserT login(UserT argUser) {
+        return userTMapper.selectUserByNamePassword(argUser);
+    }
+
+    @Override
+    public CodeMsgE join(UserT argUser) {
+        userTMapper.insertUser(argUser);
+        return null;
     }
 }

@@ -60,4 +60,32 @@ public interface UserTMapper {
      * @return
      */
     UserT selectUserByUserName(String userName);
+
+    /**
+     * 根据userName和password查询用户(valid=1) southday 2019.02.28
+     * @param user
+     * @return
+     */
+    UserT selectUserByNamePassword(UserT user);
+
+    /**
+     * 插入一条用户记录 southday 2019.02.28
+     * @param user
+     * @return
+     */
+    int insertUser(UserT user);
+
+    /**
+     * 根据userName查询指定用户的数目 southday 2019.03.01
+     * @param userName
+     * @return
+     */
+    int selectUserCountByName(String userName);
+
+    /**
+     * 根据email查询指定用户的数目 southday 2019.03.01
+     * @param email
+     * @return
+     */
+    int selectUserCountByEmail(String email);
 }

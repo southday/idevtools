@@ -1,3 +1,17 @@
+/* 首页 js
+ * @author southday
+ * @date 2019.02.27
+ * @version v0.1
+ */
+
+// index-navbar
+let vmIndexNavbar = new Vue({
+    el: "#index-navbar",
+    data: {
+        logined: false
+    }
+})
+
 // index.html 模拟数据
 let vmIDevTools = new Vue({
     el: '#idevtools',

@@ -127,4 +127,36 @@
       FROM user_t
      WHERE user_name = #{userName}
   </select>
+
+  <!-- 根据userName查询指定用户的数目 southday 2019.03.01 -->
+  <select id="selectUserCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM user_t
+     WHERE user_name = #{uesrName}
+  </select>
+
+  <!-- 根据email查询指定用户的数目 southday 2019.03.01 -->
+  <select id="selectUserCountByEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM user_t
+     WHERE email = #{email}
+  </select>
+
+  <!-- 根据userName和password查询指定用户(valid=1) southday 2019.02.28 -->
+  <select id="selectUserByNamePassword" parameterType="cn.idevtools.po.UserT" resultMap="BaseResultMap">
+    SELECT <include refid="Base_User_List"/>
+      FROM user_t
+     WHERE user_name = #{uesrName}
+       AND password = #{password}
+       AND valid = 1
+  </select>
+
+  <!-- 插入一条用户记录，并且插入后获取自增主键 southday 2019.02.28 -->
+  <insert id="insertUser" parameterType="cn.idevtools.po.UserT">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO user_t(user_name, email, password)
+    VALUES(#{userName}, #{email}, #{password})
+  </insert>
 </mapper>
