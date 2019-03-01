@@ -67,7 +67,7 @@ public class CookieUtil {
     public static boolean addLoginedToken(int id, String userName, String userType) {
         try {
             HttpServletResponse resp = HttpUtil.getHttpServletResponse();
-            String token = JWTUtil.createToken(id, userName, userType);
+            String token = JWTer.createLoginedToken(id, userName, userType);
             Cookie cookie = new Cookie(CommonConst.TOKEN, token);
             cookie.setPath("/");
             resp.addCookie(cookie);
