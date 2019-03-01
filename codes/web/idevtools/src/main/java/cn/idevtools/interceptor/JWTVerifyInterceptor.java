@@ -4,7 +4,7 @@ import cn.idevtools.common.CommonConst;
 import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.CookieUtil;
-import cn.idevtools.util.JWTUtil;
+import cn.idevtools.util.JWTer;
 import io.jsonwebtoken.Claims;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,9 +33,9 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
         boolean flag = false;
         if (jws != null && !"".equals(jws.trim())) {
             try {
-                Claims claims = JWTUtil.getClaims(jws);
-                String userName = claims.get(CommonConst.USER_NAME, String.class);
-                String userType = claims.get(CommonConst.USER_TYPE, String.class);
+                JWTer jwter = new JWTer(jws);
+                String userName = jwter.getUserName();
+                String userType = jwter.getUserType();
                 if (CommonConst.USER_TYPE_ADMIN.equals(userType))
                     flag = adminService.isAdminExists(userName);
                 else if (CommonConst.USER_TYPE_USER.equals(userType))
