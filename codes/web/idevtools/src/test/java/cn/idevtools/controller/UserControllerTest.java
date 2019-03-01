@@ -28,7 +28,7 @@ public class UserControllerTest extends CommonTest {
     public void getUserDetailWithTagByIdTest() throws Exception{
         //返回userId为1的用户详情
         String resp=mockMvc.perform(
-                MockMvcRequestBuilders.get("/user/userDetailWithTag.json/{userId}",2)
+                MockMvcRequestBuilders.get("/u/userDetailWithTag.json/{userId}",2)
         ).andReturn().getResponse().getContentAsString();
         System.out.println(resp);
     }
@@ -40,7 +40,7 @@ public class UserControllerTest extends CommonTest {
     @Test
     public void getSearchedUserInfoByPageTest() throws Exception{
         MvcResult mvcResult=mockMvc.perform(
-                MockMvcRequestBuilders.post("/user/searchUserInfo.json/page/{pageId}",1)
+                MockMvcRequestBuilders.post("/u/searchUserInfo.json/page/{pageId}",1)
                 .param("userName","1")
         ).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -52,7 +52,7 @@ public class UserControllerTest extends CommonTest {
     @Test
     public void addTagForUserTest() throws Exception{
         MvcResult mvcResult=mockMvc.perform(
-                MockMvcRequestBuilders.get("/user/addTagForUser/{userId}/{tagId}",1,1)
+                MockMvcRequestBuilders.get("/u/addTagForUser/{userId}/{tagId}",1,1)
         ).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 
@@ -64,7 +64,7 @@ public class UserControllerTest extends CommonTest {
     @Test
     public void removeTagForUserTest() throws Exception{
         MvcResult mvcResult=mockMvc.perform(
-                MockMvcRequestBuilders.get("/user/removeTagForUser/{userId}/{tagId}",1,1)
+                MockMvcRequestBuilders.get("/u/removeTagForUser/{userId}/{tagId}",1,1)
         ).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 
