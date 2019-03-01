@@ -186,14 +186,20 @@ public class UserController {
             msg = "注册失败，邮箱已被注册";
         else if (userNameExists && emailExists)
             msg = "注册失败，用户名和邮箱均已被注册";
-        if (msg != null)
+        if (msg != null) {
             return new Message<>(-1, msg);
-        else {
-            userService.join(argUser);
-            boolean success = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
-            return success ?
-                    new Message<>(1, "注册成功", argUser) :
-                    new Message<>(-1, "注册失败", "Token创建异常");
+        } else {
+            argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
+            boolean joinSuccess = userService.join(argUser);
+            if (!joinSuccess) {
+                return new Message<>(-1, "注册失败，请稍后重试");
+            } else {
+                argUser.setPassword(null);
+                boolean addTokenSuccess = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+                return addTokenSuccess ?
+                        new Message<>(1, "注册成功", argUser) :
+                        new Message<>(-1, "注册失败", "Token创建异常");
+            }
         }
     }
 }

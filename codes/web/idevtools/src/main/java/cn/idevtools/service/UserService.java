@@ -123,5 +123,5 @@ public interface UserService {
      * @param argUser
      * @return
      */
-    CodeMsgE join(UserT argUser);
+    boolean join(UserT argUser);
 }

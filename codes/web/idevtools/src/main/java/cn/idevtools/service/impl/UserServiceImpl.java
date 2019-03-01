@@ -141,8 +141,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CodeMsgE join(UserT argUser) {
-        userTMapper.insertUser(argUser);
-        return null;
+    public boolean join(UserT argUser) {
+        return userTMapper.insertUser(argUser) == 1;
     }
 }
