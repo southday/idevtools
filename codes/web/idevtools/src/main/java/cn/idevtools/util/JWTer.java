@@ -49,40 +49,31 @@ public class JWTer {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR, DURATION);
         Date expireDate = now.getTime();
-        Map<String, Object> claims = argClaims(id, userName, userType);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CommonConst.ID, id);
+        claims.put(CommonConst.USER_NAME, userName);
+        claims.put(CommonConst.USER_TYPE, userType);
         String jws = Jwts.builder().setClaims(claims).setNotBefore(startDate).setExpiration(expireDate).signWith(KEY).compact();
         return jws;
     }
 
     /**
-     * 生成无效的token southday 2019.03.01
+     * 使登陆token无效化(从cookie中取token) southday 2019.03.02
      * @return
      */
     public static String disabledLoginedToken() {
-        JWTer jwter = new JWTer(CookieUtil.getCookieValue(CommonConst.TOKEN));
-        return disabledLoginedToken(jwter.getId(), jwter.getUserName(), jwter.getUserType());
+        return disabledLoginedToken(CookieUtil.getCookieValue(CommonConst.TOKEN));
     }
 
     /**
-     * 生成无效的登陆token southday 2019.03.01
-     * @param id
-     * @param userName
-     * @param userType
+     * 使登陆token无效化 southday 2019.03.02
+     * @param jws token
      * @return
      */
-    public static String disabledLoginedToken(int id, String userName, String userType) {
-        Date startDate = new Date();
-        Map<String, Object> claims = argClaims(id, userName, userType);
-        String jws = Jwts.builder().setClaims(claims).setNotBefore(startDate).setExpiration(startDate).signWith(KEY).compact();
-        return jws;
-    }
-
-    private static Map<String, Object> argClaims(int id, String userName, String userType) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CommonConst.ID, id);
-        claims.put(CommonConst.USER_NAME, userName);
-        claims.put(CommonConst.USER_TYPE, userType);
-        return claims;
+    public static String disabledLoginedToken(String jws) {
+        Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
+        claims.setExpiration(new Date());
+        return Jwts.builder().setClaims(claims).signWith(KEY).compact();
     }
 
     public String getUserName() {

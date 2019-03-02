@@ -1,6 +1,6 @@
 package cn.idevtools.util;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.Test;
 
 /**
@@ -19,9 +19,10 @@ public class JWTerTest {
         System.out.println(userName + ", " + userType);
     }
 
-    @Test
+    @Test(expected = ExpiredJwtException.class)
     public void unUseTest() {
-        String jws = JWTer.disabledLoginedToken(123, "southday", "user");
+        String token = JWTer.createLoginedToken(123, "southday", "user");
+        String jws = JWTer.disabledLoginedToken(token);
         JWTer jwter = new JWTer(jws);
         String userName = jwter.getUserName();
         String userType = jwter.getUserType();
