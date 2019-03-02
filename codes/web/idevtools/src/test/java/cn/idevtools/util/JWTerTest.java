@@ -1,5 +1,7 @@
 package cn.idevtools.util;
 
+import cn.idevtools.common.CommonConst;
+import cn.idevtools.common.annotation.PrintExecTime;
 import io.jsonwebtoken.Claims;
 import org.junit.Test;
 
@@ -11,7 +13,7 @@ public class JWTerTest {
 
     @Test
     public void foo() {
-        String jws = JWTer.createLoginedToken(123,"southday", "user");
+        String jws = JWTer.createLoginedToken(123,"southday", CommonConst.USER_TYPE_ADMIN);
         System.out.println(jws);
         JWTer jwter = new JWTer(jws);
         String userName = jwter.getUserName();
