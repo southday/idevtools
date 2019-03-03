@@ -5,6 +5,7 @@ package cn.idevtools.common.commonEnum;
  * @see cn.idevtools.common.annotation.AddManageHistory
  *
  * @author 王沁宽
+ * @date 2019/2/27
  */
 public enum ManageHistoryActionType {
     GET,

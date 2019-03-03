@@ -5,6 +5,7 @@ package cn.idevtools.common;
  * 只在表单参数校验不通过的情况下返回
  *
  * @author 王沁宽
+ * @date 2019/2/27
  */
 public class ValidMsg {
 

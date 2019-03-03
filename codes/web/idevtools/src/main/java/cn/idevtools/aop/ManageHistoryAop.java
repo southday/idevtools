@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
  * 只写管理员的操作历史.
  * 只记录带{@link AddManageHistory}注解的方法
  * @author 王沁宽
+ * @date 2019/2/27
  */
 @Aspect
 @Component

@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
  * 管理记录Service 测试模块
  * @author 王沁宽
  */
-@Transactional
-@Rollback
 public class ManageHistoryServiceTest extends CommonTest {
 
     @Autowired
