@@ -6,6 +6,8 @@ import java.util.List;
  * 用于返回包含了标签信息的用户信息
  *
  * @author 王沁宽
+ *
+ * @date 2019/2/27
  */
 public class UserTagVO {
 

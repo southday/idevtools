@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  * 表单验证的工具类
  *
  * @author 王沁宽
+ * @date 2019/2/27
  */
 public class ValidUtil {
     private static final Pattern emailPattern;

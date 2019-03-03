@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 一些网络处理的工具
  * @author 王沁宽
+ * @date 2019/2/27
  */
 public class HttpUtil {
     /**

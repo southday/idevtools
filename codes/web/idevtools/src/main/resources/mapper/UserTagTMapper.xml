@@ -13,7 +13,7 @@
     tag_id, parent_tag_id, tag_code, tag_meaning, description
   </sql>
 
-  <!--插入标签(tagCode不得重复)-->
+  <!--插入标签(tagCode不得重复) 王沁宽 2019.02.27-->
   <insert id="insertUserTag">
     insert into user_tag_t(parent_tag_id,tag_code,tag_meaning,description)
     select #{parentTagId},#{tagCode},#{tagMeaning},#{description}
@@ -24,13 +24,13 @@
     where tag_code=#{tagCode})
   </insert>
 
-  <!--根据标签id删除标签-->
+  <!--根据标签id删除标签 王沁宽 2019.02.27-->
   <delete id="deleteUserTagById">
     delete from user_tag_t
     where tag_id=#{tagId}
   </delete>
 
-  <!--根据tagId更新标签信息，tagCode不得重复,tagId不得修改,对于parentTagId的修改业务存疑)-->
+  <!--根据tagId更新标签信息，tagCode不得重复,tagId不得修改,对于parentTagId的修改业务存疑) 王沁宽 2019.02.27-->
   <update id="updateUserTagById">
     update user_tag_t
     <set>

@@ -11,7 +11,7 @@
     <result column="actived" property="actived" jdbcType="TINYINT" />
     <result column="valid" property="valid" jdbcType="TINYINT" />
   </resultMap>
-  <!--附带标签信息的用户结果集,对应UserTagVO类-->
+  <!--附带标签信息的用户结果集,对应UserTagVO类 王沁宽 2019.02.27-->
   <resultMap id="UserTagVOResultMap" type="cn.idevtools.po.UserTagVO" >
     <id column="user_id" property="user.userId" jdbcType="INTEGER" />
     <result column="user_name" property="user.userName" jdbcType="VARCHAR" />
@@ -31,23 +31,23 @@
     </collection>
   </resultMap>
 
-  <!--用户基本信息-->
+  <!--用户基本信息 王沁宽 2019.02.27-->
   <sql id="Base_User_List" >
     user_id, user_name, email, password,actived, valid
   </sql>
-  <!--标签的基本属性-->
+  <!--标签的基本属性 王沁宽 2019.02.27-->
   <sql id="Tag_List" >
     tag_id, parent_tag_id, tag_code, tag_meaning, description
   </sql>
 
-  <!--查询用户基本信息-->
+  <!--查询用户基本信息 王沁宽 2019.02.27-->
   <select id="selectAllUser" resultMap="BaseResultMap">
     select
     <include refid="Base_User_List"/>
     from user_t
   </select>
 
-  <!--调用存储过程，根据页面号与每页显示的数量查询user信息-->
+  <!--调用存储过程，根据页面号与每页显示的数量查询user信息 王沁宽 2019.02.27-->
   <select id="selectUserPage" resultMap="BaseResultMap" statementType="CALLABLE">
     {
       call proc_select_user_page(
@@ -58,14 +58,14 @@
     }
   </select>
   
-  <!--根据用户id，将用户的valid字段设置为0，表示该用户已经被删除-->
+  <!--根据用户id，将用户的valid字段设置为0，表示该用户已经被删除 王沁宽 2019.02.27-->
   <update id="updateUserValidById">
     update user_t
     set valid=0
     where user_id=#{userId}
   </update>
   
-  <!--查询符合条件的用户的基本信息-->
+  <!--查询符合条件的用户的基本信息 王沁宽 2019.02.27-->
   <select id="selectUsers" resultMap="BaseResultMap">
     select
     <include refid="Base_User_List"/>
@@ -93,7 +93,7 @@
     </where>
   </select>
 
-  <!--根据userId更新用户基本信息,userId与userName不能更新-->
+  <!--根据userId更新用户基本信息,userId与userName不能更新 王沁宽 2019.02.27-->
   <update id="updateUser">
     update user_t
     <set>
@@ -113,7 +113,7 @@
     where user_id = #{userId}
   </update>
 
-  <!--查询某用户详细信息(附带标签信息)-->
+  <!--查询某用户详细信息(附带标签信息) 王沁宽 2019.02.27-->
   <select id="selectUserDetailWithTagById" resultMap="UserTagVOResultMap">
     select * from
     (select * from user_t WHERE user_id=#{userId}) u
