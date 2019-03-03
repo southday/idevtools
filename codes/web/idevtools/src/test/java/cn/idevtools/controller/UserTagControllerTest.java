@@ -16,8 +16,6 @@ import org.springframework.validation.BindingResult;
  * @see cn.idevtools.controller.UserTagController
  * @author 王沁宽
  */
-@Transactional
-@Rollback
 public class UserTagControllerTest extends CommonTest {
     /**
      * 测试方法{@link UserTagController#addUserTag(UserTagT, BindingResult)} )}

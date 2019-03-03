@@ -5,6 +5,7 @@ import cn.idevtools.po.ManageHistoryT;
 /**
  * 构建历史记录
  * @author 王沁宽
+ * @date 2019/2/27
  */
 public class ManageHistoryBuilder {
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @see UserServiceImpl
  *
  * @author 王沁宽
+ * @date 2019/2/27
  */
 @Service
 public interface UserService {

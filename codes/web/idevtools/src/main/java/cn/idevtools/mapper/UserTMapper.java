@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface UserTMapper {
     /**
-     * 使用存储过程proc_select_user_page分页查询用户基本信息
+     * 使用存储过程proc_select_user_page分页查询用户基本信息 王沁宽 2019.02.26
      *
      * @param pageParams pageParams的key分别为<br>
      *               pageNum:页面号;<br>
@@ -25,7 +25,7 @@ public interface UserTMapper {
 
 
     /**
-     * 根据用户id将其valid设置为0，即不可用状态，表示已经被删除
+     * 根据用户id将其valid设置为0，即不可用状态，表示已经被删除 王沁宽 2019.02.26
      *
      * @param userId 待修改用户Id
      *
@@ -34,16 +34,16 @@ public interface UserTMapper {
     int updateUserValidById(Integer userId);
 
     /**
-     * 查询全部用户信息
+     * 查询全部用户信息 王沁宽 2019.02.26
      */
     List<UserT> selectAllUser();
     /**
-     * 条件查询用户信息
+     * 条件查询用户信息 王沁宽 2019.02.26
      */
     List<UserT> selectUsers(UserT user);
 
     /**
-     * 根据userId更新用户基本信息
+     * 根据userId更新用户基本信息 王沁宽 2019.02.26
      * @param user 待修改的用户数据，userId与userName不能修改
      * @return 操作影响的行数
      */

@@ -11,13 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
- * 使用MockMvc 对UserController的方法进行测试
- * 测试方法全部回滚,不真正影响数据库
+ * 使用MockMvc 对UserController的方法进行测试 *
  * @see cn.idevtools.controller.UserController
  * @author 王沁宽
  */
-@Transactional
-@Rollback
+
 public class UserControllerTest extends CommonTest {
     /**
      * 测试方法{@link UserController#getUserDetailWithTagById}

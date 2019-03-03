@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * 管理记录模块实现
  * @author 王沁宽
+ * @date 2019/2/27
  */
 @Service
 public class ManageHistoryServiceImpl implements ManageHistoryService {
