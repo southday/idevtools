@@ -6,6 +6,7 @@ import cn.idevtools.service.UserService;
 import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.JWTer;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,9 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
                     flag = adminService.isAdminExists(userName);
                 else if (CommonConst.USER_TYPE_USER.equals(userType))
                     flag = userService.isUserExists(userName);
-            } catch (RuntimeException e) {
-                e.printStackTrace();
+            } catch (ExpiredJwtException ee) {
+                logger.debug("权限验证失败，token过期，[token=" + jws + "]");
+            } catch (Exception e) {
                 logger.error("权限验证失败，[token=" + jws + "]，异常：" + e.getMessage());
             }
         }
