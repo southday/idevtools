@@ -19,7 +19,7 @@ let vmIndexNavbar = new Vue({
     }
 })
 
-// index.html 模拟数据
+// isearch.html 模拟数据
 let vmIDevTools = new Vue({
     el: '#idevtools',
     data: {
@@ -40,7 +40,7 @@ let vmIDevTools = new Vue({
                 "toolName": "JDK",
                 "toolVersion": "8u191",
                 "codeName": "",
-                "website": "https://www.oracle.com/technetwork/java/javase/downloads/index.html"
+                "website": "https://www.oracle.com/technetwork/java/javase/downloads/isearch.html"
             }
         ]
     },
