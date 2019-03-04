@@ -1,7 +1,13 @@
 package cn.idevtools.swagger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -17,9 +23,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Date   2019/2/25
  */
 @Configuration
-@EnableWebMvc
 @EnableSwagger2
 public class SwaggerConfig {
+
 
     @Bean
     public Docket createRestApi() {
