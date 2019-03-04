@@ -32,4 +32,16 @@ public class JWTerTest {
         String userType = jwter.getUserType();
         System.out.println(userName + ", " + userType);
     }
+
+    @Test
+    public void catchExceptionTest() {
+        try {
+            String token = JWTer.createLoginedToken(123, "southday", "user");
+            String jws = JWTer.disabledLoginedToken(token);
+            new JWTer(jws);
+        } catch (ExpiredJwtException ee){
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,7 +1,5 @@
 package cn.idevtools.common;
 
-import org.aspectj.apache.bcel.classfile.Code;
-
 /**
  * 将后端返回的消息统一化
  * <pre>
@@ -15,12 +13,12 @@ import org.aspectj.apache.bcel.classfile.Code;
  * @date 2019/2/26
  */
 public class Message<T> {
-    private int code;
+    private StatusCode code;
     private String msg;
     private T data;
 
     public Message() {
-        this(0, null, null);
+        this(StatusCode.NONE, null, null);
     }
 
     public Message(CodeMsgE codeMsgE) {
@@ -39,11 +37,11 @@ public class Message<T> {
         this(codeMsgC.getCode(), codeMsgC.getMsg(), data);
     }
 
-    public Message(int code, String msg) {
+    public Message(StatusCode code, String msg) {
         this(code, msg, null);
     }
 
-    public Message(int code, String msg, T data) {
+    public Message(StatusCode code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -59,11 +57,11 @@ public class Message<T> {
         this.msg = codeMsgC.getMsg();
     }
 
-    public int getCode() {
+    public StatusCode getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(StatusCode code) {
         this.code = code;
     }
 

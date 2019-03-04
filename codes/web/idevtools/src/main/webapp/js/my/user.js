@@ -32,9 +32,9 @@ let vmUser = new Vue({
                 }
             }).then(function(resp) {
                 let ret = resp.data
-                if (ret.code == -8) { // 后端表单验证失败
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
                     showValidMsgs(ret.data)
-                } else if (ret.code == -1) {
+                } else if (ret.code == "FAILURE") {
                     toastr.error(ret.msg)
                 } else {
                     this.user = ret.data
@@ -64,9 +64,9 @@ let vmUser = new Vue({
                 }
             }).then(function(resp) {
                 let ret = resp.data
-                if (ret.code == -8) { // 后端表单验证失败
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
                     showValidMsgs(ret.data)
-                } else if (ret.code == -1) {
+                } else if (ret.code == "FAILURE") {
                     toastr.error(ret.msg)
                 } else {
                     this.user = ret.data
@@ -87,7 +87,7 @@ let vmUser = new Vue({
                 url: cookurl('/idevtools/u/logout')
             }).then(function(resp) {
                 let ret = resp.data
-                if (ret.code == 1)
+                if (ret.code == "SUCCESS")
                     vmIndexNavbar.logined = false
                 else
                     toastr.error(ret.msg)

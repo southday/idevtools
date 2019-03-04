@@ -4,6 +4,7 @@ package cn.idevtools.controller;
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
+import cn.idevtools.common.StatusCode;
 import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
@@ -175,7 +176,7 @@ public class UserController {
             return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         String password2 = req.getParameter("password2");
         if (!argUser.getPassword().equals(password2))
-            return new Message<>(-1, "注册失败，两次密码不一致");
+            return new Message<>(StatusCode.FAILURE, "注册失败，两次密码不一致");
         boolean userNameExists = userService.isUserNameExists(argUser.getUserName());
         boolean emailExists = userService.isEmailExists(argUser.getEmail());
         String msg = null;
@@ -186,18 +187,18 @@ public class UserController {
         else if (userNameExists && emailExists)
             msg = "注册失败，用户名和邮箱均已被注册";
         if (msg != null) {
-            return new Message<>(-1, msg);
+            return new Message<>(StatusCode.FAILURE, msg);
         } else {
             argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
             boolean joinSuccess = userService.join(argUser);
             if (!joinSuccess) {
-                return new Message<>(-1, "注册失败，请稍后重试");
+                return new Message<>(StatusCode.FAILURE, "注册失败，请稍后重试");
             } else {
                 argUser.setPassword(null);
                 boolean addTokenSuccess = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
                 return addTokenSuccess ?
-                        new Message<>(1, "注册成功", argUser) :
-                        new Message<>(-1, "注册失败", "Token创建异常");
+                        new Message<>(StatusCode.SUCCESS, "注册成功", argUser) :
+                        new Message<>(StatusCode.FAILURE, "注册失败", "Token创建异常");
             }
         }
     }

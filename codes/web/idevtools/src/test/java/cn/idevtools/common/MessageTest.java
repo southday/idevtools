@@ -41,7 +41,7 @@ public class MessageTest {
         users.add(user1);
         users.add(user2);
 
-        Message<List<UserT>> ret = new Message<>(-2, "程序异常", users);
+        Message<List<UserT>> ret = new Message<>(StatusCode.VALID_ERROR, "程序异常", users);
         String json = JSON.toJSONString(ret);
         System.out.println(json);
     }
