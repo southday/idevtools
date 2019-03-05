@@ -43,7 +43,7 @@ public class ManageHistoryAop {
             if(jws != null && jws.trim().length() > 0){
                 JWTer jwter = new JWTer(jws);
                 //判断是否为管理员，只为管理员写入操作历史
-                if(CommonConst.USER_TYPE_ADMIN.equals(jwter.getUserType())){
+                if(jwter.isUsable() && CommonConst.USER_TYPE_ADMIN.equals(jwter.getUserType())){
                     Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
                     //获取注解信息
                     AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);

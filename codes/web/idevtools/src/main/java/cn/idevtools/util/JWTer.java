@@ -32,13 +32,23 @@ public class JWTer {
     private int id;
     private String userName;
     private String userType;
-    private Claims claims;
+    /* 是否可用，当new JWTer(jws)发生异常时，new出的对象不可用
+     * 在调用getUserName(), getId(), getUserType()方法前，要先调用isUsable()方法判断是否可以用
+     */
+    private boolean usable = true;
+    private Exception exception; // 外部程序可能需要这个异常
 
     public JWTer(String jws) {
-        claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
-        id = claims.get(CommonConst.ID, Integer.class);
-        userName = claims.get(CommonConst.USER_NAME, String.class);
-        userType = claims.get(CommonConst.USER_TYPE, String.class);
+        try {
+            Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
+            id = claims.get(CommonConst.ID, Integer.class);
+            userName = claims.get(CommonConst.USER_NAME, String.class);
+            userType = claims.get(CommonConst.USER_TYPE, String.class);
+        } catch (Exception e) {
+            logger.debug("new JWTer(jws) error: " + e.getMessage() + "| [token = " + jws + "]");
+            usable = false;
+            exception = e;
+        }
     }
 
     /**
@@ -56,7 +66,7 @@ public class JWTer {
      * @param userType
      * @return
      */
-    public static String createLoginedToken(int id, String userName, String userType) {
+    private static String createLoginedToken(int id, String userName, String userType) {
         Date startDate = new Date();
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR, DURATION);
@@ -74,7 +84,7 @@ public class JWTer {
      * @param jws 原token
      * @return 无效化后的token
      */
-    public static String disabledLoginedToken(String jws) {
+    private static String disabledLoginedToken(String jws) {
         Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
         claims.setExpiration(new Date());
         return Jwts.builder().setClaims(claims).signWith(KEY).compact();
@@ -94,7 +104,7 @@ public class JWTer {
             resp.setHeader(CommonConst.TOKEN, jws);
             resp.setHeader("Access-Control-Expose-Headers", CommonConst.TOKEN);
         } catch (Exception e) {
-           logger.error("addLoginedToken-createLoginedToken error: " + e.getMessage());
+            logger.info("addLoginedToken-createLoginedToken error: " + e.getMessage());
             return false;
         }
         return true;
@@ -111,33 +121,53 @@ public class JWTer {
             resp.setHeader(CommonConst.TOKEN, jws);
             resp.setHeader("Access-Control-Expose-Headers", CommonConst.TOKEN);
         } catch (Exception e) {
-            logger.error("disableLoginedToken-disabledLoginedToken error: " + e.getMessage());
+            logger.info("disableLoginedToken-disabledLoginedToken error: " + e.getMessage());
             return false;
         }
         return true;
     }
 
+    /**
+     * 调用前先调用isUsable()方法判断对象是否可用
+     * southday 2019.03.06
+     * @return
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * 调用前先调用isUsable()方法判断对象是否可用
+     * southday 2019.03.06
+     * @return
+     */
     public String getUserType() {
         return userType;
     }
 
+    /**
+     * 调用前先调用isUsable()方法判断对象是否可用
+     * southday 2019.03.06
+     * @return
+     */
     public int getId() {
         return id;
     }
 
-    public static int getId(String jws) {
-        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.ID, Integer.class);
+    /**
+     * 标识：new JWTer(jws)生成的对象是否可用
+     * southday 2019.03.06
+     * @return
+     */
+    public boolean isUsable() {
+        return usable;
     }
 
-    public static String getUserName(String jws) {
-        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.USER_NAME, String.class);
-    }
-
-    public static String getUserType(String jws) {
-        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.USER_TYPE, String.class);
+    /**
+     * 返回new JWTer(jws)时产生的异常
+     * @return
+     */
+    public Exception getException() {
+        return exception;
     }
 }

@@ -213,10 +213,10 @@ public class UserController {
     @ResponseJSONP
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public Message<?> getUserInfo(HttpServletRequest req) {
-        String jws = JWTer.getToken();
-        if (jws == null || jws.trim().length() == 0)
+        JWTer jwter = new JWTer(JWTer.getToken());
+        if (!jwter.isUsable())
             return new Message<>(StatusCode.FAILURE, "获取用户信息失败");
-        UserT user = userService.getUserByUserId(JWTer.getId(jws));
+        UserT user = userService.getUserByUserId(jwter.getId());
         return user != null ?
                 new Message<>(StatusCode.SUCCESS, "获取用户信息成功", user) :
                 new Message<>(StatusCode.FAILURE, "获取用户信息失败");
