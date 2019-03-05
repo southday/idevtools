@@ -49,10 +49,10 @@
 <div id="idevtools" class="container">
     <!-- search & view tab -->
     <ul class="nav nav-tabs">
+        <li ><a href="/idevtools/search">Search</a></li>
         <li class="active">
-            <a href="#search">Search</a>
+            <a href="#">View</a>
         </li>
-        <li><a href="#view">View</a></li>
     </ul>
     <!-- search box -->
     <div class="navbar-form navbar-middle text-center">
@@ -71,47 +71,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="tool in tools">
-            <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
-            <td><a href="javascript:;" @click="showToolInfo(tool)">{{ tool.toolName }}</a></td>
-            <td>{{ tool.toolVersion }}</td>
-            <td>{{ tool.codeName }}</td>
+        <tr>
+            <td colspan="3" class="text-center">无数据</td>
         </tr>
         </tbody>
     </table>
-</div>
-
-<div id="tool-info">
-    <!-- 侧边栏内容 -->
-    <transition name="slide-fade">
-        <div class="modal-dialog r2l-nav" v-if="show">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" @click="show = !show">&times;</button>
-                    <h4 class="modal-title">工具详情</h4>
-                </div>
-                <div class="modal-body">
-                    <p>工具名：{{ tool.toolName }}</p>
-                    <p>版本号：{{ tool.toolVersion }}</p>
-                    <p>版本代号：{{ tool.codeName }}</p>
-                    <p>工具描述：{{ tool.description }}</p>
-                    <p>官网：<a :href="tool.website" target="view_window">{{ tool.website }}</a></p>
-                    <p>下载链接：</p>
-                    <ul v-for="(value, key) in downloadLinks">
-                        <div v-if="!Array.isArray(value)">
-                            <li>{{ key }}：<a :href="value" target="view_window">{{ value }}</a></li>
-                        </div>
-                        <div v-else>
-                            <li>{{ key }}：</li>
-                            <ul v-for="item in value">
-                                <li><a :href="item" target="view_window">{{ item }}</a></li>
-                            </ul>
-                        </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </transition>
 </div>
 
 <div id="user">
@@ -206,6 +170,7 @@
         </div>
     </div>
 </div>
+
 <script src="./js/jquery-3.3.1.min.js"></script>
 <script src="./js/bootstrap.min.js"></script>
 <script src="./js/axios.min.js"></script>
@@ -216,4 +181,14 @@
 <script src="./js/my/index.js"></script>
 <script src="./js/my/user.js"></script>
 </body>
+
+<footer class="navbar-fixed-bottom">
+    <div class="container">
+        <h5 class="page-header"></h5>
+        <div class="text-center">
+            @IDevTools Team
+            <a href="http://www.miitbeian.gov.cn/" target="view_window">滇ICP备18009876号</a>
+        </div>
+    </div>
+</footer>
 </html>

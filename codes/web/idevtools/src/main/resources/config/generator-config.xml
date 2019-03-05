@@ -17,8 +17,8 @@
                         autoReconnect=true&amp;utoReconnectForPools=true&amp;
                         useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;
                         serverTimezone=UTC"
-                        userId="idtlcx"
-                        password="lcx!@idt">
+                        userId="idt"
+                        password="idt!@zkdsz">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -46,20 +46,21 @@
         </javaClientGenerator>
 
         <!-- 指定要生成的表 -->
-        <table tableName="admin_t" />
-        <table tableName="collections_t" />
-        <table tableName="downloads_t" />
-        <table tableName="lookup_type_t" />
-        <table tableName="lookup_value_t" />
-        <table tableName="manage_history_t" />
-        <table tableName="message_t" />
-        <table tableName="recommendations_t" />
-        <table tableName="suggestions_t" />
-        <table tableName="tool_t" />
-        <table tableName="tool_tag_rel_t" />
-        <table tableName="tool_tag_t" />
-        <table tableName="user_t" />
-        <table tableName="user_tag_rel_t" />
-        <table tableName="user_tag_t" />
+        <!--<table tableName="admin_t" />-->
+        <!--<table tableName="collections_t" />-->
+        <!--<table tableName="downloads_t" />-->
+        <!--<table tableName="lookup_type_t" />-->
+        <!--<table tableName="lookup_value_t" />-->
+        <!--<table tableName="manage_history_t" />-->
+        <!--<table tableName="message_t" />-->
+        <!--<table tableName="recommendations_t" />-->
+        <!--<table tableName="suggestions_t" />-->
+        <!--<table tableName="tool_t" />-->
+        <!--<table tableName="tool_tag_rel_t" />-->
+        <!--<table tableName="tool_tag_t" />-->
+        <!--<table tableName="user_t" />-->
+        <!--<table tableName="user_tag_rel_t" />-->
+        <!--<table tableName="user_tag_t" />-->
+        <table tableName="tool_dir_t"/>
     </context>
 </generatorConfiguration>
