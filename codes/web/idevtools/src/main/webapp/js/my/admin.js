@@ -1,12 +1,9 @@
-function getToken() {
-    return localStorage.getItem("token")
-}
+/** 管理员模块 js
+ * @author southday
+ * @date 2019.03.05
+ * @version v0.1
+ */
 
-function saveToken(token) {
-    localStorage.setItem("token", token)
-}
-
-// 1.管理员登录
 let vmAdminLogin = new Vue({
     el: "#admin-login",
     data: {
@@ -46,11 +43,10 @@ let vmAdminLogin = new Vue({
                 headers: {'token': getToken()}
             }).then(function(resp) {
                 console.log(resp.data)
+                saveUser(null)
                 saveToken(resp.headers.token)
-                vmAdminLogin.changeJCaptcha()
             }).catch(function(error) {
                 console.log(error)
-                vmAdminLogin.changeJCaptcha()
             })
         },
         showToastr: function() {

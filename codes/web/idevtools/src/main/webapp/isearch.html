@@ -191,7 +191,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">验证码</label>
                             <div class="col-sm-4">
-                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
+                               <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
                             </div>
                             <img id="jcaptcha" class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
                         </div>

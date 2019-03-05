@@ -1,8 +1,32 @@
-/* 首页 js
+/** 首页模块 js
  * @author southday
  * @date 2019.02.27
  * @version v0.1
  */
+
+// 打开首页就请求用户数据
+let user = {}
+$(function() {
+    user = getUser()
+    if (user != null) {
+        vmIndexNavbar.fillUser(user)
+    } else {
+        axios({
+            method: 'get',
+            url: cookurl('/idevtools/u/userInfo'),
+            headers: {'token': getToken()}
+        }).then(function (resp) {
+            let ret = resp.data
+            if (ret.code == 'SUCCESS') {
+                user = ret.data
+                vmIndexNavbar.fillUser(user)
+                saveUser(user)
+            }
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+})
 
 // index-navbar
 let vmIndexNavbar = new Vue({
@@ -15,6 +39,13 @@ let vmIndexNavbar = new Vue({
     methods: {
         logout: function() {
             vmUser.logout()
+        },
+        fillUser: function(user) {
+            if (!$.isEmptyObject(user)) {
+                vmIndexNavbar.userName = user.userName
+                vmIndexNavbar.userURL = cookurl('/idevtools/u/' + user.userName)
+                vmIndexNavbar.logined = true
+            }
         }
     }
 })
