@@ -8,7 +8,7 @@ import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
-import cn.idevtools.util.CookieUtil;
+import cn.idevtools.util.JWTer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Message<?> logout() {
-        return CookieUtil.disableLoginedToken() ?
+        return JWTer.disableLoginedToken() ?
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }

@@ -5,7 +5,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,9 +23,10 @@ import java.util.Map;
  *     <a href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a>
  * </pre></blockquote>
  * @author southday
- * @date   2019/2/26
+ * @date   2019/3/5
  */
 public class JWTer {
+    private static final Logger logger = LogManager.getLogger(JWTer.class);
     private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final int DURATION = 7 * 24; // 默认token有效时长有7天
     private int id;
@@ -35,6 +39,14 @@ public class JWTer {
         id = claims.get(CommonConst.ID, Integer.class);
         userName = claims.get(CommonConst.USER_NAME, String.class);
         userType = claims.get(CommonConst.USER_TYPE, String.class);
+    }
+
+    /**
+     * 从request的header中获取token southday 2019.03.05
+     * @return
+     */
+    public static String getToken() {
+        return HttpUtil.getHttpServletRequest().getHeader(CommonConst.TOKEN);
     }
 
     /**
@@ -58,22 +70,51 @@ public class JWTer {
     }
 
     /**
-     * 使登陆token无效化(从cookie中取token) southday 2019.03.02
-     * @return
-     */
-    public static String disabledLoginedToken() {
-        return disabledLoginedToken(CookieUtil.getCookieValue(CommonConst.TOKEN));
-    }
-
-    /**
      * 使登陆token无效化 southday 2019.03.02
-     * @param jws token
-     * @return
+     * @param jws 原token
+     * @return 无效化后的token
      */
     public static String disabledLoginedToken(String jws) {
         Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
         claims.setExpiration(new Date());
         return Jwts.builder().setClaims(claims).signWith(KEY).compact();
+    }
+
+    /**
+     * 用户登陆成功后，在cookie中添加token southday 2019.02.28
+     * @param id
+     * @param userName
+     * @param userType
+     * @return
+     */
+    public static boolean addLoginedToken(int id, String userName, String userType) {
+        try {
+            HttpServletResponse resp = HttpUtil.getHttpServletResponse();
+            String jws = JWTer.createLoginedToken(id, userName, userType);
+            resp.setHeader(CommonConst.TOKEN, jws);
+            resp.setHeader("Access-Control-Expose-Headers", CommonConst.TOKEN);
+        } catch (Exception e) {
+           logger.error("addLoginedToken-createLoginedToken error: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 用户退出登录，使token无效化 southday 2019.03.05
+     * @return
+     */
+    public static boolean disableLoginedToken() {
+        try {
+            HttpServletResponse resp = HttpUtil.getHttpServletResponse();
+            String jws = JWTer.disabledLoginedToken(getToken());
+            resp.setHeader(CommonConst.TOKEN, jws);
+            resp.setHeader("Access-Control-Expose-Headers", CommonConst.TOKEN);
+        } catch (Exception e) {
+            logger.error("disableLoginedToken-disabledLoginedToken error: " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public String getUserName() {

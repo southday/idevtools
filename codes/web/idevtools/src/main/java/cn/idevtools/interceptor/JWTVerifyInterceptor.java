@@ -5,7 +5,6 @@ import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.JWTer;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +29,7 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-        String jws = CookieUtil.getCookieValue(req, CommonConst.TOKEN);
+        String jws = JWTer.getToken();
         boolean flag = false;
         if (jws != null && !"".equals(jws.trim())) {
             try {

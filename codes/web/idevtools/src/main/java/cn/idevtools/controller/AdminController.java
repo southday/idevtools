@@ -5,8 +5,8 @@ import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.AdminT;
 import cn.idevtools.service.AdminService;
-import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class AdminController {
         if (admin == null) {
             ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
         } else {
-            boolean success = CookieUtil.addLoginedToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
+            boolean success = JWTer.addLoginedToken(admin.getAdminId(), admin.getAdminName(), CommonConst.USER_TYPE_ADMIN);
             if (!success)
                 ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
         }

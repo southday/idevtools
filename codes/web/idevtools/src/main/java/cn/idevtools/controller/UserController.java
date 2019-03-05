@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.xml.registry.infomodel.User;
 import java.util.List;
 
 /**
@@ -156,7 +155,7 @@ public class UserController {
         if (user == null) {
             ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
         } else {
-            boolean success = CookieUtil.addLoginedToken(user.getUserId(), user.getUserName(), CommonConst.USER_TYPE_USER);
+            boolean success = JWTer.addLoginedToken(user.getUserId(), user.getUserName(), CommonConst.USER_TYPE_USER);
             if (!success)
                 ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
         }
@@ -197,7 +196,7 @@ public class UserController {
                 return new Message<>(StatusCode.FAILURE, "注册失败，请稍后重试");
             } else {
                 argUser.setPassword(null);
-                boolean addTokenSuccess = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+                boolean addTokenSuccess = JWTer.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
                 return addTokenSuccess ?
                         new Message<>(StatusCode.SUCCESS, "注册成功", argUser) :
                         new Message<>(StatusCode.FAILURE, "注册失败", "Token创建异常");
@@ -214,7 +213,7 @@ public class UserController {
     @ResponseJSONP
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public Message<?> getUserInfo(HttpServletRequest req) {
-        String jws = CookieUtil.getCookieValue(req, CommonConst.TOKEN);
+        String jws = JWTer.getToken();
         if (jws == null || jws.trim().length() == 0)
             return new Message<>(StatusCode.FAILURE, "获取用户信息失败");
         UserT user = userService.getUserByUserId(JWTer.getId(jws));
