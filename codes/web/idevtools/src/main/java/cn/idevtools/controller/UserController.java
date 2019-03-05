@@ -12,6 +12,7 @@ import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.xml.registry.infomodel.User;
 import java.util.List;
 
 /**
@@ -207,5 +209,17 @@ public class UserController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public Message<?> logout() {
         return userService.logout();
+    }
+
+    @ResponseJSONP
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    public Message<?> getUserInfo(HttpServletRequest req) {
+        String jws = CookieUtil.getCookieValue(req, CommonConst.TOKEN);
+        if (jws == null || jws.trim().length() == 0)
+            return new Message<>(StatusCode.FAILURE, "获取用户信息失败");
+        UserT user = userService.getUserByUserId(JWTer.getId(jws));
+        return user != null ?
+                new Message<>(StatusCode.SUCCESS, "获取用户信息成功", user) :
+                new Message<>(StatusCode.FAILURE, "获取用户信息失败");
     }
 }

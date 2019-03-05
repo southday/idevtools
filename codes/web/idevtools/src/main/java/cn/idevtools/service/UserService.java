@@ -132,4 +132,11 @@ public interface UserService {
      * @return
      */
     Message<?> logout();
+
+    /**
+     * 通过userId获取指定用户信息 southday 2019.03.04
+     * @param userId
+     * @return
+     */
+    UserT getUserByUserId(Integer userId);
 }

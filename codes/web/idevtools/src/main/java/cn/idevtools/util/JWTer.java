@@ -87,4 +87,16 @@ public class JWTer {
     public int getId() {
         return id;
     }
+
+    public static int getId(String jws) {
+        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.ID, Integer.class);
+    }
+
+    public static String getUserName(String jws) {
+        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.USER_NAME, String.class);
+    }
+
+    public static String getUserType(String jws) {
+        return Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody().get(CommonConst.USER_TYPE, String.class);
+    }
 }

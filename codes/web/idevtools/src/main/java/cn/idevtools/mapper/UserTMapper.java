@@ -55,13 +55,6 @@ public interface UserTMapper {
     UserTagVO selectUserDetailWithTagById(Integer userId);
 
     /**
-     * 根据userName查询用户信息 southday 2019.02.26
-     * @param userName
-     * @return
-     */
-    UserT selectUserByUserName(String userName);
-
-    /**
      * 根据userName和password查询用户(valid=1) southday 2019.02.28
      * @param user
      * @return
@@ -88,4 +81,11 @@ public interface UserTMapper {
      * @return
      */
     int selectUserCountByEmail(String email);
+
+    /**
+     * 通过userId查询指定用户 southday 2019.03.04
+     * @param userId
+     * @return
+     */
+    UserT selectUserByUserId(Integer userId);
 }

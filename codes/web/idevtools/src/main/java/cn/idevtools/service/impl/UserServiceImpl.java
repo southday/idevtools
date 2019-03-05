@@ -154,4 +154,9 @@ public class UserServiceImpl implements UserService {
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }
+
+    @Override
+    public UserT getUserByUserId(Integer userId) {
+        return userTMapper.selectUserByUserId(userId);
+    }
 }
