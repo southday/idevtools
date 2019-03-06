@@ -61,13 +61,17 @@
         <!-- JWT 身份验证拦截器，针对用户需要先进行登陆后才能操作的请求进行拦截 -->
         <mvc:interceptor>
             <mvc:mapping path="/u/**"/>
-            <mvc:mapping path="/a/**"/>
             <mvc:exclude-mapping path="/u/login"/>
             <mvc:exclude-mapping path="/u/join"/>
             <mvc:exclude-mapping path="/u/userInfo"/>
+            <bean class="cn.idevtools.interceptor.JWTUserInterceptor"/>
+        </mvc:interceptor>
+        <!-- JWT 身份验证拦截器，针对管理员需要先进行登陆后才能操作的请求进行拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/a/**"/>
             <mvc:exclude-mapping path="/a/login"/>
             <mvc:exclude-mapping path="/a/adminInfo"/>
-            <bean class="cn.idevtools.interceptor.JWTVerifyInterceptor"/>
+            <bean class="cn.idevtools.interceptor.JWTAdminInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>
