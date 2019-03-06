@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class MailConfig {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @Bean
     public JavaMailSenderImpl mailSender(){

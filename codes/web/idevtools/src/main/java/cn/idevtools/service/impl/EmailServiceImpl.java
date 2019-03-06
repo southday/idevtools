@@ -17,14 +17,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmailServiceImpl implements EmailService {
-
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
 
     @Autowired
-    JavaMailSenderImpl mailSender;
+    private JavaMailSenderImpl mailSender;
 
     @Autowired
-    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public void sendEmail(final SimpleMailMessage mailMessage) {

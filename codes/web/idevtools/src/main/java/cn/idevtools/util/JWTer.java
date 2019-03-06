@@ -66,7 +66,7 @@ public class JWTer {
      * @param userType
      * @return
      */
-    private static String createLoginedToken(int id, String userName, String userType) {
+    public static String createLoginedToken(int id, String userName, String userType) {
         Date startDate = new Date();
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR, DURATION);
@@ -84,7 +84,7 @@ public class JWTer {
      * @param jws 原token
      * @return 无效化后的token
      */
-    private static String disabledLoginedToken(String jws) {
+    public static String disabledLoginedToken(String jws) {
         Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(jws).getBody();
         claims.setExpiration(new Date());
         return Jwts.builder().setClaims(claims).signWith(KEY).compact();

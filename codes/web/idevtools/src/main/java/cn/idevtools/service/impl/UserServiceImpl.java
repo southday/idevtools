@@ -28,10 +28,10 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserTMapper userTMapper;
+    private UserTMapper userTMapper;
 
     @Autowired
-    UserTagRelTMapper userTagRelTMapper;
+    private UserTagRelTMapper userTagRelTMapper;
 
     /**
      * 调用UserTMapper中的selectUserPage得到分页查询用户信息     *

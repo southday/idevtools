@@ -1,4 +1,4 @@
-package cn.idevtools.common.commonEnum;
+package cn.idevtools.common.enums;
 
 /**
  * 管理历史的操作类型
