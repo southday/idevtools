@@ -4,10 +4,10 @@ import cn.idevtools.common.CommonConst;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.util.Calendar;
@@ -27,7 +27,8 @@ import java.util.Map;
  */
 public class JWTer {
     private static final Logger logger = LogManager.getLogger(JWTer.class);
-    private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final String strKey = "sky(*&#@87874KQER!@@)(#SDGsdf2pq*#@WE23S";
+    private static final Key KEY = new SecretKeySpec(strKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     private static final int DURATION = 7 * 24; // 默认token有效时长有7天
     private int id;
     private String userName;
