@@ -18,6 +18,7 @@ public enum CodeMsgE {
     LOGIN_FAILURE_TOKEN_ERROR(StatusCode.FAILURE, "登录失败，Token创建异常"),
     VALID_ERROR(StatusCode.VALID_ERROR,"表单校验失败"),
     QUERY_SUCCESS(StatusCode.SUCCESS, "查询成功"),
+    QUERY_FAILURE(StatusCode.FAILURE, "获取信息失败"),
     INSERT_SUCCESS(StatusCode.SUCCESS, "插入成功"),
     DELETE_SUCCESS(StatusCode.SUCCESS, "删除成功"),
     UPDATE_SUCCESS(StatusCode.SUCCESS, "更新成功"),

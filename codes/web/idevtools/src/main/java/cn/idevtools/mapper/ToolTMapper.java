@@ -2,8 +2,8 @@ package cn.idevtools.mapper;
 
 import cn.idevtools.po.ToolT;
 import cn.idevtools.po.ToolTagVO;
-
 import java.util.List;
+
 
 public interface ToolTMapper {
     /**
@@ -37,4 +37,11 @@ public interface ToolTMapper {
      */
     ToolTagVO selectToolWithTagById(Integer toolId);
 
+    /**
+     * 根据toolId查询指定工具
+     * southday 2019.03.07
+     * @param toolId
+     * @return
+     */
+    ToolT selectToolByToolId(Integer toolId);
 }

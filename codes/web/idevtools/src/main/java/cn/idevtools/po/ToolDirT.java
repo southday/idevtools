@@ -1,5 +1,7 @@
 package cn.idevtools.po;
 
+import java.util.Date;
+
 public class ToolDirT {
     private Integer dirId;
 
@@ -12,6 +14,16 @@ public class ToolDirT {
     private String toolName;
 
     private String fileType;
+
+    private String createdBy;
+
+    private Date createTime;
+
+    private String lastUpdatedBy;
+
+    private Date lastUpdateTime;
+
+    private Integer versionNumber;
 
     public Integer getDirId() {
         return dirId;
@@ -59,5 +71,45 @@ public class ToolDirT {
 
     public void setFileType(String fileType) {
         this.fileType = fileType == null ? null : fileType.trim();
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy == null ? null : createdBy.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy == null ? null : lastUpdatedBy.trim();
+    }
+
+    public Date getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Date lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
     }
 }
