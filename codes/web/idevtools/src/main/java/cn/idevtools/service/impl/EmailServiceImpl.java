@@ -34,13 +34,15 @@ public class EmailServiceImpl implements EmailService {
                 String from = mailMessage.getFrom();
                 String[] to = mailMessage.getTo();
                 try{
-                    if(from == null || to == null){
+                    if(from == null || from.trim().length() == 0 || to == null){
                         logger.error("请检查发送/接受地址是否为空");
                     }
                     else mailSender.send(mailMessage);
                 }catch (MailException e){
-                    for(int i = 0;i < to.length;i++){
-                        logger.error("从" + from + "到" + to[i] + "的邮件发送失败");
+                    if(to != null){
+                        for(String t : to){
+                            logger.error("从" + from + "到" + t + "的邮件发送失败");
+                        }
                     }
                     logger.error(e.toString());
                 }
