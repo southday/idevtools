@@ -25,7 +25,7 @@ public class ValidUtil {
     }
 
     /**
-     * 将表单检验结果BindingResult转为ValidMsg形式
+     * 将表单检验结果BindingResult转为ValidMsg形式 王沁宽 2019/2/27
      * @return
      */
     public static List<ValidMsg> toValidMsgs(BindingResult bindingResult){
