@@ -1,0 +1,21 @@
+#### 工作记录 007
+**2019.02.24 - 2019.03.02**
+
+---
+
+**完成的内容**
+
+**后端**
+
+- 管理员模块
+    + 用户标签的增删改查
+    + 运行时间注解
+    + 完成操作历史功能
+    + 完成表单验证功能
+- 附：
+    + 完成公共测试模块[08863b3](https://github.com/southday/idevtools/commit/08863b39742f6dfa690d14f50a431a1321d10553)
+    + 写入操作历史[1ac7149](https://github.com/southday/idevtools/commit/1ac7149c664f416c44d86cc3d6910497a6b99c57)
+    + 方法执行时间[d896d30](https://github.com/southday/idevtools/commit/d896d30d067dca0575ef5a48a20a19055a133d11)
+    + 表单验证[36b25db](https://github.com/southday/idevtools/commit/36b25dbbd993ac01c8badbabac5caacd3aab85e2)
+**前端**
+
