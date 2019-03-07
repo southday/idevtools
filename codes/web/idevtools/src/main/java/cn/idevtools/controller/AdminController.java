@@ -81,26 +81,13 @@ public class AdminController {
     private static final int pageSize = 10;
 
     /**
-     * 根据页号获取分页后的普通用户的基本json数据.
-     * 王沁宽 2019.02.27
-     * @Param pageId 页号.
-     */
-    @ResponseJSONP
-    @PostMapping("/users/pages/{pageId}")
-    public Message<List<UserT>> getUserInfoJsonByPage(@PathVariable Integer pageId) {
-        return new Message<>(
-                CodeMsgE.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
-        );
-    }
-
-    /**
      * 条件查询用户，获取分页结果（待修改，与getUserInfoJsonByPage合并为一个方法）
      * 王沁宽 2019.02.27
      * @param user 待查询的用户
      * @param pageId 页号
      */
     @ResponseJSONP
-    @PostMapping(value = "/searchUserInfo.json/page/{pageId}")
+    @PostMapping(value = "/users/page/{pageId}")
     public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
         return new Message<>(
                 CodeMsgE.QUERY_SUCCESS,
