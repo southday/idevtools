@@ -16,8 +16,13 @@
     <result column="version_number" property="versionNumber" jdbcType="INTEGER" />
   </resultMap>
 
-  <sql id="Base_Column_List" >
-    tool_id, tool_name, tool_version, code_name, description, website, download_links, 
-    created_by, create_time, last_updated_by, last_update_time, version_number
+  <sql id="Base_Tool_List" >
+    tool_id, tool_name, tool_version, code_name, description, website, download_links, last_update_time
   </sql>
+  <!-- 根据toolId查询对应的工具信息 southday 2019.03.07 -->
+  <select id="selectToolByToolId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT <include refid="Base_Tool_List"/>
+        FROM tool_t
+       WHERE tool_id = #{toolId}
+  </select>
 </mapper>
