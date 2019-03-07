@@ -18,6 +18,7 @@ public class ToolTagTMapperTest extends CommonTest {
 
     @Test
     public void toolTagTMapperTest(){
+
         toolTagTMapper.selectAllToolTag();
 
         ToolTagT toolTagT = new ToolTagT();
