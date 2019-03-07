@@ -18,20 +18,20 @@ public interface UserTagService {
      * @param userTag
      * @return 成功1 失败0
      */
-    public int addUserTag(UserTagT userTag);
+    int addUserTag(UserTagT userTag);
 
     /**
      * 更新用户标签信息
      * @param userTag
      * @return 成功1 失败0
      */
-    public int updateUserTag(UserTagT userTag);
+    int updateUserTag(UserTagT userTag);
 
     /**
      * 根据标签id删除相应标签
      * @param tagId
      * @return 成功1 失败0
      */
-    public int deleteUserTagById(Integer tagId);
+    int deleteUserTagById(Integer tagId);
 
 }

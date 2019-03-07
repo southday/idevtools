@@ -8,7 +8,7 @@ import cn.idevtools.mapper.UserTagRelTMapper;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
-import cn.idevtools.util.CookieUtil;
+import cn.idevtools.util.JWTer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserTMapper userTMapper;
+    private UserTMapper userTMapper;
 
     @Autowired
-    UserTagRelTMapper userTagRelTMapper;
+    private UserTagRelTMapper userTagRelTMapper;
 
     /**
      * 调用UserTMapper中的selectUserPage得到分页查询用户信息     *
@@ -150,8 +150,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Message<?> logout() {
-        return CookieUtil.disableLoginedToken() ?
+        return JWTer.disableLoginedToken() ?
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
+    }
+
+    @Override
+    public UserT getUserByUserId(Integer userId) {
+        return userTMapper.selectUserByUserId(userId);
     }
 }

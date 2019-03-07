@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserTagServiceImpl implements UserTagService {
 
     @Autowired
-    UserTagTMapper userTagTMapper;
+    private UserTagTMapper userTagTMapper;
 
     /**
      * 新建用户标签,其中TagCode属性不得重复

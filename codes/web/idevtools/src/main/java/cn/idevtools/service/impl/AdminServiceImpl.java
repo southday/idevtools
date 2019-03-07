@@ -5,7 +5,7 @@ import cn.idevtools.common.Message;
 import cn.idevtools.mapper.AdminTMapper;
 import cn.idevtools.po.AdminT;
 import cn.idevtools.service.AdminService;
-import cn.idevtools.util.CookieUtil;
+import cn.idevtools.util.JWTer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Message<?> logout() {
-        return CookieUtil.disableLoginedToken() ?
+        return JWTer.disableLoginedToken() ?
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }

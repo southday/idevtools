@@ -68,4 +68,15 @@ public class UserControllerTest extends CommonTest {
 
     }
 
+    /**
+     * 根据cookie中的id获取对应的用信息
+     * @throws Exception
+     */
+    @Test
+    public void getUserInfoTest() throws Exception {
+        MvcResult mvc = mockMvc.perform(
+                MockMvcRequestBuilders.get("/u/userInfo")
+        ).andReturn();
+        System.out.println(mvc.getResponse().getContentAsString());
+    }
 }

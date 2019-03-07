@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ManageHistoryServiceImpl implements ManageHistoryService {
     @Autowired
-    ManageHistoryTMapper manageHistoryTMapper;
+    private ManageHistoryTMapper manageHistoryTMapper;
 
     @Override
     public int addManageHistory(ManageHistoryT manageHistory) {

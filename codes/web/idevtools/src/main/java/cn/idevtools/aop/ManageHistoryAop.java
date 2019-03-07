@@ -5,9 +5,7 @@ import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.builder.ManageHistoryBuilder;
 import cn.idevtools.po.ManageHistoryT;
 import cn.idevtools.service.ManageHistoryService;
-import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.JWTer;
-import io.jsonwebtoken.Claims;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -41,11 +39,11 @@ public class ManageHistoryAop {
         ManageHistoryBuilder manageHistoryBuilder=new ManageHistoryBuilder();
         try{
             result = joinPoint.proceed();
-            String jws = CookieUtil.getCookieValue(CommonConst.TOKEN);
+            String jws = JWTer.getToken();
             if(jws != null && jws.trim().length() > 0){
                 JWTer jwter = new JWTer(jws);
                 //判断是否为管理员，只为管理员写入操作历史
-                if(CommonConst.USER_TYPE_ADMIN.equals(jwter.getUserType())){
+                if(jwter.isUsable() && CommonConst.USER_TYPE_ADMIN.equals(jwter.getUserType())){
                     Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
                     //获取注解信息
                     AddManageHistory addManageHistory = method.getAnnotation(AddManageHistory.class);
