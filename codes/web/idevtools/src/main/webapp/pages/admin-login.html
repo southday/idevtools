@@ -24,7 +24,7 @@
             <div class="col-sm-2 col-sm-offset-4">
                 <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
             </div>
-            <img class="col-sm-2" data-content="点击更换验证码" @click="changeVerifyCode" :src="jcaptchaURL">
+            <img class="col-sm-2" data-content="点击更换验证码" @click="changeJCaptcha" :src="jcaptchaURL">
         </div>
         <div class="form-group">
             <div class="col-sm-4 col-sm-offset-4">

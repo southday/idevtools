@@ -5,7 +5,6 @@ import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.JWTer;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,22 +29,18 @@ public class JWTVerifyInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-        String jws = CookieUtil.getCookieValue(req, CommonConst.TOKEN);
+        String jws = JWTer.getToken();
+        JWTer jwter = new JWTer(jws);
         boolean flag = false;
-        if (jws != null && !"".equals(jws.trim())) {
-            try {
-                JWTer jwter = new JWTer(jws);
-                String userName = jwter.getUserName();
-                String userType = jwter.getUserType();
-                if (CommonConst.USER_TYPE_ADMIN.equals(userType))
-                    flag = adminService.isAdminExists(userName);
-                else if (CommonConst.USER_TYPE_USER.equals(userType))
-                    flag = userService.isUserExists(userName);
-            } catch (ExpiredJwtException ee) {
-                logger.debug("权限验证失败，token过期，[token=" + jws + "]");
-            } catch (Exception e) {
-                logger.error("权限验证失败，[token=" + jws + "]，异常：" + e.getMessage());
-            }
+        if (!jwter.isUsable()) {
+            logger.info("权限验证失败，[token = " + jws + "，异常：" + jwter.getException().getMessage());
+        } else {
+            String userName = jwter.getUserName();
+            String userType = jwter.getUserType();
+            if (CommonConst.USER_TYPE_ADMIN.equals(userType))
+                flag = adminService.isAdminExists(userName);
+            else if (CommonConst.USER_TYPE_USER.equals(userType))
+                flag = userService.isUserExists(userName);
         }
         if (!flag)
             resp.setStatus(401);

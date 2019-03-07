@@ -8,16 +8,9 @@ package cn.idevtools.common;
  * @date 2019/2/27
  */
 public class ValidMsg {
-
     private String field;
-
     private String errorMsg;
 
-    /**
-     * 6
-     * @param field 字段名
-     * @param errorMsg 错误信息
-     */
     public ValidMsg(String field,String errorMsg){
         this.field = field;
         this.errorMsg = errorMsg;

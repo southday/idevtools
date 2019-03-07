@@ -64,7 +64,9 @@
             <mvc:mapping path="/a/**"/>
             <mvc:exclude-mapping path="/u/login"/>
             <mvc:exclude-mapping path="/u/join"/>
+            <mvc:exclude-mapping path="/u/userInfo"/>
             <mvc:exclude-mapping path="/a/login"/>
+            <mvc:exclude-mapping path="/a/adminInfo"/>
             <bean class="cn.idevtools.interceptor.JWTVerifyInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

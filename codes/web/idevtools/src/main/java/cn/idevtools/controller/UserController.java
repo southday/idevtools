@@ -5,23 +5,21 @@ import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
-import cn.idevtools.common.annotation.AddManageHistory;
-import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.UserT;
-import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
-import cn.idevtools.util.CookieUtil;
 import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 该类用于实现管理员用户管理模块.
@@ -36,104 +34,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
-
-    /**
-     * 该变量表示对用户数据分页时每页显示的数据量
-     */
-    private static final int pageSize=10;
-
-
-    /**
-     * 根据页号获取分页后的普通用户的基本json数据.
-     *
-     * @Param pageId 页号.
-     */
-    @RequestMapping(value = "/userinfo.json/page/{pageId}")
-    @ResponseJSONP
-    public Message<List<UserT>> getUserInfoJsonByPage(@PathVariable Integer pageId){
-
-        return new Message<>(
-                CodeMsgE.QUERY_SUCCESS,userService.getAllUserPage(pageId,pageSize).getList()
-        );
-    }
-
-    /**
-     * 根据用户id删除用户（不做真实删除，只标记valid为0）.
-     *
-     * @Param userId 用户id.
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/delete/{userId}")
-    public Message deleteUserById(@PathVariable Integer userId){
-        return new Message(
-                userService.deleteUser(userId) == 0 ?
-                        CodeMsgE.DELETE_FAILURE :
-                        CodeMsgE.DELETE_SUCCESS
-        );
-    }
-
-    /**
-     * 条件查询用户，获取分页结果
-     * @param user 待查询的用户
-     * @param pageId 页号
-     */
-    @ResponseJSONP
-    @PostMapping(value = "/searchUserInfo.json/page/{pageId}")
-    public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
-        return new Message<>(
-                CodeMsgE.QUERY_SUCCESS,
-                userService.getUsersPage(user,pageId,pageSize).getList()
-        );
-    }
-
-    /**
-     * 根据用户id获得带有用户标签信息的用户详细信息
-     * 包含数据有:用户全部字段信息，用户对应标签全部字段信息
-     */
-    @ResponseJSONP
-    @RequestMapping("/userDetailWithTag.json/{userId}")
-    @PrintExecTime
-    @AddManageHistory(ACTION_DESC = "王无敌到此一游")
-    public Message<UserTagVO> getUserDetailWithTagById(@PathVariable Integer userId){
-        return new Message<>(
-                CodeMsgE.QUERY_SUCCESS,userService.getUserDetailWithTagById(userId)
-        );
-    }
-
-    /**
-     * 根据用户id与标签id为相应的用户添加标签
-     * @param userId 用户id
-     * @param tagId 标签id
-     * @return
-     */
-    @ResponseJSONP
-    @RequestMapping("/addTagForUser/{userId}/{tagId}")
-    public Message addTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
-        return new Message(
-                userService.addTagForUser(userId,tagId) == 0 ?
-                        CodeMsgE.INSERT_FAILURE :
-                        CodeMsgE.INSERT_SUCCESS
-        );
-    }
-
-    /**
-     * 根据用户id与标签id为相应的用户删除对应标签
-     * @param userId 用户id
-     * @param tagId 标签id
-     * @return 0:失败 1:成功
-     */
-    @ResponseJSONP
-    @RequestMapping("/removeTagForUser/{userId}/{tagId}")
-    public Message removeTagForUser(@PathVariable Integer userId,@PathVariable Integer tagId){
-        return new Message(
-                userService.removeTagForUser(userId,tagId) == 0 ?
-                        CodeMsgE.DELETE_FAILURE :
-                        CodeMsgE.DELETE_SUCCESS
-        );
-    }
+    private UserService userService;
 
     /**
      * 用户登陆 southday 2019.02.28
@@ -142,7 +43,7 @@ public class UserController {
      * @return
      */
     @ResponseJSONP
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping("/login")
     public Message<?> login(@Valid UserT argUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
@@ -154,7 +55,7 @@ public class UserController {
         if (user == null) {
             ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_INPUT_ERROR);
         } else {
-            boolean success = CookieUtil.addLoginedToken(user.getUserId(), user.getUserName(), CommonConst.USER_TYPE_USER);
+            boolean success = JWTer.addLoginedToken(user.getUserId(), user.getUserName(), CommonConst.USER_TYPE_USER);
             if (!success)
                 ret.setCodeMsg(CodeMsgE.LOGIN_FAILURE_TOKEN_ERROR);
         }
@@ -168,7 +69,7 @@ public class UserController {
      * @return
      */
     @ResponseJSONP
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    @PostMapping("/join")
     public Message<?> join(@Valid UserT argUser, BindingResult bindingResult, HttpServletRequest req) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
@@ -195,7 +96,7 @@ public class UserController {
                 return new Message<>(StatusCode.FAILURE, "注册失败，请稍后重试");
             } else {
                 argUser.setPassword(null);
-                boolean addTokenSuccess = CookieUtil.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+                boolean addTokenSuccess = JWTer.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
                 return addTokenSuccess ?
                         new Message<>(StatusCode.SUCCESS, "注册成功", argUser) :
                         new Message<>(StatusCode.FAILURE, "注册失败", "Token创建异常");
@@ -203,9 +104,31 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户退出登录
+     * southday 2019.03.05
+     * @return
+     */
     @ResponseJSONP
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @PostMapping("/logout")
     public Message<?> logout() {
         return userService.logout();
+    }
+
+    /**
+     * 根据token获取用户信息
+     * southday 2019.03.05
+     * @return
+     */
+    @ResponseJSONP
+    @GetMapping("/userInfo")
+    public Message<?> getUserInfo() {
+        JWTer jwter = new JWTer(JWTer.getToken());
+        if (!jwter.isUsable())
+            return new Message<>(StatusCode.FAILURE, "获取用户信息失败");
+        UserT user = userService.getUserByUserId(jwter.getId());
+        return user != null ?
+                new Message<>(StatusCode.SUCCESS, "获取用户信息成功", user) :
+                new Message<>(StatusCode.FAILURE, "获取用户信息失败");
     }
 }

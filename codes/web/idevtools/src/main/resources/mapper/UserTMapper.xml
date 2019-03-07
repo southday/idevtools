@@ -33,7 +33,7 @@
 
   <!--用户基本信息 王沁宽 2019.02.27-->
   <sql id="Base_User_List" >
-    user_id, user_name, email, password,actived, valid
+    user_id, user_name, email, actived, valid
   </sql>
   <!--标签的基本属性 王沁宽 2019.02.27-->
   <sql id="Tag_List" >
@@ -121,13 +121,6 @@
     NATURAL JOIN user_tag_t
   </select>
 
-  <!-- 根据userName查询指定用户 southday 2019.02.26 -->
-  <select id="selectUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT <include refid="Base_User_List"/>
-      FROM user_t
-     WHERE user_name = #{userName}
-  </select>
-
   <!-- 根据userName查询指定用户的数目 southday 2019.03.01 -->
   <select id="selectUserCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
     SELECT COUNT(1)
@@ -159,4 +152,11 @@
     INSERT INTO user_t(user_name, email, password)
     VALUES(#{userName}, #{email}, #{password})
   </insert>
+
+  <!-- 根据userId查询指定用户 southday 2019.03.04 -->
+  <select id="selectUserByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_User_List"/>
+    FROM user_t
+    WHERE user_id = #{userId}
+  </select>
 </mapper>

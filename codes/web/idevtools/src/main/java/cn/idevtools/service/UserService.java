@@ -1,16 +1,15 @@
 package cn.idevtools.service;
 
 
-import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
+import cn.idevtools.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import cn.idevtools.service.impl.UserServiceImpl;
-import org.springframework.stereotype.Service;
 
 /**
  * 管理员用户管理模块的接口.
@@ -132,4 +131,11 @@ public interface UserService {
      * @return
      */
     Message<?> logout();
+
+    /**
+     * 通过userId获取指定用户信息 southday 2019.03.04
+     * @param userId
+     * @return
+     */
+    UserT getUserByUserId(Integer userId);
 }

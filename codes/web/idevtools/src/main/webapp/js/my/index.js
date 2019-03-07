@@ -1,8 +1,37 @@
-/* 首页 js
+/** 首页模块 js
  * @author southday
  * @date 2019.02.27
  * @version v0.1
  */
+
+/* 强制要求每次打开首页都要去请求数据，而不管之前是否已经saveUser(user)
+ * 原因：
+ * 如果写为：
+ *      user = getUser()
+ *      if (user != null) {...}
+ * 则：
+ * 1.如果user保存在sessionStorage中，不同标签页(tab)或不同页面，不共用sessionStorage，
+ *   可能造成标tab1中用户退出了，而tab2中用户还没退出，此时刷新tab2中的页面，也不会自动退出，并且此时用户进行其他操作token会验证失败；
+ * 2.如果user保存在localStorage中，当服务器重启后，会从localStorage中拿到用户数据，显示已登录，其实token会验证失败，出现和<1>一样的情况；
+ */
+let user = {}
+$(function() {
+    axios({
+        method: 'get',
+        url: cookurl('/idevtools/u/userInfo'),
+        headers: {'token': getToken()}
+    }).then(function (resp) {
+        let ret = resp.data
+        if (ret.code == 'SUCCESS') {
+            user = ret.data
+            vmIndexNavbar.fillUser(user)
+            saveUser(user)
+        }
+    }).catch(function (error) {
+        vmIndexNavbar.logined = false
+        console.log(error)
+    })
+})
 
 // index-navbar
 let vmIndexNavbar = new Vue({
@@ -15,6 +44,13 @@ let vmIndexNavbar = new Vue({
     methods: {
         logout: function() {
             vmUser.logout()
+        },
+        fillUser: function(user) {
+            if (!$.isEmptyObject(user)) {
+                vmIndexNavbar.userName = user.userName
+                vmIndexNavbar.userURL = cookurl('/idevtools/u/' + user.userName)
+                vmIndexNavbar.logined = true
+            }
         }
     }
 })
