@@ -44,7 +44,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("IDevTools RESTful API")
-                .contact(new Contact("southday", "https://github.com/southday/idevtools", "lichaoxi7@qq.com"))
+                .contact(new Contact("IDevTools Team", "https://github.com/southday/idevtools", "lichaoxi7@qq.com"))
                 .version("1.0.0")
                 .build();
     }
