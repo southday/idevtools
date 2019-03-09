@@ -9,7 +9,51 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
 
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     tag_id, parent_tag_id, tag_code, tag_meaning, description
   </sql>
+
+  <!--插入标签(tagCode不得重复) 王沁宽 2019.02.27-->
+  <insert id="insertUserTag">
+    insert into user_tag_t(parent_tag_id,tag_code,tag_meaning,description)
+    select #{parentTagId},#{tagCode},#{tagMeaning},#{description}
+    from DUAL
+    where not exists
+    (select tag_id
+    from user_tag_t
+    where tag_code=#{tagCode})
+  </insert>
+
+  <!--根据标签id删除标签 王沁宽 2019.02.27-->
+  <delete id="deleteUserTagById">
+    delete from user_tag_t
+    where tag_id=#{tagId}
+  </delete>
+
+  <!--根据tagId更新标签信息，tagCode不得重复,tagId不得修改,对于parentTagId的修改业务存疑) 王沁宽 2019.02.27-->
+  <update id="updateUserTagById">
+    update user_tag_t
+    <set>
+      <if test="tagCode != null" >
+        tag_code = #{tagCode},
+      </if>
+      <if test="parentTagId != null" >
+        parent_tag_id = #{parentTagId},
+      </if>
+      <if test="tagMeaning != null" >
+        tag_meaning = #{tagMeaning},
+      </if>
+      <if test="description != null" >
+        description = #{description},
+      </if>
+    </set>
+    where tag_id=#{tagId}
+      <if test="tagCode != null" >
+        and not EXISTS
+        <!--mysql不支持在update后再用原表进行子查询，因此判断tagCode是否已经存在这里多嵌套一层，将原表user_tag_t转为u-->
+        (select 1 from
+        (select 1 from user_tag_t
+        where tag_code = #{tagCode} and tag_id != #{tagId}) u )
+      </if>
+  </update>
 </mapper>

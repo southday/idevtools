@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="off">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </appenders>
+    <!-- OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+    <loggers>
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+        </root>
+        <!--指定mapper包,打印sql-->
+        <Logger name="cn.idevtools.mapper" level="TRACE" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </loggers>
+</configuration>

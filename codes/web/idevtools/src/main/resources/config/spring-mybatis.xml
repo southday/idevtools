@@ -23,6 +23,7 @@
     <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="typeAliasesPackage" value="cn.idevtools.po"/>
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
         <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
     </bean>
     <!-- 扫描mapper接口包 -->
@@ -38,5 +39,9 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
+    <!--扫描配置文件-->
+    <context:component-scan base-package="cn.idevtools.mail"/>
+
     <tx:annotation-driven />
 </beans>

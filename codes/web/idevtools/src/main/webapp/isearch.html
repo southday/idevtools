@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>IDevTools</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/toastr.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="./css/my/index.css">
+</head>
+
+<body>
+<!-- navbar -->
+<nav id="index-navbar" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a style="font-weight:bold; color:white" class="navbar-brand" href="#">IDevTools</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#">推荐工具</a>
+                </li>
+                <li>
+                    <a href="#">意见反馈</a>
+                </li>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ userName }}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a :href="userURL">个人中心</a></li>
+                        <li><a href="#tools">我的工具</a></li>
+                        <li><a href="#news">我的消息</a></li>
+                        <li><a href="javascript:;" @click="logout">退出</a></li>
+                    </ul>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-login-modal">登录</a>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-join-modal">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- main content -->
+<div id="idevtools" class="container">
+    <!-- search & view tab -->
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Search</a>
+        </li>
+        <li><a href="/idevtools/view">View</a></li>
+    </ul>
+    <!-- search box -->
+    <div class="navbar-form navbar-middle text-center">
+        <input class="form-control" type="text" placeholder="输入关键字">
+        <button class="btn btn-link">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </div>
+    <!-- show tools info -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>工具名</th>
+            <th>版本号</th>
+            <th>版本代号</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="tool in tools">
+            <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
+            <td><a href="javascript:;" @click="showToolInfo(tool)">{{ tool.toolName }}</a></td>
+            <td>{{ tool.toolVersion }}</td>
+            <td>{{ tool.codeName }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="tool-info">
+    <!-- 侧边栏内容 -->
+    <transition name="slide-fade">
+        <div class="modal-dialog r2l-nav" v-if="show">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" @click="show = !show">&times;</button>
+                    <h4 class="modal-title">工具详情</h4>
+                </div>
+                <div class="modal-body">
+                    <p>工具名：{{ tool.toolName }}</p>
+                    <p>版本号：{{ tool.toolVersion }}</p>
+                    <p>版本代号：{{ tool.codeName }}</p>
+                    <p>工具描述：{{ tool.description }}</p>
+                    <p>官网：<a :href="tool.website" target="view_window">{{ tool.website }}</a></p>
+                    <p>下载链接：</p>
+                    <ul v-for="(value, key) in downloadLinks">
+                        <div v-if="!Array.isArray(value)">
+                            <li>{{ key }}：<a :href="value" target="view_window">{{ value }}</a></li>
+                        </div>
+                        <div v-else>
+                            <li>{{ key }}：</li>
+                            <ul v-for="item in value">
+                                <li><a :href="item" target="view_window">{{ item }}</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </transition>
+</div>
+
+<div id="user">
+    <!-- 用户登录模态框 -->
+    <div id="user-login-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-login-label" aria-hidden="true">
+        <div class="modal-dialog login-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="user-login-label">用户登录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-6">
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-6">
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-danger btn-block" @click="login">登录</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- form -->
+    </div>
+    <!-- 用户注册模态框 -->
+    <div id="user-join-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-join-label" aria-hidden="true">
+        <div class="modal-dialog join-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="user-join-label">用户注册</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-6">
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">邮箱</label>
+                            <div class="col-sm-6">
+                                <input v-model="email" type="email" class="form-control" placeholder="邮箱" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-6">
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码确认</label>
+                            <div class="col-sm-6">
+                                <input v-model="password2" type="password" class="form-control" placeholder="密码确认">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                               <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img id="jcaptcha" class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="join">注册</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- form -->
+        </div>
+    </div>
+</div>
+<!-- footer -->
+<idevtools-footer id="idevtools-footer"></idevtools-footer>
+
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/vue.min.js"></script>
+<script src="./js/toastr.min.js"></script>
+<!-- my js -->
+<script src="./js/my/common.js"></script>
+<script src="./js/my/index.js"></script>
+<script src="./js/my/user.js"></script>
+</body>
+</html>

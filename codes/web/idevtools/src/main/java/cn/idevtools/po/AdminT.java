@@ -1,12 +1,18 @@
 package cn.idevtools.po;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 public class AdminT {
     private Integer adminId;
 
+    @NotEmpty(message = "用户名不能为空")
     private String adminName;
 
+    @Email(message = "Email非法")
     private String email;
 
+    @NotEmpty(message = "密码不能为空")
     private String password;
 
     private String intro;

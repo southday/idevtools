@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.ToolDirTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.ToolDirT" >
+    <id column="dir_id" property="dirId" jdbcType="INTEGER" />
+    <result column="parent_dir_id" property="parentDirId" jdbcType="INTEGER" />
+    <result column="dir_name" property="dirName" jdbcType="VARCHAR" />
+    <result column="tool_id" property="toolId" jdbcType="INTEGER" />
+    <result column="tool_name" property="toolName" jdbcType="VARCHAR" />
+    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="last_updated_by" property="lastUpdatedBy" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="version_number" property="versionNumber" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_ToolDir_List" >
+    dir_id, parent_dir_id, dir_name, tool_id, tool_name, file_type, last_update_time
+   </sql>
+
+  <!-- 查询dirId目录对应的子文件(工具、目录) -->
+  <select id="selectSubToolDirsByDirId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_ToolDir_List"/>
+      FROM tool_dir_t
+     WHERE parent_dir_id = #{dirId}
+  </select>
+</mapper>

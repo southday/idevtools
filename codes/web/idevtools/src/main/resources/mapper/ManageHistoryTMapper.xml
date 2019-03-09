@@ -14,4 +14,9 @@
   <sql id="Base_Column_List" >
     history_id, admin_id, admin_name, action_type, action_target, action_desc, proc_time
   </sql>
+  <!--插入操作日志 王沁宽 2019.02.27-->
+  <insert id="insertManageHistory">
+    insert into manage_history_t(admin_id, admin_name, action_type, action_target, action_desc, proc_time)
+    value (#{adminId},#{adminName},#{actionType},#{actionTarget},#{actionDesc},now())
+  </insert>
 </mapper>
