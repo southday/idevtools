@@ -1,8 +1,8 @@
 package cn.idevtools.service;
 
 import cn.idevtools.po.UserT;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import javax.mail.internet.MimeMessage;
 
 
 /**
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EmailService {
     /**
-     * 发送简单邮件
-     * @param mailMessage 指定from to text(内容) subject(标题)即可
+     * 发送邮件
+     * @param message
      */
-    void sendEmail(SimpleMailMessage mailMessage);
+    void sendEmail(MimeMessage message);
 
     /**
      * 发送验证邮件
-     * @param user
+     * @param user 待验证的用户
      */
-    void sendValidEmail(UserT user);
+    void sendValidEmail (UserT user);
 }

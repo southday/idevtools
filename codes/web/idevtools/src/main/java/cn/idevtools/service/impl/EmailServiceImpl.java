@@ -9,10 +9,13 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 /**
  * 邮件服务实现
@@ -24,6 +27,11 @@ public class EmailServiceImpl implements EmailService {
 
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
 
+    /**
+     * 发邮件用的邮箱
+     */
+    public static final String mailHost = "wangqinkuan@qq.com";
+
     @Autowired
     private JavaMailSenderImpl mailSender;
 
@@ -31,31 +39,35 @@ public class EmailServiceImpl implements EmailService {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
-    public void sendEmail(final SimpleMailMessage mailMessage) {
+    public void sendEmail(final MimeMessage message) {
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                String from = mailMessage.getFrom();
-                String[] to = mailMessage.getTo();
-                try{
-                    if(from == null || from.trim().length() == 0 || to == null){
-                        logger.error("请检查发送/接受地址是否为空");
-                    }
-                    else mailSender.send(mailMessage);
-                }catch (MailException e){
-                    if(to != null){
-                        for(String t : to){
-                            logger.error("从" + from + "到" + t + "的邮件发送失败");
-                        }
-                    }
-                    logger.error(e.toString());
-                }
-
+                System.out.println("send");
+                mailSender.send(message);
             }
         });
     }
-    @Override
-    public void sendValidEmail(UserT user){
 
+    @Override
+    public void sendValidEmail(UserT user) {
+        //标题
+        String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
+        //验证链接
+        String link = "http://localhost:8080/idevtools/u/active/" + user.getUserId();
+        //内容
+        String text = "点击本条链接进行验证 " + link;
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message,true);
+            helper.setFrom(mailHost);
+            helper.setTo(user.getEmail());
+            helper.setSubject(subject);
+            helper.setText(text);
+            sendEmail(message);
+        }
+        catch (MessagingException e){
+            e.toString();
+        }
     }
 }

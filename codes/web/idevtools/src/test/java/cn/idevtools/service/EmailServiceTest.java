@@ -1,6 +1,7 @@
 package cn.idevtools.service;
 
 import cn.idevtools.CommonTest;
+import cn.idevtools.po.UserT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,19 +17,16 @@ public class EmailServiceTest extends CommonTest {
 
     @Test
     public void emailServiceTest() {
+        UserT u = new UserT();
+        u.setUserId(2);
+        u.setEmail("wangqinkuan@qq.com");
+        u.setUserName("无敌");
 
-        for(int i=0;i<10;i++){
-            SimpleMailMessage mailMessage=new SimpleMailMessage();
-            mailMessage.setFrom("wangqinkuan@qq.com");
-            mailMessage.setTo("wangqinkuan@qq.com");
-            mailMessage.setText(String.valueOf(i));
-            emailService.sendEmail(mailMessage);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
+        emailService.sendValidEmail(u);
+       try {
+           Thread.sleep(10000);
+       }catch (Exception e){
+           e.toString();
+       }
     }
 }

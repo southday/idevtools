@@ -1,8 +1,9 @@
 package cn.idevtools.controller;
 
-import cn.idevtools.mail.MailConfig;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 静态页面请求处理Controller
@@ -31,4 +32,5 @@ public class HtmlController {
     public String viewHtml() {
         return "iview";
     }
+
 }

@@ -138,4 +138,10 @@ public interface UserService {
      * @return
      */
     UserT getUserByUserId(Integer userId);
+
+    /**
+     * 根据userId激活用户
+     * 王沁宽 2019.03.09
+     */
+    boolean activeUser(Integer userId);
 }

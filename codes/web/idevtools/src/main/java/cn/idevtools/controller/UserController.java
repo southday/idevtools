@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -136,5 +137,20 @@ public class UserController {
         return user != null ?
                 new Message<>(StatusCode.SUCCESS, "获取用户信息成功", user) :
                 new Message<>(StatusCode.FAILURE, "获取用户信息失败");
+    }
+
+    /**
+     * 激活用户
+     * 王沁宽 2019.03.09
+     */
+    @ResponseJSONP
+    @GetMapping("/active/{userId}")
+    public Message<?> activeUser(@PathVariable Integer userId){
+
+        emailService.sendValidEmail(userService.getUserByUserId(userId));
+
+        return userService.activeUser(userId) ?
+                new Message<>(StatusCode.SUCCESS,"激活成功") :
+                new Message<>(StatusCode.FAILURE,"激活失败");
     }
 }

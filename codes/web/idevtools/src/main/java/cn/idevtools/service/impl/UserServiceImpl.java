@@ -144,6 +144,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean activeUser(Integer userId) {
+        return userTMapper.updateActiveByUserId(userId) == 1;
+    }
+
+    @Override
     public boolean join(UserT argUser) {
         return userTMapper.insertUser(argUser) == 1;
     }
