@@ -11,6 +11,8 @@ import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,6 +34,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/u")
 public class UserController {
+    private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -97,9 +100,8 @@ public class UserController {
             } else {
                 argUser.setPassword(null);
                 boolean addTokenSuccess = JWTer.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
-                return addTokenSuccess ?
-                        new Message<>(StatusCode.SUCCESS, "注册成功", argUser) :
-                        new Message<>(StatusCode.FAILURE, "注册失败", "Token创建异常");
+                msg = addTokenSuccess ? "注册成功" : "注册成功，Token创建异常";
+                return new Message<>(StatusCode.SUCCESS, msg, argUser);
             }
         }
     }

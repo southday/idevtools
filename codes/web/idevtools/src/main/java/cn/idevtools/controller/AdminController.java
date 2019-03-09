@@ -87,7 +87,7 @@ public class AdminController {
      * @param pageId 页号
      */
     @ResponseJSONP
-    @PostMapping(value = "/users/page/{pageId}")
+    @PostMapping("/users/page/{pageId}")
     public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
         return new Message<>(
                 CodeMsgE.QUERY_SUCCESS,
