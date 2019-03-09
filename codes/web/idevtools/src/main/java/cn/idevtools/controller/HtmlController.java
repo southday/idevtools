@@ -1,5 +1,6 @@
 package cn.idevtools.controller;
 
+import cn.idevtools.mail.MailConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
