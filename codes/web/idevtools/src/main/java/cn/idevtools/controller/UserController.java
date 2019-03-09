@@ -6,6 +6,7 @@ import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
 import cn.idevtools.po.UserT;
+import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTer;
@@ -34,10 +35,11 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/u")
 public class UserController {
-    private static final Logger logger = LogManager.getLogger(UserController.class);
-
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     /**
      * 用户登陆 southday 2019.02.28
@@ -100,6 +102,8 @@ public class UserController {
             } else {
                 argUser.setPassword(null);
                 boolean addTokenSuccess = JWTer.addLoginedToken(argUser.getUserId(), argUser.getUserName(), CommonConst.USER_TYPE_USER);
+                //发送验证邮件
+                emailService.sendValidEmail(argUser);
                 msg = addTokenSuccess ? "注册成功" : "注册成功，Token创建异常";
                 return new Message<>(StatusCode.SUCCESS, msg, argUser);
             }

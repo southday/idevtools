@@ -1,14 +1,18 @@
 package cn.idevtools.service.impl;
 
+import cn.idevtools.po.UserT;
 import cn.idevtools.service.EmailService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 邮件服务实现
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmailServiceImpl implements EmailService {
+
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
 
     @Autowired
@@ -48,6 +53,9 @@ public class EmailServiceImpl implements EmailService {
 
             }
         });
+    }
+    @Override
+    public void sendValidEmail(UserT user){
 
     }
 }
