@@ -159,4 +159,11 @@
     FROM user_t
     WHERE user_id = #{userId}
   </select>
+
+  <!--根据userId激活用户 王沁宽 2019.03.09 -->
+  <update id="updateActiveByUserId" parameterType="java.lang.Integer">
+    update user_t
+    set actived = 1
+    where user_id = #{userId}
+  </update>
 </mapper>

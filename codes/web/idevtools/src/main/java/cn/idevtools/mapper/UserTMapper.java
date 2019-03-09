@@ -88,4 +88,11 @@ public interface UserTMapper {
      * @return
      */
     UserT selectUserByUserId(Integer userId);
+
+    /**
+     * 根据userId激活用户 王沁宽 2019.03.09
+     * @param userId
+     * @return
+     */
+    int updateActiveByUserId(Integer userId);
 }
