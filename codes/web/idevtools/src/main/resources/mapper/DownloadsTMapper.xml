@@ -9,49 +9,7 @@
     <result column="download_time" property="downloadTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
-  <!--附带工具信息的下载记录 王沁宽 2019.03.03-->
-  <resultMap id="DownloadToolResultMap" type="cn.idevtools.po.DownloadToolVO" >
-    <!--下载记录-->
-    <id column="download_id" property="download.downloadId" jdbcType="INTEGER" />
-    <result column="user_id" property="download.userId" jdbcType="INTEGER" />
-    <result column="res_id" property="download.resId" jdbcType="INTEGER" />
-    <result column="res_type" property="download.resType" jdbcType="VARCHAR" />
-    <result column="download_time" property="download.downloadTime" jdbcType="TIMESTAMP" />
-    <!--工具信息-->
-    <result column="tool_id" property="tool.toolId" jdbcType="INTEGER" />
-    <result column="tool_name" property="tool.toolName" jdbcType="VARCHAR" />
-    <result column="tool_version" property="tool.toolVersion" jdbcType="VARCHAR" />
-    <result column="code_name" property="tool.codeName" jdbcType="VARCHAR" />
-    <result column="description" property="tool.description" jdbcType="VARCHAR" />
-    <result column="website" property="tool.website" jdbcType="VARCHAR" />
-    <result column="download_links" property="tool.downloadLinks" jdbcType="VARCHAR" />
-    <result column="created_by" property="tool.createdBy" jdbcType="VARCHAR" />
-    <result column="create_time" property="tool.createTime" jdbcType="TIMESTAMP" />
-    <result column="last_updated_by" property="tool.lastUpdatedBy" jdbcType="VARCHAR" />
-    <result column="last_update_time" property="tool.lastUpdateTime" jdbcType="TIMESTAMP" />
-    <result column="version_number" property="tool.versionNumber" jdbcType="INTEGER" />
-  </resultMap>
-
   <sql id="Base_Column_List" >
     download_id, user_id, res_id, res_type, download_time
   </sql>
-
-  <!--附带工具信息的下载记录字段 王沁宽 2019.03.03-->
-  <sql id="Download_Tool_List">
-    download_id,res_id,tool_name,tool_version,download_links,download_time
-  </sql>
-  <!--添加下载记录 王沁宽 2019.03.03-->
-  <insert id="insertDownload">
-    insert into downloads_t(user_id, res_id, res_type, download_time)
-    values(#{userId},#{resId},#{resType},now())
-  </insert>
-
-  <!--查询某用户的下载记录,附带工具信息 王沁宽 2019.03.03-->
-  <select id="selectDownloadToolByUserId" resultMap="DownloadToolResultMap">
-    select
-    <include refid="Download_Tool_List"/>
-    from
-    (select * from downloads_t where user_id=#{userId}) d
-    INNER JOIN tool_t on d.res_id=tool_t.tool_id
-  </select>
 </mapper>
