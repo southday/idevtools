@@ -4,7 +4,7 @@ import cn.idevtools.CommonTest;
 import cn.idevtools.po.UserT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+
 
 /**
  * 邮件服务测试
