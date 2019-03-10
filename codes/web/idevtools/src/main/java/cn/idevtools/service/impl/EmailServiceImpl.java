@@ -2,20 +2,20 @@ package cn.idevtools.service.impl;
 
 import cn.idevtools.po.UserT;
 import cn.idevtools.service.EmailService;
+import cn.idevtools.util.DESCipher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 邮件服务实现
@@ -26,11 +26,19 @@ import javax.mail.internet.MimeMessage;
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
-
     /**
      * 发邮件用的邮箱
      */
-    public static final String mailHost = "wangqinkuan@qq.com";
+    public static final String MAIL_HOST = "wangqinkuan@qq.com";
+
+    /**
+     * 激活邮件有效时间 单位 分钟
+     */
+    public static final int ACTIVE_DURATION = 30;
+    /**
+     * 邮件日期格式
+     */
+    public static final SimpleDateFormat MAIL_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
     @Autowired
     private JavaMailSenderImpl mailSender;
@@ -43,7 +51,6 @@ public class EmailServiceImpl implements EmailService {
         threadPoolTaskExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                System.out.println("send");
                 mailSender.send(message);
             }
         });
@@ -51,23 +58,34 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendValidEmail(UserT user) {
-        //标题
-        String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
-        //验证链接
-        String link = "http://localhost:8080/idevtools/u/active/" + user.getUserId();
-        //内容
-        String text = "点击本条链接进行验证 " + link;
-        MimeMessage message = mailSender.createMimeMessage();
+        //截止时间
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE,ACTIVE_DURATION);
+        Date expireDate = now.getTime();
+        //加密后的userId
+        String encryptUserId = "";
         try {
+            encryptUserId = DESCipher.getInstance().encrypt(String.valueOf(user.getUserId()));
+            //标题
+            String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
+            //验证链接，加密后的id可能会包含/ 因此不用路径获取值
+            String link = String.format("http://localhost:8080/idevtools/u/active?userId=%s&&expireDate=%s",encryptUserId,MAIL_DATE_FORMAT.format(expireDate));
+            //内容
+            String text = "点击本条链接进行验证" + link;
+            //发邮件
+            MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,true);
-            helper.setFrom(mailHost);
+            helper.setFrom(MAIL_HOST);
             helper.setTo(user.getEmail());
             helper.setSubject(subject);
             helper.setText(text);
             sendEmail(message);
         }
         catch (MessagingException e){
-            e.toString();
+            e.printStackTrace();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

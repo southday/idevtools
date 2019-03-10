@@ -64,7 +64,7 @@
             <mvc:exclude-mapping path="/u/login"/>
             <mvc:exclude-mapping path="/u/join"/>
             <mvc:exclude-mapping path="/u/userInfo"/>
-            <mvc:exclude-mapping path="/u/active/{userId}"/>
+            <mvc:exclude-mapping path="/u/active"/>
             <bean class="cn.idevtools.interceptor.JWTUserInterceptor"/>
         </mvc:interceptor>
         <!-- JWT 身份验证拦截器，针对管理员需要先进行登陆后才能操作的请求进行拦截 -->

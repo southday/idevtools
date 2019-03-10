@@ -8,22 +8,20 @@ import cn.idevtools.common.StatusCode;
 import cn.idevtools.po.UserT;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
+import cn.idevtools.service.impl.EmailServiceImpl;
+import cn.idevtools.util.DESCipher;
 import cn.idevtools.util.EncryptUtil;
 import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * 该类用于实现管理员用户管理模块.
@@ -144,11 +142,11 @@ public class UserController {
      * 王沁宽 2019.03.09
      */
     @ResponseJSONP
-    @GetMapping("/active/{userId}")
-    public Message<?> activeUser(@PathVariable Integer userId){
-
-        emailService.sendValidEmail(userService.getUserByUserId(userId));
-
+    @GetMapping("/active")
+    public Message<?> activeUser(@RequestParam("userId") String enUserId,@RequestParam("expireDate") String expireDate) throws Exception{
+        //如果过期直接激活失败
+        if((new Date()).after(EmailServiceImpl.MAIL_DATE_FORMAT.parse(expireDate))) return new Message<>(StatusCode.FAILURE,"激活邮件过期");
+        Integer userId=Integer.valueOf(DESCipher.getInstance().decrypt(enUserId));
         return userService.activeUser(userId) ?
                 new Message<>(StatusCode.SUCCESS,"激活成功") :
                 new Message<>(StatusCode.FAILURE,"激活失败");
