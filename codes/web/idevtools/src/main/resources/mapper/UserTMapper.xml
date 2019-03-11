@@ -11,24 +11,10 @@
     <result column="actived" property="actived" jdbcType="TINYINT" />
     <result column="valid" property="valid" jdbcType="TINYINT" />
   </resultMap>
-  <!--附带标签信息的用户结果集,对应UserTagVO类 王沁宽 2019.02.27-->
+  <!-- 附带标签信息的用户结果集，对应UserTagVO类 southday 2019.03.11 -->
   <resultMap id="UserTagVOResultMap" type="cn.idevtools.po.UserTagVO" >
-    <id column="user_id" property="user.userId" jdbcType="INTEGER" />
-    <result column="user_name" property="user.userName" jdbcType="VARCHAR" />
-    <result column="email" property="user.email" jdbcType="VARCHAR" />
-    <result column="password" property="user.password" jdbcType="VARCHAR" />
-    <result column="intro" property="user.intro" jdbcType="VARCHAR" />
-    <result column="img_path" property="user.imgPath" jdbcType="VARCHAR" />
-    <result column="actived" property="user.actived" jdbcType="TINYINT" />
-    <result column="valid" property="user.valid" jdbcType="TINYINT" />
-    <!--一个用户持有多个标签,注意这里是ofType，如果设置为javaType会报错-->
-    <collection property="userTags" ofType="cn.idevtools.po.UserTagT">
-      <id column="tag_id" property="tagId" jdbcType="INTEGER" />
-      <result column="parent_tag_id" property="parentTagId" jdbcType="INTEGER" />
-      <result column="tag_code" property="tagCode" jdbcType="VARCHAR" />
-      <result column="tag_meaning" property="tagMeaning" jdbcType="VARCHAR" />
-      <result column="description" property="description" jdbcType="VARCHAR" />
-    </collection>
+    <association property="user" resultMap="BaseResultMap" />
+    <collection property="userTags" column="user_id" ofType="cn.idevtools.po.UserTagT" select="cn.idevtools.mapper.UserTagTMapper.selectUserTagsByUserId" />
   </resultMap>
 
   <!--用户基本信息 王沁宽 2019.02.27-->
@@ -113,12 +99,11 @@
     where user_id = #{userId}
   </update>
 
-  <!--查询某用户详细信息(附带标签信息) 王沁宽 2019.02.27-->
-  <select id="selectUserDetailWithTagById" resultMap="UserTagVOResultMap">
-    select * from
-    (select * from user_t WHERE user_id=#{userId}) u
-    NATURAL JOIN user_tag_rel_t
-    NATURAL JOIN user_tag_t
+  <!-- 查询某用户详细信息(附带标签信息) southday 2019.03.11 -->
+  <select id="selectUserDetailWithTagById" parameterType="java.lang.Integer" resultMap="UserTagVOResultMap">
+    SELECT <include refid="Base_User_List" />
+      FROM user_t
+     WHERE user_id = #{userId}
   </select>
 
   <!-- 根据userName查询指定用户的数目 southday 2019.03.01 -->
