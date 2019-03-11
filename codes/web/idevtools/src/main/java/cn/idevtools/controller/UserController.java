@@ -143,10 +143,14 @@ public class UserController {
      */
     @ResponseJSONP
     @GetMapping("/active")
-    public Message<?> activeUser(@RequestParam("userId") String enUserId,@RequestParam("expireDate") String expireDate) throws Exception{
+    public Message<?> activeUser(@RequestParam("activeCode") String activeCode) throws Exception{
+        //解析激活码
+        String decryptedActiveCode = DESCipher.getInstance().decrypt(activeCode);
+        int expireDateIndex = decryptedActiveCode.length() - EmailServiceImpl.MAIL_DATE_PARTTEN.length();
+        String expireDate = decryptedActiveCode.substring(expireDateIndex);
+        Integer userId = Integer.valueOf(decryptedActiveCode.substring(0,expireDateIndex));
         //如果过期直接激活失败
         if((new Date()).after(EmailServiceImpl.MAIL_DATE_FORMAT.parse(expireDate))) return new Message<>(StatusCode.FAILURE,"激活邮件过期");
-        Integer userId=Integer.valueOf(DESCipher.getInstance().decrypt(enUserId));
         return userService.activeUser(userId) ?
                 new Message<>(StatusCode.SUCCESS,"激活成功") :
                 new Message<>(StatusCode.FAILURE,"激活失败");
