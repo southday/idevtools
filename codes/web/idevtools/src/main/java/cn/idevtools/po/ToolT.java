@@ -17,6 +17,12 @@ public class ToolT {
 
     private String downloadLinks;
 
+    private Boolean usable;
+
+    private Integer downloadCount;
+
+    private Integer collectCount;
+
     private String createdBy;
 
     private Date createTime;
@@ -81,6 +87,30 @@ public class ToolT {
 
     public void setDownloadLinks(String downloadLinks) {
         this.downloadLinks = downloadLinks == null ? null : downloadLinks.trim();
+    }
+
+    public Boolean getUsable() {
+        return usable;
+    }
+
+    public void setUsable(Boolean usable) {
+        this.usable = usable;
+    }
+
+    public Integer getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(Integer downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public Integer getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(Integer collectCount) {
+        this.collectCount = collectCount;
     }
 
     public String getCreatedBy() {

@@ -5,7 +5,6 @@
     <id column="collect_id" property="collectId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="res_id" property="resId" jdbcType="INTEGER" />
-    <result column="res_type" property="resType" jdbcType="VARCHAR" />
     <result column="collect_time" property="collectTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
@@ -15,7 +14,6 @@
     <id column="collect_id" property="collection.collectId" jdbcType="INTEGER" />
     <result column="user_id" property="collection.userId" jdbcType="INTEGER" />
     <result column="res_id" property="collection.resId" jdbcType="INTEGER" />
-    <result column="res_type" property="collection.resType" jdbcType="VARCHAR" />
     <result column="collect_time" property="collection.collectTime" jdbcType="TIMESTAMP" />
     <!--工具信息-->
     <result column="tool_id" property="tool.toolId" jdbcType="INTEGER" />
@@ -24,6 +22,9 @@
     <result column="code_name" property="tool.codeName" jdbcType="VARCHAR" />
     <result column="description" property="tool.description" jdbcType="VARCHAR" />
     <result column="website" property="tool.website" jdbcType="VARCHAR" />
+    <result column="usable" property="usable" jdbcType="TINYINT" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
     <result column="download_links" property="tool.downloadLinks" jdbcType="VARCHAR" />
     <result column="created_by" property="tool.createdBy" jdbcType="VARCHAR" />
     <result column="create_time" property="tool.createTime" jdbcType="TIMESTAMP" />
@@ -33,7 +34,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    collect_id, user_id, res_id, res_type, collect_time
+    collect_id, user_id, res_id, collect_time
   </sql>
 
   <!--在用户收藏界面要展示的字段 王沁宽 2019.03.03-->
@@ -56,8 +57,8 @@
 
   <!--插入一条收藏记录,用户不能重复收藏 王沁宽 2019.03.03-->
   <insert id="insertCollection">
-    insert into collections_t(user_id,res_id,res_type,collect_time)
-    select #{userId},#{resId},#{resType},now()
+    insert into collections_t(user_id,res_id,collect_time)
+    select #{userId},#{resId},now()
     from DUAL
     where not exists
     (select 1
