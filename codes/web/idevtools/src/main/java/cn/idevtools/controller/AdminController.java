@@ -10,7 +10,7 @@ import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
-import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
@@ -48,7 +48,7 @@ public class AdminController {
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
         if (!ValidUtil.isPassCaptcha())
             return new Message<>(CodeMsgE.CAPTCHA_ERROR);
-        argAdmin.setPassword(EncryptUtil.md5salt(argAdmin.getPassword()));
+        argAdmin.setPassword(MD5Util.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
         Message<AdminT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, admin);
         if (admin == null) {
