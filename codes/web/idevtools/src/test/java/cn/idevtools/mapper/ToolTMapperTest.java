@@ -2,6 +2,8 @@ package cn.idevtools.mapper;
 
 import cn.idevtools.CommonTest;
 import cn.idevtools.po.ToolT;
+import cn.idevtools.po.ToolTagVO;
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +39,11 @@ public class ToolTMapperTest extends CommonTest {
 
         toolTMapper.insertTool(tool2);
         toolTMapper.deleteToolById(2);
+    }
 
-
+    @Test
+    public void getToolWithTagsTest() {
+        ToolTagVO vo = toolTMapper.selectToolWithTagById(1);
+        System.out.println(JSON.toJSON(vo));
     }
 }

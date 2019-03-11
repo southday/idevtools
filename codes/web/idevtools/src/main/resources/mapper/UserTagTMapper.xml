@@ -9,7 +9,7 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
 
-  <sql id="Base_Column_List">
+  <sql id="Base_UserTag_List">
     tag_id, parent_tag_id, tag_code, tag_meaning, description
   </sql>
 
@@ -56,4 +56,14 @@
         where tag_code = #{tagCode} and tag_id != #{tagId}) u )
       </if>
   </update>
+
+  <!-- 根据userId查询指定用户的用户标签 southday 2019.03.11 -->
+  <select id="selectUserTagsByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_UserTag_List"/>
+      FROM user_tag_t u JOIN
+           (SELECT tag_id
+              FROM user_tag_rel_t
+             WHERE user_id = #{userId}) m
+           USING (tag_id)
+  </select>
 </mapper>

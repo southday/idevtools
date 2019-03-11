@@ -18,32 +18,12 @@
     <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="version_number" property="versionNumber" jdbcType="INTEGER" />
   </resultMap>
-  <!--带标签信息的工具结果集 王沁宽 2019.03.07-->
+  <!-- 带标签信息的工具结果集 southday 2019.03.11 -->
   <resultMap id="ToolWithTagResultMap" type="cn.idevtools.po.ToolTagVO">
-    <!--工具基本信息-->
-    <id column="tool_id" property="tool.toolId" jdbcType="INTEGER" />
-    <result column="tool_name" property="tool.toolName" jdbcType="VARCHAR" />
-    <result column="tool_version" property="tool.toolVersion" jdbcType="VARCHAR" />
-    <result column="code_name" property="tool.codeName" jdbcType="VARCHAR" />
-    <result column="description" property="tool.description" jdbcType="VARCHAR" />
-    <result column="website" property="tool.website" jdbcType="VARCHAR" />
-    <result column="download_links" property="tool.downloadLinks" jdbcType="VARCHAR" />
-    <result column="usable" property="usable" jdbcType="TINYINT" />
-    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
-    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
-    <result column="created_by" property="tool.createdBy" jdbcType="VARCHAR" />
-    <result column="create_time" property="tool.createTime" jdbcType="TIMESTAMP" />
-    <result column="last_updated_by" property="tool.lastUpdatedBy" jdbcType="VARCHAR" />
-    <result column="last_update_time" property="tool.lastUpdateTime" jdbcType="TIMESTAMP" />
-    <result column="version_number" property="tool.versionNumber" jdbcType="INTEGER" />
-    <!--标签基本信息-->
-    <collection property="toolTags" ofType="cn.idevtools.po.ToolTagT">
-      <id column="tag_id" property="tagId" jdbcType="INTEGER" />
-      <result column="parent_tag_id" property="parentTagId" jdbcType="INTEGER" />
-      <result column="tag_code" property="tagCode" jdbcType="VARCHAR" />
-      <result column="tag_meaning" property="tagMeaning" jdbcType="VARCHAR" />
-      <result column="description" property="description" jdbcType="VARCHAR" />
-    </collection>
+    <!-- 工具基本信息 -->
+    <association property="tool" resultMap="BaseResultMap" />
+    <!-- 标签基本信息 1对多 -->
+    <collection property="toolTags" column="tool_id" ofType="cn.idevtools.po.ToolTagT" select="cn.idevtools.mapper.ToolTagTMapper.selectToolTagsByToolId" />
   </resultMap>
 
   <sql id="Base_Tool_List" >
@@ -169,13 +149,10 @@
     where tool_id = #{toolId}
   </update>
 
-  <!--根据id查询带标签信息的工具信息 王沁宽 2019.03.07-->
-  <select id="selectToolWithTagById" resultMap="ToolWithTagResultMap">
-    select t.tool_id, t.tool_name, t.tool_version, t.code_name, t.description, t.website, t.download_links, t.usable, t.download_count, t.collect_count, last_update_time,
-    tag.tag_id, tag.parent_tag_id, tag.tag_code, tag.tag_meaning, tag.description
-    from
-    (select * from tool_t where tool_id=1) t
-    NATURAL join tool_tag_rel_t r
-    JOIN tool_tag_t tag on tag.tag_id = r.tag_id
+  <!-- 根据id查询带标签信息的工具信息 southday 2019.03.11 -->
+  <select id="selectToolWithTagById" parameterType="java.lang.Integer" resultMap="ToolWithTagResultMap">
+    SELECT <include refid="Base_Tool_List" />
+      FROM tool_t
+     WHERE tool_id = #{toolId}
   </select>
 </mapper>
