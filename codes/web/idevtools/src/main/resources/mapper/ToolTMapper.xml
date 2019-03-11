@@ -9,6 +9,9 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="website" property="website" jdbcType="VARCHAR" />
     <result column="download_links" property="downloadLinks" jdbcType="VARCHAR" />
+    <result column="usable" property="usable" jdbcType="TINYINT" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="last_updated_by" property="lastUpdatedBy" jdbcType="VARCHAR" />
@@ -25,6 +28,9 @@
     <result column="description" property="tool.description" jdbcType="VARCHAR" />
     <result column="website" property="tool.website" jdbcType="VARCHAR" />
     <result column="download_links" property="tool.downloadLinks" jdbcType="VARCHAR" />
+    <result column="usable" property="usable" jdbcType="TINYINT" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="collect_count" property="collectCount" jdbcType="INTEGER" />
     <result column="created_by" property="tool.createdBy" jdbcType="VARCHAR" />
     <result column="create_time" property="tool.createTime" jdbcType="TIMESTAMP" />
     <result column="last_updated_by" property="tool.lastUpdatedBy" jdbcType="VARCHAR" />
@@ -41,7 +47,7 @@
   </resultMap>
 
   <sql id="Base_Tool_List" >
-    tool_id, tool_name, tool_version, code_name, description, website, download_links, last_update_time
+    tool_id, tool_name, tool_version, code_name, description, website, download_links, usable, download_count, collect_count, last_update_time
   </sql>
 
   <!-- 根据toolId查询对应的工具信息 southday 2019.03.07 -->
@@ -165,7 +171,7 @@
 
   <!--根据id查询带标签信息的工具信息 王沁宽 2019.03.07-->
   <select id="selectToolWithTagById" resultMap="ToolWithTagResultMap">
-    select t.tool_id, t.tool_name, t.tool_version, t.code_name, t.description, t.website, t.download_links, created_by, create_time, last_updated_by, last_update_time, version_number,
+    select t.tool_id, t.tool_name, t.tool_version, t.code_name, t.description, t.website, t.download_links, t.usable, t.download_count, t.collect_count, last_update_time,
     tag.tag_id, tag.parent_tag_id, tag.tag_code, tag.tag_meaning, tag.description
     from
     (select * from tool_t where tool_id=1) t

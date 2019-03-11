@@ -10,7 +10,7 @@ import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
 import cn.idevtools.util.DESCipher;
-import cn.idevtools.util.EncryptUtil;
+import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
@@ -53,7 +53,7 @@ public class UserController {
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
         if (!ValidUtil.isPassCaptcha())
             return new Message<>(CodeMsgE.CAPTCHA_ERROR);
-        argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
+        argUser.setPassword(MD5Util.md5salt(argUser.getPassword()));
         UserT user = userService.login(argUser);
         Message<UserT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, user);
         if (user == null) {
@@ -94,7 +94,7 @@ public class UserController {
         if (msg != null) {
             return new Message<>(StatusCode.FAILURE, msg);
         } else {
-            argUser.setPassword(EncryptUtil.md5salt(argUser.getPassword()));
+            argUser.setPassword(MD5Util.md5salt(argUser.getPassword()));
             boolean joinSuccess = userService.join(argUser);
             if (!joinSuccess) {
                 return new Message<>(StatusCode.FAILURE, "注册失败，请稍后重试");

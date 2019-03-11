@@ -9,8 +9,6 @@ public class DownloadsT {
 
     private Integer resId;
 
-    private String resType;
-
     private Date downloadTime;
 
     public Integer getDownloadId() {
@@ -35,14 +33,6 @@ public class DownloadsT {
 
     public void setResId(Integer resId) {
         this.resId = resId;
-    }
-
-    public String getResType() {
-        return resType;
-    }
-
-    public void setResType(String resType) {
-        this.resType = resType == null ? null : resType.trim();
     }
 
     public Date getDownloadTime() {

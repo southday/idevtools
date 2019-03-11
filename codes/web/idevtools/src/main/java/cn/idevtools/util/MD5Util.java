@@ -7,7 +7,7 @@ import java.security.MessageDigest;
  * @author southday
  * @date 2019/2/27
  */
-public class EncryptUtil {
+public class MD5Util {
     private static final MessageDigest MD5;
 
     private static final String[] saltList = {

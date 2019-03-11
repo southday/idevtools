@@ -21,7 +21,7 @@ public class MessageT {
 
     private Date sendTime;
 
-    private Byte read;
+    private Boolean read;
 
     public Integer getMsgId() {
         return msgId;
@@ -95,11 +95,11 @@ public class MessageT {
         this.sendTime = sendTime;
     }
 
-    public Byte getRead() {
+    public Boolean getRead() {
         return read;
     }
 
-    public void setRead(Byte read) {
+    public void setRead(Boolean read) {
         this.read = read;
     }
 }

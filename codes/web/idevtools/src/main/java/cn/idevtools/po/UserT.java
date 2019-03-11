@@ -23,9 +23,9 @@ public class UserT {
 
     private String imgPath;
 
-    private Byte actived;
+    private Boolean actived;
 
-    private Byte valid;
+    private Boolean valid;
 
     public Integer getUserId() {
         return userId;
@@ -75,19 +75,19 @@ public class UserT {
         this.imgPath = imgPath == null ? null : imgPath.trim();
     }
 
-    public Byte getActived() {
+    public Boolean getActived() {
         return actived;
     }
 
-    public void setActived(Byte actived) {
+    public void setActived(Boolean actived) {
         this.actived = actived;
     }
 
-    public Byte getValid() {
+    public Boolean getValid() {
         return valid;
     }
 
-    public void setValid(Byte valid) {
+    public void setValid(Boolean valid) {
         this.valid = valid;
     }
 }
