@@ -38,7 +38,9 @@ public class EmailServiceImpl implements EmailService {
     /**
      * 邮件日期格式
      */
-    public static final SimpleDateFormat MAIL_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
+    public static final String MAIL_DATE_PARTTEN = "yyyyMMddHHmmss";
+
+    public static final SimpleDateFormat MAIL_DATE_FORMAT = new SimpleDateFormat(MAIL_DATE_PARTTEN);
 
     @Autowired
     private JavaMailSenderImpl mailSender;
@@ -62,14 +64,15 @@ public class EmailServiceImpl implements EmailService {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.MINUTE,ACTIVE_DURATION);
         Date expireDate = now.getTime();
-        //加密后的userId
-        String encryptUserId = "";
         try {
-            encryptUserId = DESCipher.getInstance().encrypt(String.valueOf(user.getUserId()));
+            String userId = String.valueOf(user.getUserId());
+            String expireDateString = MAIL_DATE_FORMAT.format(expireDate);
+            //拼接id与日期并加密 生成激活码
+            String activeCode = DESCipher.getInstance().encrypt(userId + expireDateString);
             //标题
             String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
-            //验证链接，加密后的id可能会包含/ 因此不用路径获取值
-            String link = String.format("http://localhost:8080/idevtools/u/active?userId=%s&&expireDate=%s",encryptUserId,MAIL_DATE_FORMAT.format(expireDate));
+            //验证链接，激活码可能会包含/ 因此不用路径获取值
+            String link = String.format("http://localhost:8080/idevtools/u/active?activeCode=%s",activeCode);
             //内容
             String text = "点击本条链接进行验证" + link;
             //发邮件
