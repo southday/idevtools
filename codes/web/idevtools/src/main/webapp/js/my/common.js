@@ -10,8 +10,8 @@
  * 该是为了方便以上两种情况的相互转换，真正部署时，要取消该方法的调用
  */
 function cookurl(url) {
-    return url;
-    // return 'http://localhost:8080' + url;
+    // return url;
+    return 'http://localhost:8080' + url;
 }
 
 /** 更换验证码 */
