@@ -30,6 +30,11 @@
     tool_id, tool_name, tool_version, code_name, description, website, download_links, usable, download_count, collect_count, last_update_time
   </sql>
 
+  <!-- 精简的Tool信息，搜索工具时只返回这部分信息，等要查看某工具详情时再发一次请求来获取其他信息 southday 2019.03.12 -->
+  <sql id="Brief_Tool_List">
+    tool_id, tool_name, tool_version, code_name, download_count, collect_count
+  </sql>
+
   <!-- 根据toolId查询对应的工具信息 southday 2019.03.07 -->
   <select id="selectToolByToolId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       SELECT <include refid="Base_Tool_List"/>
@@ -154,5 +159,13 @@
     SELECT <include refid="Base_Tool_List" />
       FROM tool_t
      WHERE tool_id = #{toolId}
+  </select>
+
+  <!-- 根据toolName来查询工具信息 southday 2019.03.12 -->
+  <select id="selectToolsByToolName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT <include refid="Brief_Tool_List" />
+      FROM tool_t
+     WHERE tool_name LIKE CONCAT('%', #{toolName}, '%')
+      LIMIT 200
   </select>
 </mapper>

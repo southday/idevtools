@@ -62,50 +62,6 @@ function getUser() {
 }
 
 /**
- * idevtools-header组件(未使用，待完善)
- * southday 2019.03.06
- */
-Vue.component('idevtools-header', {
-    props: ['logined', 'userName', 'userURL'],
-    template: `
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <a style="font-weight:bold; color:white" class="navbar-brand" href="#">IDevTools</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <a href="#">推荐工具</a>
-                </li>
-                <li>
-                  <a href="#">意见反馈</a>
-                </li>
-                <li v-if="logined" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    {{ userName }}<b class="caret"></b>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a :href="userURL">个人中心</a></li>
-                    <li><a href="#tools">我的工具</a></li>
-                    <li><a href="#news">我的消息</a></li>
-                    <li><a href="javascript:;" @click="logout">退出</a></li>
-                  </ul>
-                </li>
-                <li v-if="!logined">
-                  <a href="javascript:;" data-toggle="modal" data-target="#user-login-modal">登录</a>
-                </li>
-                <li v-if="!logined">
-                  <a href="javascript:;" data-toggle="modal" data-target="#user-join-modal">注册</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-    `
-})
-
-/**
  * idevtools-footer组件
  * southday 2019.03.06
  */

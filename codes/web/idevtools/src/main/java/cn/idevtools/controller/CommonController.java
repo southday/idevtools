@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public class CommonController {
         List<ToolDirT> toolDirs = commonService.getSubToolDirs(dirId);
         return (toolDirs == null || toolDirs.size() == 0) ?
                 new Message<>(CodeMsgE.QUERY_FAILURE) :
-                new Message<>(CodeMsgE.QUERY_SUCCESS, commonService.getSubToolDirs(dirId));
+                new Message<>(CodeMsgE.QUERY_SUCCESS, toolDirs);
     }
 
     /**
@@ -53,7 +55,21 @@ public class CommonController {
         ToolT tool = commonService.getToolByToolId(toolId);
         return tool == null ?
                 new Message<>(CodeMsgE.QUERY_FAILURE) :
-                new Message<>(CodeMsgE.QUERY_SUCCESS, commonService.getToolByToolId(toolId));
+                new Message<>(CodeMsgE.QUERY_SUCCESS, tool);
     }
 
+    /**
+     * 根据关键字wd来查询工具信息
+     * southday 2019.03.12
+     * @param wd
+     * @return
+     */
+    @ResponseJSONP
+    @GetMapping("/search/search")
+    public Message<?> searchTools(@RequestParam("wd") String wd) {
+        List<ToolT> tools = commonService.searchToolsByToolName(wd);
+        return tools == null || tools.size() == 0 ?
+                new Message<>(CodeMsgE.QUERY_FAILURE) :
+                new Message<>(CodeMsgE.QUERY_SUCCESS, tools);
+    }
 }

@@ -46,7 +46,7 @@
     </div>
 </nav>
 <!-- main content -->
-<div id="idevtools" class="container">
+<div id="search-module" class="container">
     <!-- search & view tab -->
     <ul class="nav nav-tabs">
         <li class="active">
@@ -56,8 +56,8 @@
     </ul>
     <!-- search box -->
     <div class="navbar-form navbar-middle text-center">
-        <input class="form-control" type="text" placeholder="输入关键字">
-        <button class="btn btn-link">
+        <input v-model="wd" class="form-control" type="text" @keyup.enter="search" placeholder="输入关键字">
+        <button class="btn btn-link" @click="search">
             <i class="glyphicon glyphicon-search"></i>
         </button>
     </div>
@@ -71,9 +71,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="tool in tools">
+        <tr v-if="!$.isEmptyObject(tools)" v-for="tool in sortedTools">
             <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
-            <td><a href="javascript:;" @click="showToolInfo(tool)">{{ tool.toolName }}</a></td>
+            <td><a href="javascript:;" @click="showToolInfo(tool.toolId)">{{ tool.toolName }}</a></td>
             <td>{{ tool.toolVersion }}</td>
             <td>{{ tool.codeName }}</td>
         </tr>
@@ -96,6 +96,8 @@
                     <p>版本代号：{{ tool.codeName }}</p>
                     <p>工具描述：{{ tool.description }}</p>
                     <p>官网：<a :href="tool.website" target="view_window">{{ tool.website }}</a></p>
+                    <p>下载次数：{{ tool.downloadCount }}</p>
+                    <p>收藏次数：{{ tool.collectCount }}</p>
                     <p>下载链接：</p>
                     <ul v-for="(value, key) in downloadLinks">
                         <div v-if="!Array.isArray(value)">
