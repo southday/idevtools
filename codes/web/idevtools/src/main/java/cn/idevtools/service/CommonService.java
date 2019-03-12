@@ -29,4 +29,12 @@ public interface CommonService {
      * @return
      */
     ToolT getToolByToolId(Integer toolId);
+
+    /**
+     * 根据toolName来查询工具信息
+     * southday 2019.03.12
+     * @param toolName
+     * @return
+     */
+    List<ToolT> searchToolsByToolName(String toolName);
 }

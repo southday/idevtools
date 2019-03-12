@@ -21,6 +21,7 @@
     SELECT <include refid="Base_Admin_List"/>
       FROM admin_t
      WHERE admin_name = #{adminName}
+      LIMIT 1
   </select>
 
   <!-- 根据adminName查询指定管理的数目 southday 2019.03.01 -->

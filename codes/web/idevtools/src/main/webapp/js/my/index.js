@@ -55,36 +55,78 @@ let vmIndexNavbar = new Vue({
     }
 })
 
-// isearch.html 模拟数据
-let vmIDevTools = new Vue({
-    el: '#idevtools',
+/**
+ * 对搜索到的工具进行排序， southday 2019.03.12
+ * 排序规则：
+ * 1) 如果 下载量不相等，则按下载量降序排序，否则(2)
+ * 2) 如果 收藏量不相等，则按收藏量降序排序，否则(3)
+ * 3) 按toolName字符串默认排序
+ * @param tools
+ * @returns {*}
+ */
+function sortTools(tools) {
+    return tools.sort(function(a, b) {
+        let d1 = a['downloadCount']
+        let c1 = a['collectCount']
+        let d2 = b['downloadCount']
+        let c2 = b['collectCount']
+        if (d1 != d2)
+            return d2 - d1
+        else if (c1 != c2)
+            return c2 - c1
+        else
+            return a['toolName'].localeCompare(b['toolName'], 'zh-CN')
+    })
+}
+
+// isearch.html 搜索模块
+let vmSearchModule = new Vue({
+    el: '#search-module',
     data: {
-        tools: [
-            {
-                "description": "Package suited for development of Eclipse itself at Eclipse.org; based on the Eclipse Platform adding PDE, Git, Marketplace Client, source code and developer documentation.",
-                "downloadLinks": "{\"macos\": \"http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-committers-photon-R-macosx-cocoa-x86_64.dmg\", \"win32\": \"http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-committers-photon-R-win32.zip\", \"win64\": \"http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-committers-photon-R-win32-x86_64.zip\", \"linux32\": \"http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-committers-photon-R-linux-gtk.tar.gz\", \"linux64\": \"http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-committers-photon-R-linux-gtk-x86_64.tar.gz\"}",
-                "toolId": 1,
-                "toolName": "Eclipse",
-                "toolVersion": "4.8",
-                "codeName": "Photon",
-                "website": "https://www.eclipse.org/downloads/"
-            },
-            {
-                "description": "Java SE Development Kit 8u191",
-                "downloadLinks": "{\"Linux 86\": [\"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-i586.rpm\", \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-i586.tar.gz\"], \"Linux x64\": [\"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.rpm\", \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.tar.gz\"], \"Windows x64\": \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-windows-x64.exe\", \"Windows x86\": \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-windows-i586.exe\", \"Mac OS X x64\": \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-macosx-x64.dmg\", \"Linux ARM 32 Hard Float ABI\": \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-arm32-vfp-hflt.tar.gz\", \"Linux ARM 64 Hard Float ABI\": \"https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-arm64-vfp-hflt.tar.gz\"}",
-                "toolId": 2,
-                "toolName": "JDK",
-                "toolVersion": "8u191",
-                "codeName": "",
-                "website": "https://www.oracle.com/technetwork/java/javase/downloads/isearch.html"
-            }
-        ]
+        wd: '',
+        tools: []
+    },
+    computed: {
+      sortedTools: function() {
+          return sortTools(this.tools)
+      }
     },
     methods: {
-        showToolInfo: function(curTool) {
-            vmToolInfo.show = true
-            vmToolInfo.tool = curTool
-            vmToolInfo.downloadLinks = JSON.parse(curTool.downloadLinks)
+        showToolInfo: function(toolId) {
+            axios({
+                method: 'get',
+                url: cookurl('/idevtools/c/tools/' + toolId)
+            }).then(function(resp) {
+                let ret = resp.data
+                if (ret == 'FAILURE')
+                    toastr.warn(ret.msg)
+                else {
+                    vmToolInfo.tool = ret.data
+                    vmToolInfo.downloadLinks = JSON.parse(ret.data.downloadLinks)
+                    vmToolInfo.show = true
+                }
+            }).catch(function(error) {
+                console.log(error)
+            })
+        },
+        search: function() {
+            axios({
+                method: 'get',
+                url: cookurl('/idevtools/c/search/search'),
+                params: {
+                    wd: vmSearchModule.wd
+                }
+            }).then(function(resp) {
+                let ret = resp.data
+                if (ret.code == 'FAILURE') {
+                    toastr.info("未匹配到工具")
+                    vmSearchModule.tools = []
+                } else {
+                    vmSearchModule.tools = ret.data
+                }
+            }).catch(function(error) {
+                console.log(error)
+            })
         }
     }
 })
