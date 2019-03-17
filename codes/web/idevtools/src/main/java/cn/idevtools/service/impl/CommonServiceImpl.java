@@ -32,4 +32,9 @@ public class CommonServiceImpl implements CommonService {
     public ToolT getToolByToolId(Integer toolId) {
         return toolTMapper.selectToolByToolId(toolId);
     }
+
+    @Override
+    public List<ToolT> searchToolsByToolName(String toolName) {
+        return toolTMapper.selectToolsByToolName(toolName);
+    }
 }

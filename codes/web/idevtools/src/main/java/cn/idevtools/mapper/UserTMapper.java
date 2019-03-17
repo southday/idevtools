@@ -48,6 +48,7 @@ public interface UserTMapper {
      * @return 操作影响的行数
      */
     int updateUser(UserT user);
+
     /**
      * 根据userId查询附带标签信息的用户详细信息，包含用户的全部字段以及用户对应标签的全部字段
      * @param userId 用户id

@@ -44,4 +44,12 @@ public interface ToolTMapper {
      * @return
      */
     ToolT selectToolByToolId(Integer toolId);
+
+    /**
+     * 根据toolName来查询工具信息
+     * southday 2019.03.12
+     * @param toolName
+     * @return
+     */
+    List<ToolT> selectToolsByToolName(String toolName);
 }
