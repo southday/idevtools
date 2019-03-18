@@ -79,3 +79,4 @@ Vue.component('idevtools-footer', {
     `
 })
 new Vue({ el: '#idevtools-footer' })
+

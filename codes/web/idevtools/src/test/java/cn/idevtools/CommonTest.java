@@ -27,7 +27,6 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(JUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:/config/spring-mvc.xml","classpath:/config/spring-mybatis.xml"})
-@Transactional
 @Rollback
 public class CommonTest {
     @Autowired
