@@ -5,15 +5,13 @@ import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
-import cn.idevtools.po.CollectionsT;
-import cn.idevtools.po.DownloadsT;
-import cn.idevtools.po.UserT;
+import cn.idevtools.po.*;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
 import cn.idevtools.util.DESCipher;
-import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.JWTer;
+import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,5 +208,45 @@ public class UserController {
         return success ?
                 new Message<>(CodeMsgE.DELETE_SUCCESS) :
                 new Message<>(CodeMsgE.DELETE_FAILURE);
+    }
+
+    /**
+     * 用户意见反馈 southday 2019.03.18
+     * @param suggestion
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/suggestions")
+    public Message<?> submitSuggestion(SuggestionsT suggestion) {
+        JWTer jwTer = new JWTer(JWTer.getToken());
+        if (!jwTer.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        suggestion.setUserId(jwTer.getId());
+        // 1.意见反馈记录入库
+        boolean success = userService.submitSuggestion(suggestion);
+        // 2.发送邮件（待开发）
+        return success ?
+                new Message<>(CodeMsgE.INSERT_SUCCESS) :
+                new Message<>(CodeMsgE.INSERT_FAILURE);
+    }
+
+    /**
+     * 用户推荐工具 southday 2019.03.18
+     * @param recommendation
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/recommendations")
+    public Message<?> recommendTool(RecommendationsT recommendation) {
+        JWTer jwTer = new JWTer(JWTer.getToken());
+        if (!jwTer.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        recommendation.setUserId(jwTer.getId());
+        // 1.工具推荐记录入库
+        boolean success = userService.recommendTool(recommendation);
+        // 2.发送邮件（待开发）
+        return success ?
+                new Message<>(CodeMsgE.INSERT_SUCCESS) :
+                new Message<>(CodeMsgE.INSERT_FAILURE);
     }
 }

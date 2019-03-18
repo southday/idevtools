@@ -3,14 +3,8 @@ package cn.idevtools.service.impl;
 
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
-import cn.idevtools.mapper.CollectionsTMapper;
-import cn.idevtools.mapper.DownloadsTMapper;
-import cn.idevtools.mapper.UserTMapper;
-import cn.idevtools.mapper.UserTagRelTMapper;
-import cn.idevtools.po.CollectionsT;
-import cn.idevtools.po.DownloadsT;
-import cn.idevtools.po.UserT;
-import cn.idevtools.po.UserTagVO;
+import cn.idevtools.mapper.*;
+import cn.idevtools.po.*;
 import cn.idevtools.service.UserService;
 import cn.idevtools.util.JWTer;
 import com.github.pagehelper.PageHelper;
@@ -171,6 +165,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean cancelCollection(Integer collectId) {
         return collectionsTMapper.deleteCollectionByCollectId(collectId) == 1;
+    }
+
+    @Autowired
+    private MessageTMapper messageTMapper;
+
+    @Override
+    public boolean submitSuggestion(SuggestionsT suggestion) {
+        return messageTMapper.insertSuggestionMsg(suggestion) == 1;
+    }
+
+    @Override
+    public boolean recommendTool(RecommendationsT recommendation) {
+        return messageTMapper.insertToolRecommendationMsg(recommendation) == 1;
     }
 
     @Override

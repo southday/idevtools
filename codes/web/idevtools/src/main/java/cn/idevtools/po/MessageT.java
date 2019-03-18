@@ -9,11 +9,9 @@ public class MessageT {
 
     private Integer senderId;
 
-    private String senderName;
-
     private Integer receiverId;
 
-    private String receiverName;
+    private String title;
 
     private String content;
 
@@ -47,14 +45,6 @@ public class MessageT {
         this.senderId = senderId;
     }
 
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName == null ? null : senderName.trim();
-    }
-
     public Integer getReceiverId() {
         return receiverId;
     }
@@ -63,12 +53,12 @@ public class MessageT {
         this.receiverId = receiverId;
     }
 
-    public String getReceiverName() {
-        return receiverName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName == null ? null : receiverName.trim();
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     public String getContent() {

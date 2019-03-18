@@ -2,10 +2,7 @@ package cn.idevtools.service;
 
 
 import cn.idevtools.common.Message;
-import cn.idevtools.po.CollectionsT;
-import cn.idevtools.po.DownloadsT;
-import cn.idevtools.po.UserT;
-import cn.idevtools.po.UserTagVO;
+import cn.idevtools.po.*;
 import cn.idevtools.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -167,4 +164,18 @@ public interface UserService {
      * @return
      */
     boolean cancelCollection(Integer collectId);
+
+    /**
+     * 用户反馈意见 southday 2019.03.18
+     * @param suggestion
+     * @return
+     */
+    boolean submitSuggestion(SuggestionsT suggestion);
+
+    /**
+     * 用户推荐工具 southday 2019.03.18
+     * @param recommendation
+     * @return
+     */
+    boolean recommendTool(RecommendationsT recommendation);
 }

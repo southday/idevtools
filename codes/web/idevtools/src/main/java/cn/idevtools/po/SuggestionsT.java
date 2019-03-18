@@ -7,8 +7,6 @@ public class SuggestionsT {
 
     private Integer userId;
 
-    private String email;
-
     private String content;
 
     private Date sugTime;
@@ -27,14 +25,6 @@ public class SuggestionsT {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
     }
 
     public String getContent() {
