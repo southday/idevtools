@@ -62,23 +62,25 @@
         </button>
     </div>
     <!-- show tools info -->
-    <table class="table">
-        <thead>
-        <tr>
-            <th>工具名</th>
-            <th>版本号</th>
-            <th>版本代号</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="!$.isEmptyObject(tools)" v-for="tool in sortedTools">
-            <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
-            <td><a href="javascript:;" @click="showToolInfo(tool.toolId)">{{ tool.toolName }}</a></td>
-            <td>{{ tool.toolVersion }}</td>
-            <td>{{ tool.codeName }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="overflow-y:auto; height:600px;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>工具名</th>
+                <th>版本号</th>
+                <th>版本代号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-if="!$.isEmptyObject(tools)" v-for="tool in sortedTools">
+                <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
+                <td><a href="javascript:;" @click="showToolInfo(tool.toolId)">{{ tool.toolName }}</a></td>
+                <td>{{ tool.toolVersion }}</td>
+                <td>{{ tool.codeName }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div id="tool-info">
