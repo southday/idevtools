@@ -7,9 +7,7 @@ public class RecommendationsT {
 
     private Integer userId;
 
-    private String email;
-
-    private String resName;
+    private String toolName;
 
     private String website;
 
@@ -33,20 +31,12 @@ public class RecommendationsT {
         this.userId = userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getToolName() {
+        return toolName;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public String getResName() {
-        return resName;
-    }
-
-    public void setResName(String resName) {
-        this.resName = resName == null ? null : resName.trim();
+    public void setToolName(String toolName) {
+        this.toolName = toolName == null ? null : toolName.trim();
     }
 
     public String getWebsite() {

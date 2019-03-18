@@ -5,13 +5,13 @@
     <id column="rec_id" property="recId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="res_name" property="resName" jdbcType="VARCHAR" />
+    <result column="tool_name" property="toolName" jdbcType="VARCHAR" />
     <result column="website" property="website" jdbcType="VARCHAR" />
     <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="rec_time" property="recTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    rec_id, user_id, email, res_name, website, reason, rec_time
+    rec_id, user_id, email, tool_name, website, reason, rec_time
   </sql>
 </mapper>
