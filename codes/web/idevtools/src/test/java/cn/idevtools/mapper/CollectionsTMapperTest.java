@@ -21,7 +21,7 @@ public class CollectionsTMapperTest extends CommonTest {
         collectionsTMapper.deleteCollectionByCollectId(1);
 
         CollectionsT collectionsT=new CollectionsT();
-        collectionsT.setResId(1);
+        collectionsT.setToolId(1);
         collectionsT.setUserId(1);
         collectionsTMapper.insertCollection(collectionsT);
     }

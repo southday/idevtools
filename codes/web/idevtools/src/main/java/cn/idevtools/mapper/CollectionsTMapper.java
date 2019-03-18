@@ -21,9 +21,9 @@ public interface CollectionsTMapper {
 
     /**
      * 插入一条收藏记录，时间为now() 王沁宽 2019.03.03
-     * @param collections
+     * @param collection
      * @return
      */
-    int insertCollection(CollectionsT collections);
+    int insertCollection(CollectionsT collection);
 
 }

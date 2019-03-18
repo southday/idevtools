@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.idevtools.po.DownloadsT" >
     <id column="download_id" property="downloadId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="res_id" property="resId" jdbcType="INTEGER" />
+    <result column="tool_id" property="toolId" jdbcType="INTEGER" />
     <result column="download_time" property="downloadTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
@@ -13,7 +13,7 @@
     <!--下载记录-->
     <id column="download_id" property="download.downloadId" jdbcType="INTEGER" />
     <result column="user_id" property="download.userId" jdbcType="INTEGER" />
-    <result column="res_id" property="download.resId" jdbcType="INTEGER" />
+    <result column="tool_id" property="download.toolId" jdbcType="INTEGER" />
     <result column="download_time" property="download.downloadTime" jdbcType="TIMESTAMP" />
     <!--工具信息-->
     <result column="tool_id" property="tool.toolId" jdbcType="INTEGER" />
@@ -33,18 +33,19 @@
     <result column="version_number" property="tool.versionNumber" jdbcType="INTEGER" />
   </resultMap>
 
-  <sql id="Base_Column_List" >
-    download_id, user_id, res_id, download_time
+  <sql id="Base_Downloads_List" >
+    download_id, user_id, tool_id, download_time
   </sql>
 
   <!--附带工具信息的下载记录字段 王沁宽 2019.03.03-->
   <sql id="Download_Tool_List">
-    download_id,res_id,tool_name,tool_version,download_links,download_time
+    download_id,tool_id,tool_name,tool_version,download_links,download_time
   </sql>
-  <!--添加下载记录 王沁宽 2019.03.03-->
+
+  <!-- 添加下载记录 southday 2019.03.18 -->
   <insert id="insertDownload">
-    insert into downloads_t(user_id, res_id, download_time)
-    values(#{userId},#{resId},now())
+    INSERT INTO downloads_t(user_id, tool_id, download_time)
+    VALUES(#{userId}, #{toolId}, now())
   </insert>
 
   <!--查询某用户的下载记录,附带工具信息 王沁宽 2019.03.03-->
@@ -53,6 +54,6 @@
     <include refid="Download_Tool_List"/>
     from
     (select * from downloads_t where user_id=#{userId}) d
-    INNER JOIN tool_t on d.res_id=tool_t.tool_id
+    INNER JOIN tool_t on d.tool_id=tool_t.tool_id
   </select>
 </mapper>

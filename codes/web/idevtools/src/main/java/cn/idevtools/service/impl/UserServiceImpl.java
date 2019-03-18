@@ -3,8 +3,12 @@ package cn.idevtools.service.impl;
 
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
+import cn.idevtools.mapper.CollectionsTMapper;
+import cn.idevtools.mapper.DownloadsTMapper;
 import cn.idevtools.mapper.UserTMapper;
 import cn.idevtools.mapper.UserTagRelTMapper;
+import cn.idevtools.po.CollectionsT;
+import cn.idevtools.po.DownloadsT;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
@@ -146,6 +150,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean activeUser(Integer userId) {
         return userTMapper.updateActiveByUserId(userId) == 1;
+    }
+
+    @Autowired
+    private DownloadsTMapper downloadsTMapper;
+
+    @Override
+    public boolean downloadTool(DownloadsT download) {
+        return downloadsTMapper.insertDownload(download) == 1;
+    }
+
+    @Autowired
+    private CollectionsTMapper collectionsTMapper;
+
+    @Override
+    public boolean collectTool(CollectionsT collection) {
+        return collectionsTMapper.insertCollection(collection) == 1;
+    }
+
+    @Override
+    public boolean cancelCollection(Integer collectId) {
+        return collectionsTMapper.deleteCollectionByCollectId(collectId) == 1;
     }
 
     @Override

@@ -2,6 +2,8 @@ package cn.idevtools.service;
 
 
 import cn.idevtools.common.Message;
+import cn.idevtools.po.CollectionsT;
+import cn.idevtools.po.DownloadsT;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.impl.UserServiceImpl;
@@ -144,4 +146,25 @@ public interface UserService {
      * 王沁宽 2019.03.09
      */
     boolean activeUser(Integer userId);
+
+    /**
+     * 用户下载工具 southday 2019.03.18
+     * @param download
+     * @return
+     */
+    boolean downloadTool(DownloadsT download);
+
+    /**
+     * 用户收藏工具 southday 2019.03.18
+     * @param collection
+     * @return
+     */
+    boolean collectTool(CollectionsT collection);
+
+    /**
+     * 用户取消收藏 southday 2019.03.18
+     * @param collectId
+     * @return
+     */
+    boolean cancelCollection(Integer collectId);
 }
