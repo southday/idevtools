@@ -14,6 +14,7 @@ import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.JWTer;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -88,13 +89,21 @@ public class AdminController {
      */
     @ResponseJSONP
     @PostMapping("/users/page/{pageId}")
-    public Message<List<UserT>> getSearchedUserInfoByPage(UserT user,@PathVariable Integer pageId){
-        return new Message<>(
+    public Message getSearchedUserInfoByPage(UserT user, @PathVariable Integer pageId){
+        return new Message(
                 CodeMsgE.QUERY_SUCCESS,
                 userService.getUsersPage(user,pageId,pageSize).getList()
         );
     }
 
+    @ResponseJSONP
+    @GetMapping("/users/page/{pageId}")
+    public Message getAllUserInfoByPage(@PathVariable Integer pageId){
+        return new Message(
+                CodeMsgE.QUERY_SUCCESS,
+                userService.getAllUserPage(pageId,pageSize)
+        );
+    }
     /**
      * 根据用户id删除用户（不做真实删除，只标记valid为0）.
      * 王沁宽 2019.02.27
