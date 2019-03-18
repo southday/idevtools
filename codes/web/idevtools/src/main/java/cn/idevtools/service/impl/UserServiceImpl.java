@@ -12,6 +12,8 @@ import cn.idevtools.util.JWTer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -159,7 +161,6 @@ public class UserServiceImpl implements UserService {
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }
-
     @Override
     public UserT getUserByUserId(Integer userId) {
         return userTMapper.selectUserByUserId(userId);
