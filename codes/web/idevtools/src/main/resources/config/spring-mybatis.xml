@@ -42,6 +42,7 @@
 
     <!--扫描配置文件-->
     <context:component-scan base-package="cn.idevtools.mail"/>
+    <context:component-scan base-package="cn.idevtools.redis"/>
 
     <tx:annotation-driven />
 </beans>
