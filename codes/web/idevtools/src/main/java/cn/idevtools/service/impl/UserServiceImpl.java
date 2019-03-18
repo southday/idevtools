@@ -1,10 +1,15 @@
+
 package cn.idevtools.service.impl;
 
 
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.Message;
+import cn.idevtools.mapper.CollectionsTMapper;
+import cn.idevtools.mapper.DownloadsTMapper;
 import cn.idevtools.mapper.UserTMapper;
 import cn.idevtools.mapper.UserTagRelTMapper;
+import cn.idevtools.po.CollectionsT;
+import cn.idevtools.po.DownloadsT;
 import cn.idevtools.po.UserT;
 import cn.idevtools.po.UserTagVO;
 import cn.idevtools.service.UserService;
@@ -12,8 +17,6 @@ import cn.idevtools.util.JWTer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -150,6 +153,27 @@ public class UserServiceImpl implements UserService {
         return userTMapper.updateActiveByUserId(userId) == 1;
     }
 
+    @Autowired
+    private DownloadsTMapper downloadsTMapper;
+
+    @Override
+    public boolean downloadTool(DownloadsT download) {
+        return downloadsTMapper.insertDownload(download) == 1;
+    }
+
+    @Autowired
+    private CollectionsTMapper collectionsTMapper;
+
+    @Override
+    public boolean collectTool(CollectionsT collection) {
+        return collectionsTMapper.insertCollection(collection) == 1;
+    }
+
+    @Override
+    public boolean cancelCollection(Integer collectId) {
+        return collectionsTMapper.deleteCollectionByCollectId(collectId) == 1;
+    }
+
     @Override
     public boolean join(UserT argUser) {
         return userTMapper.insertUser(argUser) == 1;
@@ -161,8 +185,10 @@ public class UserServiceImpl implements UserService {
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }
+
     @Override
     public UserT getUserByUserId(Integer userId) {
         return userTMapper.selectUserByUserId(userId);
     }
 }
+

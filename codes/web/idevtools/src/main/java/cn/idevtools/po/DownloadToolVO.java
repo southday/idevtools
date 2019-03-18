@@ -7,7 +7,6 @@ package cn.idevtools.po;
  * @date 2019/3/3
  */
 public class DownloadToolVO {
-
     private DownloadsT download;
 
     private ToolT tool;

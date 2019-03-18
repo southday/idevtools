@@ -7,7 +7,7 @@ public class CollectionsT {
 
     private Integer userId;
 
-    private Integer resId;
+    private Integer toolId;
 
     private Date collectTime;
 
@@ -27,12 +27,12 @@ public class CollectionsT {
         this.userId = userId;
     }
 
-    public Integer getResId() {
-        return resId;
+    public Integer getToolId() {
+        return toolId;
     }
 
-    public void setResId(Integer resId) {
-        this.resId = resId;
+    public void setToolId(Integer toolId) {
+        this.toolId = toolId;
     }
 
     public Date getCollectTime() {
