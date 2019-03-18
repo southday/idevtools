@@ -7,7 +7,6 @@ package cn.idevtools.po;
  * @date 2019/3/3
  */
 public class CollectionToolVO {
-
     private CollectionsT collection;
 
     private ToolT tool;

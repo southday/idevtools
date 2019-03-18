@@ -5,6 +5,8 @@ import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
+import cn.idevtools.po.CollectionsT;
+import cn.idevtools.po.DownloadsT;
 import cn.idevtools.po.UserT;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
@@ -154,5 +156,59 @@ public class UserController {
         return userService.activeUser(userId) ?
                 new Message<>(StatusCode.SUCCESS,"激活成功") :
                 new Message<>(StatusCode.FAILURE,"激活失败");
+    }
+
+    /**
+     * 用户下载工具 southday 2019.03.18
+     * @param toolId
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/downloads/{toolId}")
+    public Message<?> downloadTool(@PathVariable Integer toolId) {
+        JWTer jwter = new JWTer(JWTer.getToken());
+        if (!jwter.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        DownloadsT download = new DownloadsT();
+        download.setUserId(jwter.getId());
+        download.setToolId(toolId);
+        boolean success = userService.downloadTool(download);
+        return success ?
+                new Message<>(CodeMsgE.INSERT_SUCCESS) :
+                new Message<>(CodeMsgE.INSERT_FAILURE);
+    }
+
+    /**
+     * 用户收藏工具 southday 2019.03.18
+     * @param toolId
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/collections/{toolId}")
+    public Message<?> collectTool(@PathVariable Integer toolId) {
+        JWTer jwTer = new JWTer(JWTer.getToken());
+        if (!jwTer.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        CollectionsT collection = new CollectionsT();
+        collection.setUserId(jwTer.getId());
+        collection.setToolId(toolId);
+        boolean success = userService.collectTool(collection);
+        return success ?
+                new Message<>(CodeMsgE.INSERT_SUCCESS) :
+                new Message<>(CodeMsgE.INSERT_FAILURE);
+    }
+
+    /**
+     * 用户取消收藏 southday 2019.03.18
+     * @param collectId
+     * @return
+     */
+    @ResponseJSONP
+    @DeleteMapping("/collections/{collectId}")
+    public Message<?> cancelCollection(@PathVariable Integer collectId) {
+        boolean success = userService.cancelCollection(collectId);
+        return success ?
+                new Message<>(CodeMsgE.DELETE_SUCCESS) :
+                new Message<>(CodeMsgE.DELETE_FAILURE);
     }
 }

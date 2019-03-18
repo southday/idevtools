@@ -21,7 +21,7 @@ public class DownloadsTmapperTest extends CommonTest {
         downloadsTMapper.selectDownloadToolByUserId(1);
 
         DownloadsT downloads=new DownloadsT();
-        downloads.setResId(1);
+        downloads.setToolId(1);
         downloads.setUserId(3);
         downloadsTMapper.insertDownload(downloads);
     }
