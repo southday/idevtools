@@ -43,3 +43,8 @@ body {
     transform: translateX(500px);
     opacity: 0;
 }
+
+/* iview.html 选中行后的字体颜色 southday 2019.05.15 */
+.active {
+    color: #0099CC;
+}
