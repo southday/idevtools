@@ -72,7 +72,8 @@
             <mvc:mapping path="/a/**"/>
             <mvc:exclude-mapping path="/a/login"/>
             <mvc:exclude-mapping path="/a/adminInfo"/>
-            <!--<mvc:exclude-mapping path="/a/users/page/{pageId}"/>-->
+            <!-- 2019.5.13 测试分页demo添加的 exclude-mapping -->
+            <mvc:exclude-mapping path="/a/users/pages/{pageId}"/>
             <bean class="cn.idevtools.interceptor.JWTAdminInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

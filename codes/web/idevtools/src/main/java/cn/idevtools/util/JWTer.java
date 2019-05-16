@@ -62,9 +62,9 @@ public class JWTer {
 
     /**
      * 创建登陆token southday 2019.03.01
-     * @param id
-     * @param userName
-     * @param userType
+     * @param id 用户或管理员ID
+     * @param userName 用户或管理员名称
+     * @param userType 用户/管理员
      * @return
      */
     public static String createLoginedToken(int id, String userName, String userType) {

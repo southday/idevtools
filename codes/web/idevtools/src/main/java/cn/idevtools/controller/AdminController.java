@@ -88,7 +88,7 @@ public class AdminController {
      * @param pageId 页号
      */
     @ResponseJSONP
-    @PostMapping("/users/page/{pageId}")
+    @PostMapping("/users/pages/{pageId}")
     public Message getSearchedUserInfoByPage(UserT user, @PathVariable Integer pageId){
         return new Message(
                 CodeMsgE.QUERY_SUCCESS,
@@ -97,7 +97,7 @@ public class AdminController {
     }
 
     @ResponseJSONP
-    @GetMapping("/users/page/{pageId}")
+    @GetMapping("/users/pages/{pageId}")
     public Message getAllUserInfoByPage(@PathVariable Integer pageId){
         return new Message(
                 CodeMsgE.QUERY_SUCCESS,

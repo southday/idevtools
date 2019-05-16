@@ -13,4 +13,12 @@ public interface ToolDirTMapper {
      * @return
      */
     List<ToolDirT> selectSubToolDirsByDirId(Integer dirId);
+
+    /**
+     * 根据dirName查询toolDir
+     * southday 2019.05.13
+     * @param dirName
+     * @return
+     */
+    List<ToolDirT> selectToolDirByDirName(String dirName);
 }

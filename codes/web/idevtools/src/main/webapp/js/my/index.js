@@ -20,20 +20,23 @@ $(function() {
         method: 'get',
         url: cookurl('/idevtools/u/userInfo'),
         headers: {'token': getToken()}
-    }).then(function (resp) {
+    }).then(function(resp) {
         let ret = resp.data
         if (ret.code == 'SUCCESS') {
             user = ret.data
             vmIndexNavbar.fillUser(user)
             saveUser(user)
         }
-    }).catch(function (error) {
+    }).catch(function(error) {
         vmIndexNavbar.logined = false
         console.log(error)
     })
 })
 
-// index-navbar
+/**
+ * index-navbar
+ * southday 2019.03.12
+ */
 let vmIndexNavbar = new Vue({
     el: "#index-navbar",
     data: {
@@ -79,7 +82,10 @@ function sortTools(tools) {
     })
 }
 
-// isearch.html 搜索模块
+/**
+ * isearch.html 搜索模块
+ * southday 2019.03.12
+ */
 let vmSearchModule = new Vue({
     el: '#search-module',
     data: {
@@ -131,7 +137,10 @@ let vmSearchModule = new Vue({
     }
 })
 
-// tool-info 右侧边栏
+/**
+ * tool-info 右侧边栏
+ * southday 2019.03.12
+ */
 let vmToolInfo = new Vue({
     el: "#tool-info",
     data: {

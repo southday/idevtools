@@ -56,7 +56,7 @@
             methods: {					
 				getData: function(pageId){
 					axios
-					  .get('http://localhost:8080/idevtools/a/users/page/'+pageId)
+					  .get('http://localhost:8080/idevtools/a/users/pages/'+pageId)
 					  .then(response => {
 						  //整体数据
 						  this.info = response;
