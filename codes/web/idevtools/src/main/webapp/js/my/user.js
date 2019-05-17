@@ -13,6 +13,14 @@ let vmUser = new Vue({
         email: '',
         password: '',
         password2: '',
+        suggestion: {
+            content: ''
+        },
+        recommendation: {
+            toolName: '',
+            website: '',
+            reason: ''
+        }
     },
     methods: {
         changeJCaptcha: function() {
@@ -132,6 +140,40 @@ let vmUser = new Vue({
             vmUser.password2 = ''
             vmUser.email = ''
             vmUser.jcaptcha = ''
+        },
+        suggest: function() {
+            axios({
+                method: 'post',
+                url: cookurl('/idevtools/u/suggestions'),
+                params: {
+                    content: vmUser.suggestion.content,
+                    jcaptcha: vmUser.jcaptcha
+                },
+                headers: {'token': getToken()}
+            }).then(function(resp) {
+                let ret = resp.data
+                console.log(ret)
+            }).catch(function(error) {
+                console.log(error)
+            })
+        },
+        recommendTool: function() {
+            axios({
+                method: 'post',
+                url: cookurl('/idevtools/u/recommendations'),
+                params: {
+                    toolName: vmUser.recommendation.toolName,
+                    website: vmUser.recommendation.website,
+                    reason: vmUser.recommendation.reason,
+                    jcaptcha: vmUser.jcaptcha
+                },
+                headers: {'token': getToken()}
+            }).then(function(resp) {
+                let ret = resp.data
+                console.log(ret)
+            }).catch(function(error) {
+                console.log(error)
+            })
         }
     }
 })

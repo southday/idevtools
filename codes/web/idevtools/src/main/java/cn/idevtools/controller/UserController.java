@@ -51,8 +51,6 @@ public class UserController {
     public Message<?> login(@Valid UserT argUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
-        if (!ValidUtil.isPassCaptcha())
-            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         argUser.setPassword(MD5Util.md5salt(argUser.getPassword()));
         UserT user = userService.login(argUser);
         Message<UserT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, user);
@@ -77,8 +75,6 @@ public class UserController {
     public Message<?> join(@Valid UserT argUser, BindingResult bindingResult, HttpServletRequest req) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
-        if (!ValidUtil.isPassCaptcha(req))
-            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         String password2 = req.getParameter("password2");
         if (!argUser.getPassword().equals(password2))
             return new Message<>(StatusCode.FAILURE, "注册失败，两次密码不一致");

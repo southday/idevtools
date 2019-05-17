@@ -47,8 +47,6 @@ public class AdminController {
     public Message<?> login(@Valid AdminT argAdmin, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
-        if (!ValidUtil.isPassCaptcha())
-            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         argAdmin.setPassword(MD5Util.md5salt(argAdmin.getPassword()));
         AdminT admin = adminService.login(argAdmin);
         Message<AdminT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, admin);
