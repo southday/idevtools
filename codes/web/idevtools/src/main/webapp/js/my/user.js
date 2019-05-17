@@ -152,9 +152,19 @@ let vmUser = new Vue({
                 headers: {'token': getToken()}
             }).then(function(resp) {
                 let ret = resp.data
-                console.log(ret)
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
+                    showValidMsgs(ret.data)
+                } else if (ret.code == "FAILURE") {
+                    toastr.error(ret.msg)
+                } else {
+                    toastr.success(ret.msg)
+                    $("#user-suggestion-modal").modal("hide")
+                    vmUser.clearParams()
+                }
+                vmUser.changeJCaptcha()
             }).catch(function(error) {
                 console.log(error)
+                vmUser.changeJCaptcha()
             })
         },
         recommendTool: function() {
@@ -170,9 +180,19 @@ let vmUser = new Vue({
                 headers: {'token': getToken()}
             }).then(function(resp) {
                 let ret = resp.data
-                console.log(ret)
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
+                    showValidMsgs(ret.data)
+                } else if (ret.code == "FAILURE") {
+                    toastr.error(ret.msg)
+                } else {
+                    toastr.success(ret.msg)
+                    $("#user-recommendation-modal").modal("hide")
+                    vmUser.clearParams()
+                }
+                vmUser.changeJCaptcha()
             }).catch(function(error) {
                 console.log(error)
+                vmUser.changeJCaptcha()
             })
         }
     }

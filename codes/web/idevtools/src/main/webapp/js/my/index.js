@@ -149,3 +149,18 @@ let vmToolInfo = new Vue({
         downloadLinks: {}
     }
 })
+
+/**
+ * 只有在用户登陆后才会显示目标模态框，否则提示用户登陆，并弹出登录框
+ * southday 2019.05.17
+ * @param modalId
+ */
+function showModalNeedLogined(modalId) {
+    // $(modalId).modal("show")
+    if (getUser() == null) {
+        toastr.info("请先登陆")
+        $("#user-login-modal").modal("show")
+    } else {
+        $(modalId).modal("show")
+    }
+}

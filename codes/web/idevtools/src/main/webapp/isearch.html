@@ -20,10 +20,10 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#">推荐工具</a>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-recommendation-modal')">推荐工具</a>
                 </li>
                 <li>
-                    <a href="#">意见反馈</a>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-suggestion-modal')">意见反馈</a>
                 </li>
                 <li v-if="logined" class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
@@ -198,7 +198,7 @@
                             <div class="col-sm-4">
                                <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
                             </div>
-                            <img id="jcaptcha" class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                            <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
                         </div>
                         <div class="form-group">
                             <div class="col-sm-6 col-sm-offset-3">
@@ -208,6 +208,83 @@
                     </div>
                 </div>
             </div><!-- form -->
+        </div>
+    </div>
+    <!-- 用户意见反馈模态框 southday 2019.05.17 -->
+    <div id="user-suggestion-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-suggestion-label" aria-hidden="true">
+        <div class="modal-dialog suggestion-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="user-suggestion-label">意见反馈</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <textarea v-model="suggestion.content" class="form-control" rows="5" placeholder="您的意见 / 建议"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" type="text" @keyup.enter="suggest" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="suggest">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 用户工具推荐模态框 southday 2019.05.17 -->
+    <div id="user-recommendation-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-recommendation-label" aria-hidden="true">
+        <div class="modal-dialog recommendation-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="user-recommendation-label">工具推荐</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工具名</label>
+                            <div class="col-sm-6">
+                                <input v-model="recommendation.toolName" type="text" class="form-control" placeholder="工具名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">官网</label>
+                            <div class="col-sm-6">
+                                <input v-model="recommendation.website" type="text" class="form-control" placeholder="官网">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推荐理由</label>
+                            <div class="col-sm-8">
+                                <textarea v-model="recommendation.reason" class="form-control" rows="3" placeholder="推荐理由"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" @keyup.enter="recommendTool" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="sol-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="recommendTool">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

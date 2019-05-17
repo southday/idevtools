@@ -1,5 +1,6 @@
 package cn.idevtools.po;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class SuggestionsT {
@@ -7,6 +8,7 @@ public class SuggestionsT {
 
     private Integer userId;
 
+    @NotEmpty(message = "意见内容不能为空")
     private String content;
 
     private Date sugTime;

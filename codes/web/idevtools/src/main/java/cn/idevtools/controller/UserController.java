@@ -213,7 +213,9 @@ public class UserController {
      */
     @ResponseJSONP
     @PostMapping("/suggestions")
-    public Message<?> submitSuggestion(SuggestionsT suggestion) {
+    public Message<?> submitSuggestion(@Valid SuggestionsT suggestion, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
         JWTer jwTer = new JWTer(JWTer.getToken());
         if (!jwTer.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
@@ -222,8 +224,8 @@ public class UserController {
         boolean success = userService.submitSuggestion(suggestion);
         // 2.发送邮件（待开发）
         return success ?
-                new Message<>(CodeMsgE.INSERT_SUCCESS) :
-                new Message<>(CodeMsgE.INSERT_FAILURE);
+                new Message<>(StatusCode.SUCCESS, "感谢您的反馈！") :
+                new Message<>(CodeMsgE.SUBMIT_FAILURE);
     }
 
     /**
@@ -233,7 +235,9 @@ public class UserController {
      */
     @ResponseJSONP
     @PostMapping("/recommendations")
-    public Message<?> recommendTool(RecommendationsT recommendation) {
+    public Message<?> recommendTool(@Valid RecommendationsT recommendation, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
         JWTer jwTer = new JWTer(JWTer.getToken());
         if (!jwTer.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
@@ -242,7 +246,7 @@ public class UserController {
         boolean success = userService.recommendTool(recommendation);
         // 2.发送邮件（待开发）
         return success ?
-                new Message<>(CodeMsgE.INSERT_SUCCESS) :
-                new Message<>(CodeMsgE.INSERT_FAILURE);
+                new Message<>(StatusCode.SUCCESS, "感谢您的推荐！") :
+                new Message<>(CodeMsgE.SUBMIT_FAILURE);
     }
 }

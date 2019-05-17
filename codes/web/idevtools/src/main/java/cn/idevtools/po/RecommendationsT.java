@@ -1,5 +1,6 @@
 package cn.idevtools.po;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class RecommendationsT {
@@ -7,10 +8,13 @@ public class RecommendationsT {
 
     private Integer userId;
 
+    @NotEmpty(message = "工具名称不能为空")
     private String toolName;
 
+    @NotEmpty(message = "官网地址不能为空")
     private String website;
 
+    @NotEmpty(message = "推荐理由不能为空")
     private String reason;
 
     private Date recTime;
