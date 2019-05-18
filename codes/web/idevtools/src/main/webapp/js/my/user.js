@@ -50,7 +50,7 @@ let vmUser = new Vue({
                     let vUser = ret.data
                     vmIndexNavbar.fillUser(vUser)
                     saveUser(vUser)
-                    saveToken(resp.headers.token)
+                    saveUserToken(resp.headers.token)
                     vmUser.clearParams()
                 }
                 vmUser.changeJCaptcha()
@@ -81,7 +81,7 @@ let vmUser = new Vue({
                     let vUser = ret.data
                     vmIndexNavbar.fillUser(vUser)
                     saveUser(vUser)
-                    saveToken(resp.headers.token)
+                    saveUserToken(resp.headers.token)
                     vmUser.clearParams()
                 }
                 vmUser.changeJCaptcha()
@@ -94,13 +94,13 @@ let vmUser = new Vue({
             axios({
                 method: 'post',
                 url: cookurl('/idevtools/u/logout'),
-                headers: {'token': getToken()}
+                headers: {'token': getUserToken()}
             }).then(function(resp) {
                 let ret = resp.data
                 if (ret.code == "SUCCESS") {
                     vmIndexNavbar.logined = false
                     saveUser(null)
-                    saveToken(resp.headers.token)
+                    saveUserToken(null)
                 } else {
                     toastr.error(ret.msg)
                 }
@@ -149,7 +149,7 @@ let vmUser = new Vue({
                     content: vmUser.suggestion.content,
                     jcaptcha: vmUser.jcaptcha
                 },
-                headers: {'token': getToken()}
+                headers: {'token': getUserToken()}
             }).then(function(resp) {
                 let ret = resp.data
                 if (ret.code == "VALID_ERROR") { // 后端表单验证失败
@@ -177,7 +177,7 @@ let vmUser = new Vue({
                     reason: vmUser.recommendation.reason,
                     jcaptcha: vmUser.jcaptcha
                 },
-                headers: {'token': getToken()}
+                headers: {'token': getUserToken()}
             }).then(function(resp) {
                 let ret = resp.data
                 if (ret.code == "VALID_ERROR") { // 后端表单验证失败

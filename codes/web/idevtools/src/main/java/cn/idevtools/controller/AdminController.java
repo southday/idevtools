@@ -3,6 +3,7 @@ package cn.idevtools.controller;
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
+import cn.idevtools.common.StatusCode;
 import cn.idevtools.common.annotation.AddManageHistory;
 import cn.idevtools.common.annotation.PrintExecTime;
 import cn.idevtools.po.AdminT;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -71,6 +74,23 @@ public class AdminController {
         return adminService.logout();
     }
 
+    /**
+     * 根据token获取管理员信息
+     * southday 2019.05.17
+     * @return
+     */
+    @ResponseJSONP
+    @GetMapping("/adminInfo")
+    public Message<?> getAdminInfo() {
+        JWTer jwter = new JWTer(JWTer.getToken());
+        if (!jwter.isUsable())
+            return new Message<>(StatusCode.FAILURE, "获取管理员信息失败");
+        AdminT admin = adminService.getAdminByAdminId(jwter.getId());
+        return admin != null ?
+                new Message<>(StatusCode.SUCCESS, "获取管理员信息成功") :
+                new Message<>(StatusCode.FAILURE, "获取管理员信息失败");
+    }
+
     @Autowired
     private UserService userService;
 
@@ -87,8 +107,8 @@ public class AdminController {
      */
     @ResponseJSONP
     @PostMapping("/users/pages/{pageId}")
-    public Message getSearchedUserInfoByPage(UserT user, @PathVariable Integer pageId){
-        return new Message(
+    public Message<?> getSearchedUserInfoByPage(UserT user, @PathVariable Integer pageId){
+        return new Message<>(
                 CodeMsgE.QUERY_SUCCESS,
                 userService.getUsersPage(user,pageId,pageSize).getList()
         );
@@ -96,8 +116,8 @@ public class AdminController {
 
     @ResponseJSONP
     @GetMapping("/users/pages/{pageId}")
-    public Message getAllUserInfoByPage(@PathVariable Integer pageId){
-        return new Message(
+    public Message<?> getAllUserInfoByPage(@PathVariable Integer pageId){
+        return new Message<>(
                 CodeMsgE.QUERY_SUCCESS,
                 userService.getAllUserPage(pageId,pageSize)
         );
@@ -110,8 +130,8 @@ public class AdminController {
      */
     @ResponseJSONP
     @DeleteMapping("/users/{userId}")
-    public Message deleteUserById(@PathVariable Integer userId){
-        return new Message(
+    public Message<?> deleteUserById(@PathVariable Integer userId){
+        return new Message<>(
                 userService.deleteUser(userId) == 0 ?
                         CodeMsgE.DELETE_FAILURE :
                         CodeMsgE.DELETE_SUCCESS
