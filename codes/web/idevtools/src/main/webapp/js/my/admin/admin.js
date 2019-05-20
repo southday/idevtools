@@ -1,9 +1,13 @@
 /** 管理员模块 js
  * @author southday
  * @date 2019.03.05
- * @version v0.1
+ * @version v0.2
  */
 
+/**
+ * 管理员登陆模态框 /pages/admin/login.html
+ * southday 2019.05.17
+ */
 let vmAdminLogin = new Vue({
     el: "#admin-login",
     data: {
@@ -23,10 +27,16 @@ let vmAdminLogin = new Vue({
                     jcaptcha: vmAdminLogin.jcaptcha
                 }
             }).then(function(resp) {
-                console.log(resp.data)
-                console.log(resp.data.data) // admin
-                console.log(resp.headers.token) // token
-                saveToken(resp.headers.token)
+                let ret = resp.data
+                if (ret.code == 'VALID_ERROR') {
+                    showValidMsgs(ret.data)
+                } else if (ret.code == 'FAILURE') {
+                    toastr.error(ret.msg)
+                } else {
+                    saveAdmin(ret.data)
+                    saveAdminToken(resp.headers.token)
+                    window.location.href = "/idevtools/pages/admin/index.html"
+                }
                 vmAdminLogin.changeJCaptcha()
             }).catch(function(error) {
                 console.log(error)
@@ -40,17 +50,18 @@ let vmAdminLogin = new Vue({
             axios({
                 method: 'post',
                 url: cookurl('/idevtools/a/logout'),
-                headers: {'token': getToken()}
+                headers: {'token': getAdminToken()}
             }).then(function(resp) {
-                console.log(resp.data)
-                saveUser(null)
-                saveToken(resp.headers.token)
+                let ret = resp.data
+                if (ret.code == "SUCCESS") {
+                    saveAdmin(null)
+                    saveAdminToken(null)
+                } else {
+                    toastr.error(ret.msg)
+                }
             }).catch(function(error) {
                 console.log(error)
             })
-        },
-        showToastr: function() {
-            toastr.warning('你有新消息了！');
         }
     }
 })

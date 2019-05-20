@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -71,5 +70,20 @@ public class CommonController {
         return tools == null || tools.size() == 0 ?
                 new Message<>(CodeMsgE.QUERY_FAILURE) :
                 new Message<>(CodeMsgE.QUERY_SUCCESS, tools);
+    }
+
+    /**
+     * 根据关键字wd来查询工具目录信息
+     * southday 2019.05.13
+     * @param wd
+     * @return
+     */
+    @ResponseJSONP
+    @GetMapping("/view/search")
+    public Message<?> searchToolDirs(@RequestParam("wd") String wd) {
+        List<ToolDirT> toolDirs = commonService.searchToolByDirName(wd);
+        return toolDirs == null || toolDirs.size() == 0 ?
+                new Message<>(CodeMsgE.QUERY_FAILURE) :
+                new Message<>(CodeMsgE.QUERY_SUCCESS, toolDirs);
     }
 }

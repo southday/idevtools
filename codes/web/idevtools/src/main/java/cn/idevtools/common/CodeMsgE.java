@@ -26,7 +26,9 @@ public enum CodeMsgE {
     DELETE_FAILURE(StatusCode.FAILURE, "删除失败"),
     UPDATE_FAILURE(StatusCode.FAILURE, "更新失败"),
     LOGOUT_SUCCESS(StatusCode.SUCCESS, "退出登录成功"),
-    LOGOUT_ERROR(StatusCode.FAILURE, "退出登录异常");
+    LOGOUT_ERROR(StatusCode.FAILURE, "退出登录异常"),
+    SUBMIT_SUCCESS(StatusCode.SUCCESS, "提交成功"),
+    SUBMIT_FAILURE(StatusCode.FAILURE, "提交失败");
 
     private final StatusCode code;
     private final String msg;

@@ -1,5 +1,6 @@
 package cn.idevtools.po;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class SuggestionsT {
@@ -7,8 +8,7 @@ public class SuggestionsT {
 
     private Integer userId;
 
-    private String email;
-
+    @NotEmpty(message = "意见内容不能为空")
     private String content;
 
     private Date sugTime;
@@ -27,14 +27,6 @@ public class SuggestionsT {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
     }
 
     public String getContent() {

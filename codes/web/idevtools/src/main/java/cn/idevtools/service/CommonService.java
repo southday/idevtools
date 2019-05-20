@@ -37,4 +37,12 @@ public interface CommonService {
      * @return
      */
     List<ToolT> searchToolsByToolName(String toolName);
+
+    /**
+     * 根据dirName查询工具目录信息
+     * southday 2019.05.13
+     * @param dirName
+     * @return
+     */
+    List<ToolDirT> searchToolByDirName(String dirName);
 }

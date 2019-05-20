@@ -30,4 +30,11 @@ public interface AdminService {
      * @return
      */
     Message<?> logout();
+
+    /**
+     * 根据AdminId来获取指定管理员 southday 2019.05.17
+     * @param adminId
+     * @return
+     */
+    AdminT getAdminByAdminId(Integer adminId);
 }

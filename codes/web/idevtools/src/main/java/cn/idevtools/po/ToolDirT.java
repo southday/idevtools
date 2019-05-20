@@ -15,6 +15,10 @@ public class ToolDirT {
 
     private String fileType;
 
+    private String website;
+
+    private String description;
+
     private String createdBy;
 
     private Date createTime;
@@ -71,6 +75,22 @@ public class ToolDirT {
 
     public void setFileType(String fileType) {
         this.fileType = fileType == null ? null : fileType.trim();
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website == null ? null : website.trim();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public String getCreatedBy() {

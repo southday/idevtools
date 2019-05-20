@@ -14,26 +14,27 @@
  *   可能造成标tab1中用户退出了，而tab2中用户还没退出，此时刷新tab2中的页面，也不会自动退出，并且此时用户进行其他操作token会验证失败；
  * 2.如果user保存在localStorage中，当服务器重启后，会从localStorage中拿到用户数据，显示已登录，其实token会验证失败，出现和<1>一样的情况；
  */
-let user = {}
 $(function() {
     axios({
         method: 'get',
         url: cookurl('/idevtools/u/userInfo'),
-        headers: {'token': getToken()}
-    }).then(function (resp) {
+        headers: {'token': getUserToken()}
+    }).then(function(resp) {
         let ret = resp.data
         if (ret.code == 'SUCCESS') {
-            user = ret.data
-            vmIndexNavbar.fillUser(user)
-            saveUser(user)
+            vmIndexNavbar.fillUser(ret.data)
+            saveUser(ret.data)
         }
-    }).catch(function (error) {
+    }).catch(function(error) {
         vmIndexNavbar.logined = false
         console.log(error)
     })
 })
 
-// index-navbar
+/**
+ * index-navbar
+ * southday 2019.03.12
+ */
 let vmIndexNavbar = new Vue({
     el: "#index-navbar",
     data: {
@@ -79,7 +80,10 @@ function sortTools(tools) {
     })
 }
 
-// isearch.html 搜索模块
+/**
+ * isearch.html 搜索模块
+ * southday 2019.03.12
+ */
 let vmSearchModule = new Vue({
     el: '#search-module',
     data: {
@@ -131,7 +135,10 @@ let vmSearchModule = new Vue({
     }
 })
 
-// tool-info 右侧边栏
+/**
+ * tool-info 右侧边栏
+ * southday 2019.03.12
+ */
 let vmToolInfo = new Vue({
     el: "#tool-info",
     data: {
@@ -140,3 +147,18 @@ let vmToolInfo = new Vue({
         downloadLinks: {}
     }
 })
+
+/**
+ * 只有在用户登陆后才会显示目标模态框，否则提示用户登陆，并弹出登录框
+ * southday 2019.05.17
+ * @param modalId
+ */
+function showModalNeedLogined(modalId) {
+    // $(modalId).modal("show")
+    if (getUser() == null) {
+        toastr.info("请先登录")
+        $("#user-login-modal").modal("show")
+    } else {
+        $(modalId).modal("show")
+    }
+}

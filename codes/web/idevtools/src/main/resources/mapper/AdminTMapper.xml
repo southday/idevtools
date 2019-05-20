@@ -24,6 +24,13 @@
       LIMIT 1
   </select>
 
+  <!-- 根据adminId查询指定管理员 southday 2019.05.17 -->
+  <select id="selectAdminByAdminId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Admin_List"/>
+      FROM admin_t
+     WHERE admin_id = #{adminId}
+  </select>
+
   <!-- 根据adminName查询指定管理的数目 southday 2019.03.01 -->
   <select id="selectAdminCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
     SELECT COUNT(1)

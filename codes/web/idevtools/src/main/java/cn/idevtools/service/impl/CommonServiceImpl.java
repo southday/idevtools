@@ -8,6 +8,7 @@ import cn.idevtools.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +26,13 @@ public class CommonServiceImpl implements CommonService {
         return toolDirTMapper.selectSubToolDirsByDirId(dirId);
     }
 
+    @Override
+    public List<ToolDirT> searchToolByDirName(String dirName) {
+        return (dirName == null || dirName.trim().length() == 0) ?
+                Collections.emptyList() :
+                toolDirTMapper.selectToolDirByDirName(dirName);
+    }
+
     @Autowired
     private ToolTMapper toolTMapper;
 
@@ -35,6 +43,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public List<ToolT> searchToolsByToolName(String toolName) {
-        return toolTMapper.selectToolsByToolName(toolName);
+        return (toolName == null || toolName.trim().length() == 0) ?
+                Collections.emptyList() :
+                toolTMapper.selectToolsByToolName(toolName);
     }
+
 }

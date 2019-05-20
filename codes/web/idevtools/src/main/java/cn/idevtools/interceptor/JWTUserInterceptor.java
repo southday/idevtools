@@ -34,8 +34,10 @@ public class JWTUserInterceptor extends HandlerInterceptorAdapter {
         } else {
             flag = userService.isUserExists(jwter.getUserName());
         }
-        if (!flag)
+        if (!flag) {
             resp.setStatus(401);
+            resp.sendRedirect("/idevtools/search");
+        }
         return flag;
     }
 }

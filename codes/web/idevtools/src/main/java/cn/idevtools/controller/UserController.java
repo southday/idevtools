@@ -1,19 +1,16 @@
 package cn.idevtools.controller;
 
-
 import cn.idevtools.common.CodeMsgE;
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
-import cn.idevtools.po.CollectionsT;
-import cn.idevtools.po.DownloadsT;
-import cn.idevtools.po.UserT;
+import cn.idevtools.po.*;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
 import cn.idevtools.util.DESCipher;
-import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.JWTer;
+import cn.idevtools.util.MD5Util;
 import cn.idevtools.util.ValidUtil;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +50,6 @@ public class UserController {
     public Message<?> login(@Valid UserT argUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
-        if (!ValidUtil.isPassCaptcha())
-            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         argUser.setPassword(MD5Util.md5salt(argUser.getPassword()));
         UserT user = userService.login(argUser);
         Message<UserT> ret = new Message<>(CodeMsgE.LOGIN_SUCCESS, user);
@@ -79,8 +74,6 @@ public class UserController {
     public Message<?> join(@Valid UserT argUser, BindingResult bindingResult, HttpServletRequest req) {
         if (bindingResult.hasErrors())
             return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
-        if (!ValidUtil.isPassCaptcha(req))
-            return new Message<>(CodeMsgE.CAPTCHA_ERROR);
         String password2 = req.getParameter("password2");
         if (!argUser.getPassword().equals(password2))
             return new Message<>(StatusCode.FAILURE, "注册失败，两次密码不一致");
@@ -210,5 +203,49 @@ public class UserController {
         return success ?
                 new Message<>(CodeMsgE.DELETE_SUCCESS) :
                 new Message<>(CodeMsgE.DELETE_FAILURE);
+    }
+
+    /**
+     * 用户意见反馈 southday 2019.03.18
+     * @param suggestion
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/suggestions")
+    public Message<?> submitSuggestion(@Valid SuggestionsT suggestion, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
+        JWTer jwTer = new JWTer(JWTer.getToken());
+        if (!jwTer.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        suggestion.setUserId(jwTer.getId());
+        // 1.意见反馈记录入库
+        boolean success = userService.submitSuggestion(suggestion);
+        // 2.发送邮件（待开发）
+        return success ?
+                new Message<>(StatusCode.SUCCESS, "感谢您的反馈！") :
+                new Message<>(CodeMsgE.SUBMIT_FAILURE);
+    }
+
+    /**
+     * 用户推荐工具 southday 2019.03.18
+     * @param recommendation
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/recommendations")
+    public Message<?> recommendTool(@Valid RecommendationsT recommendation, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new Message<>(CodeMsgE.VALID_ERROR, ValidUtil.toValidMsgs(bindingResult));
+        JWTer jwTer = new JWTer(JWTer.getToken());
+        if (!jwTer.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        recommendation.setUserId(jwTer.getId());
+        // 1.工具推荐记录入库
+        boolean success = userService.recommendTool(recommendation);
+        // 2.发送邮件（待开发）
+        return success ?
+                new Message<>(StatusCode.SUCCESS, "感谢您的推荐！") :
+                new Message<>(CodeMsgE.SUBMIT_FAILURE);
     }
 }

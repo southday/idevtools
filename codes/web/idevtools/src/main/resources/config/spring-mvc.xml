@@ -72,8 +72,20 @@
             <mvc:mapping path="/a/**"/>
             <mvc:exclude-mapping path="/a/login"/>
             <mvc:exclude-mapping path="/a/adminInfo"/>
-            <!--<mvc:exclude-mapping path="/a/users/page/{pageId}"/>-->
+            <!-- 2019.5.13 测试分页demo添加的 exclude-mapping -->
+            <mvc:exclude-mapping path="/a/users/pages/{pageId}"/>
             <bean class="cn.idevtools.interceptor.JWTAdminInterceptor"/>
+        </mvc:interceptor>
+        <!-- 验证码拦截器 southday 2019.05.17 -->
+        <mvc:interceptor>
+            <!-- user -->
+            <mvc:mapping path="/u/login"/>
+            <mvc:mapping path="/u/join"/>
+            <mvc:mapping path="/u/suggestions"/>
+            <mvc:mapping path="/u/recommendations"/>
+            <!-- admin -->
+            <mvc:mapping path="/a/login"/>
+            <bean class="cn.idevtools.interceptor.JCaptchaInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>

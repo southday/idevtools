@@ -1,5 +1,6 @@
 package cn.idevtools.po;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class RecommendationsT {
@@ -7,12 +8,13 @@ public class RecommendationsT {
 
     private Integer userId;
 
-    private String email;
+    @NotEmpty(message = "工具名称不能为空")
+    private String toolName;
 
-    private String resName;
-
+    @NotEmpty(message = "官网地址不能为空")
     private String website;
 
+    @NotEmpty(message = "推荐理由不能为空")
     private String reason;
 
     private Date recTime;
@@ -33,20 +35,12 @@ public class RecommendationsT {
         this.userId = userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getToolName() {
+        return toolName;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public String getResName() {
-        return resName;
-    }
-
-    public void setResName(String resName) {
-        this.resName = resName == null ? null : resName.trim();
+    public void setToolName(String toolName) {
+        this.toolName = toolName == null ? null : toolName.trim();
     }
 
     public String getWebsite() {

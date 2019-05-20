@@ -34,8 +34,10 @@ public class JWTAdminInterceptor extends HandlerInterceptorAdapter {
         } else {
             flag = adminService.isAdminExists(jwter.getUserName());
         }
-        if (!flag)
+        if (!flag) {
             resp.setStatus(401);
+            resp.sendRedirect("/idevtools/pages/admin/login.html");
+        }
         return flag;
     }
 }

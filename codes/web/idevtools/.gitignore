@@ -4,7 +4,6 @@
 
 # special files
 src/main/resources/config/generator-config.xml
-src/main/resources/config/jdbc-dev.properties
 
 # common
 *.class

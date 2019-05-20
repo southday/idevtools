@@ -35,4 +35,9 @@ public class AdminServiceImpl implements AdminService {
                 new Message<>(CodeMsgE.LOGOUT_SUCCESS) :
                 new Message<>(CodeMsgE.LOGOUT_ERROR);
     }
+
+    @Override
+    public AdminT getAdminByAdminId(Integer adminId) {
+        return adminTMapper.selectAdminByAdminId(adminId);
+    }
 }

@@ -13,6 +13,14 @@ let vmUser = new Vue({
         email: '',
         password: '',
         password2: '',
+        suggestion: {
+            content: ''
+        },
+        recommendation: {
+            toolName: '',
+            website: '',
+            reason: ''
+        }
     },
     methods: {
         changeJCaptcha: function() {
@@ -42,7 +50,7 @@ let vmUser = new Vue({
                     let vUser = ret.data
                     vmIndexNavbar.fillUser(vUser)
                     saveUser(vUser)
-                    saveToken(resp.headers.token)
+                    saveUserToken(resp.headers.token)
                     vmUser.clearParams()
                 }
                 vmUser.changeJCaptcha()
@@ -73,7 +81,7 @@ let vmUser = new Vue({
                     let vUser = ret.data
                     vmIndexNavbar.fillUser(vUser)
                     saveUser(vUser)
-                    saveToken(resp.headers.token)
+                    saveUserToken(resp.headers.token)
                     vmUser.clearParams()
                 }
                 vmUser.changeJCaptcha()
@@ -86,13 +94,13 @@ let vmUser = new Vue({
             axios({
                 method: 'post',
                 url: cookurl('/idevtools/u/logout'),
-                headers: {'token': getToken()}
+                headers: {'token': getUserToken()}
             }).then(function(resp) {
                 let ret = resp.data
                 if (ret.code == "SUCCESS") {
                     vmIndexNavbar.logined = false
                     saveUser(null)
-                    saveToken(resp.headers.token)
+                    saveUserToken(null)
                 } else {
                     toastr.error(ret.msg)
                 }
@@ -132,6 +140,60 @@ let vmUser = new Vue({
             vmUser.password2 = ''
             vmUser.email = ''
             vmUser.jcaptcha = ''
+        },
+        suggest: function() {
+            axios({
+                method: 'post',
+                url: cookurl('/idevtools/u/suggestions'),
+                params: {
+                    content: vmUser.suggestion.content,
+                    jcaptcha: vmUser.jcaptcha
+                },
+                headers: {'token': getUserToken()}
+            }).then(function(resp) {
+                let ret = resp.data
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
+                    showValidMsgs(ret.data)
+                } else if (ret.code == "FAILURE") {
+                    toastr.error(ret.msg)
+                } else {
+                    toastr.success(ret.msg)
+                    $("#user-suggestion-modal").modal("hide")
+                    vmUser.clearParams()
+                }
+                vmUser.changeJCaptcha()
+            }).catch(function(error) {
+                console.log(error)
+                vmUser.changeJCaptcha()
+            })
+        },
+        recommendTool: function() {
+            axios({
+                method: 'post',
+                url: cookurl('/idevtools/u/recommendations'),
+                params: {
+                    toolName: vmUser.recommendation.toolName,
+                    website: vmUser.recommendation.website,
+                    reason: vmUser.recommendation.reason,
+                    jcaptcha: vmUser.jcaptcha
+                },
+                headers: {'token': getUserToken()}
+            }).then(function(resp) {
+                let ret = resp.data
+                if (ret.code == "VALID_ERROR") { // 后端表单验证失败
+                    showValidMsgs(ret.data)
+                } else if (ret.code == "FAILURE") {
+                    toastr.error(ret.msg)
+                } else {
+                    toastr.success(ret.msg)
+                    $("#user-recommendation-modal").modal("hide")
+                    vmUser.clearParams()
+                }
+                vmUser.changeJCaptcha()
+            }).catch(function(error) {
+                console.log(error)
+                vmUser.changeJCaptcha()
+            })
         }
     }
 })

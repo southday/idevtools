@@ -33,6 +33,18 @@ body {
     width: 300px;
 }
 
+/* 意见反馈模态框 southday 2019.05.17 */
+.suggestion-frame {
+    padding-top: 90px;
+    width: 500px;
+}
+
+/* 工具推荐模态框 southday 2019.05.17 */
+.recommendation-frame {
+    padding-top: 90px;
+    width: 500px;
+}
+
 .slide-fade-enter-active {
     transition: all .5s ease;
 }
@@ -42,4 +54,9 @@ body {
 .slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(500px);
     opacity: 0;
+}
+
+/* iview.html 选中行后的字体颜色 southday 2019.05.15 */
+.active {
+    color: #0099CC;
 }

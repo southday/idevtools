@@ -8,6 +8,8 @@
     <result column="tool_id" property="toolId" jdbcType="INTEGER" />
     <result column="tool_name" property="toolName" jdbcType="VARCHAR" />
     <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="website" property="website" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="last_updated_by" property="lastUpdatedBy" jdbcType="VARCHAR" />
@@ -16,13 +18,21 @@
   </resultMap>
 
   <sql id="Base_ToolDir_List" >
-    dir_id, parent_dir_id, dir_name, tool_id, tool_name, file_type, last_update_time
+    dir_id, parent_dir_id, dir_name, tool_id, tool_name, file_type, website, description, last_update_time
    </sql>
 
-  <!-- 查询dirId目录对应的子文件(工具、目录) -->
+  <!-- 查询dirId目录对应的子文件(工具、目录) southday 2019.03.07 -->
   <select id="selectSubToolDirsByDirId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT <include refid="Base_ToolDir_List"/>
       FROM tool_dir_t
      WHERE parent_dir_id = #{dirId}
+  </select>
+
+  <!-- 根据dirName查询toolDir southday 2019.05.13 -->
+  <select id="selectToolDirByDirName" parameterType="java.lang.String" resultMap="BaseResultMap">
+      SELECT <include refid="Base_ToolDir_List"/>
+        FROM tool_dir_t
+       WHERE dir_name LIKE CONCAT('%', #{dirName}, '%')
+       LIMIT 200
   </select>
 </mapper>
