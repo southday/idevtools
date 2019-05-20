@@ -21,10 +21,18 @@ public class RedisTest extends CommonTest {
 
     @Test
     public void redisTemplateTest(){
-        userService.getUserByUserId(2);
-        System.out.println(redisTemplate.hasKey("user::2"));
-        UserT u = (UserT)redisTemplate.opsForValue().get("user::2");
-        System.out.println(u.getUserName());
+//        userService.getUserByUserId(2);
+//        System.out.println(redisTemplate.hasKey("user::2"));
+//        UserT u = (UserT)redisTemplate.opsForValue().get("user::2");
+//        System.out.println(u.getUserName());
+        String key = "123::123";
+        Integer num ;
+        if((num = (Integer)redisTemplate.opsForValue().get(key))!= null){
+            System.out.print(num);
+            redisTemplate.opsForValue().increment(key,100);
+        } else {
+            redisTemplate.opsForValue().set(key,1);
+        }
 
     }
 }
