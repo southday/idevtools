@@ -8,10 +8,7 @@ import cn.idevtools.po.*;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
-import cn.idevtools.util.DESCipher;
-import cn.idevtools.util.JWTer;
-import cn.idevtools.util.MD5Util;
-import cn.idevtools.util.ValidUtil;
+import cn.idevtools.util.*;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,6 +159,9 @@ public class UserController {
         JWTer jwter = new JWTer(JWTer.getToken());
         if (!jwter.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
+        //表示用户喜欢这个工具(统计后用于推荐)
+        RedisUtil.LikeTool(jwter.getId(),toolId);
+
         DownloadsT download = new DownloadsT();
         download.setUserId(jwter.getId());
         download.setToolId(toolId);
@@ -182,6 +182,10 @@ public class UserController {
         JWTer jwTer = new JWTer(JWTer.getToken());
         if (!jwTer.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
+
+        //表示用户喜欢这个工具(统计后用于推荐)
+        RedisUtil.LikeTool(jwTer.getId(),toolId);
+
         CollectionsT collection = new CollectionsT();
         collection.setUserId(jwTer.getId());
         collection.setToolId(toolId);
