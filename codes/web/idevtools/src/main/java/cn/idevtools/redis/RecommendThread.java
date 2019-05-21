@@ -4,7 +4,6 @@ import cn.idevtools.common.annotation.PrintExecTime;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
-import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.precompute.example.GroupLensDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,20 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 推荐算法线程(单独开线程完成计算、推荐)
+ * @author 王沁宽
+ * @date 2019/5/21
+ */
 @Component
 public class RecommendThread implements Runnable{
-    //public static final String dataPath = Recommend.class.getClassLoader().getResource("/data/ratings.dat").getPath();
-    public static final String dataPath = "E:\\ratings.dat";
+
+
     //进行推荐算法计算的时间间隔
     private static final long interval = 60*1000;
+    //用于分析的文件路径 如果涉及到mvc的测试，要把这句注释掉
+    public static final String dataPath = Recommend.class.getClassLoader().getResource("/data/ratings.dat").getPath();
+    //public static final String dataPath = "E:\\ratings.dat";
 
     @Autowired
     RedisUtil redisUtil;
@@ -53,6 +60,7 @@ public class RecommendThread implements Runnable{
         //构建推荐器，协同过滤推荐有两种，分别是基于用户的和基于物品的，这里使用基于物品的协同过滤推荐
         Recommend.recommender = new GenericItemBasedRecommender(dataModel, itemSimilarity);
     }
+
 
     @Override
     public void run() {

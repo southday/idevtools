@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 测试redis
@@ -43,6 +44,21 @@ public class RedisTest extends CommonTest {
 //        redisUtil.LikeTool(123,312);
 //        redisUtil.LikeTool(123,212,10);
         //System.out.println(redisTemplate.opsForValue().increment("222::212"));
-        r.run();
+       // r.run();
+        generateData();
+    }
+
+    /**
+     * 生成10万条测试数据
+     */
+    public void generateData(){
+        Random random = new Random();
+        int uid,toolid;
+        for(int i = 0;i < 100000;i++){
+            uid = random.nextInt(500) ;
+            toolid = random.nextInt(500);
+            redisUtil.LikeTool(uid,toolid);
+        }
+
     }
 }
