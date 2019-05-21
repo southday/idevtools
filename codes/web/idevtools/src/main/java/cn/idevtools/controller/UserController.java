@@ -5,11 +5,14 @@ import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
 import cn.idevtools.po.*;
+import cn.idevtools.redis.Recommend;
+import cn.idevtools.redis.RedisUtil;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
 import cn.idevtools.util.*;
 import com.alibaba.fastjson.support.spring.annotation.ResponseJSONP;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 该类用于实现管理员用户管理模块.
@@ -30,6 +34,9 @@ import java.util.Date;
 @Controller
 @RequestMapping("/u")
 public class UserController {
+    @Autowired
+    RedisUtil redisUtil;
+
     @Autowired
     private UserService userService;
 
@@ -160,7 +167,7 @@ public class UserController {
         if (!jwter.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
         //表示用户喜欢这个工具(统计后用于推荐)
-        RedisUtil.LikeTool(jwter.getId(),toolId);
+        redisUtil.LikeTool(jwter.getId(),toolId);
 
         DownloadsT download = new DownloadsT();
         download.setUserId(jwter.getId());
@@ -184,7 +191,7 @@ public class UserController {
             return new Message<>(CodeMsgE.INSERT_FAILURE);
 
         //表示用户喜欢这个工具(统计后用于推荐)
-        RedisUtil.LikeTool(jwTer.getId(),toolId);
+        redisUtil.LikeTool(jwTer.getId(),toolId);
 
         CollectionsT collection = new CollectionsT();
         collection.setUserId(jwTer.getId());
@@ -251,5 +258,26 @@ public class UserController {
         return success ?
                 new Message<>(StatusCode.SUCCESS, "感谢您的推荐！") :
                 new Message<>(CodeMsgE.SUBMIT_FAILURE);
+    }
+
+    /**
+     * 给用户推送n个与toolId类似的tool 王沁宽 2019.05.21
+     * @return
+     */
+    @ResponseJSONP
+    @PostMapping("/recommend/{toolId}")
+    public Message<?> recommendToUser(@PathVariable Integer toolId){
+        //要推送几个
+        int n = 5;
+        JWTer jwter = new JWTer(JWTer.getToken());
+        if (!jwter.isUsable())
+            return new Message<>(CodeMsgE.INSERT_FAILURE);
+        try {
+            List<RecommendedItem> recommendedItemList = Recommend.recommender.recommendedBecause(jwter.getId(),toolId,n);
+            return new Message<>(CodeMsgE.QUERY_SUCCESS,recommendedItemList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Message<>(CodeMsgE.QUERY_FAILURE);
     }
 }

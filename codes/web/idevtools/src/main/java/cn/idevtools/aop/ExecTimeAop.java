@@ -27,10 +27,10 @@ public class ExecTimeAop {
         try{
             String methodName=joinPoint.getSignature().getName();
             long startTime=System.currentTimeMillis();
-            System.out.println("方法: "+methodName+"---开始执行");
+            logger.info("方法: "+methodName+"---开始执行");
             result=joinPoint.proceed();
             long endTime=System.currentTimeMillis();
-            System.out.println("方法: "+methodName+"---执行完毕，耗时："+(endTime-startTime)+"ms");
+            logger.info("方法: "+methodName+"---执行完毕，耗时："+(endTime-startTime)+"ms");
         }catch (Throwable e){
             e.printStackTrace();
         }
