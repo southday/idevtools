@@ -5,6 +5,7 @@ import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.Message;
 import cn.idevtools.common.StatusCode;
 import cn.idevtools.po.*;
+import cn.idevtools.redis.RedisUtil;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
@@ -30,6 +31,9 @@ import java.util.Date;
 @Controller
 @RequestMapping("/u")
 public class UserController {
+    @Autowired
+    RedisUtil redisUtil;
+
     @Autowired
     private UserService userService;
 
@@ -160,7 +164,7 @@ public class UserController {
         if (!jwter.isUsable())
             return new Message<>(CodeMsgE.INSERT_FAILURE);
         //表示用户喜欢这个工具(统计后用于推荐)
-        RedisUtil.LikeTool(jwter.getId(),toolId);
+        redisUtil.LikeTool(jwter.getId(),toolId);
 
         DownloadsT download = new DownloadsT();
         download.setUserId(jwter.getId());
@@ -184,7 +188,7 @@ public class UserController {
             return new Message<>(CodeMsgE.INSERT_FAILURE);
 
         //表示用户喜欢这个工具(统计后用于推荐)
-        RedisUtil.LikeTool(jwTer.getId(),toolId);
+        redisUtil.LikeTool(jwTer.getId(),toolId);
 
         CollectionsT collection = new CollectionsT();
         collection.setUserId(jwTer.getId());
