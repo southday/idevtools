@@ -52,9 +52,9 @@
     <!-- 静态资源访问 -->
     <mvc:default-servlet-handler />
     <!-- cors跨域支持 开发页面时使用，开发完后除去该配置 -->
-    <mvc:cors>
-        <mvc:mapping path="/**" />
-    </mvc:cors>
+    <!--<mvc:cors>-->
+        <!--<mvc:mapping path="/**" />-->
+    <!--</mvc:cors>-->
     
     <!--&lt;!&ndash; 拦截器配置 southday 2019.02.26 &ndash;&gt;-->
     <mvc:interceptors>
@@ -73,7 +73,7 @@
             <mvc:exclude-mapping path="/a/login"/>
             <mvc:exclude-mapping path="/a/adminInfo"/>
             <!-- 2019.5.13 测试分页demo添加的 exclude-mapping -->
-            <mvc:exclude-mapping path="/a/users/pages/{pageId}"/>
+            <!--<mvc:exclude-mapping path="/a/users/pages/{pageId}"/>-->
             <bean class="cn.idevtools.interceptor.JWTAdminInterceptor"/>
         </mvc:interceptor>
         <!-- 验证码拦截器 southday 2019.05.17 -->

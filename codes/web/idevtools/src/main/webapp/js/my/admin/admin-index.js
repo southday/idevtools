@@ -4,7 +4,7 @@
 $(function() {
     axios({
         method: 'get',
-        url: cookurl('/idevtools/a/adminInfo'),
+        url: cookurl('/a/adminInfo'),
         headers: {'token': getAdminToken()}
     }).then(function(resp) {
         let ret = resp.data
@@ -12,7 +12,7 @@ $(function() {
             saveAdmin(ret.data)
         } else {
             console.log(ret)
-            window.location.href = "/idevtools/pages/admin/login.html"
+            window.location.href = "/pages/admin/login.html"
         }
     }).catch(function(error) {
         console.log(error)

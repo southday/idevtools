@@ -11,7 +11,7 @@
                            http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 加载配置文件 -->
-    <context:property-placeholder location="classpath:config/jdbc-dev.properties"/>
+    <context:property-placeholder location="classpath:config/jdbc-pe.properties"/>
     <!-- 配置数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="${jdbc.driver}"/>
