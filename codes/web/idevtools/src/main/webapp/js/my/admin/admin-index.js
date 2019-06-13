@@ -12,7 +12,7 @@ $(function() {
             saveAdmin(ret.data)
         } else {
             console.log(ret)
-            window.location.href = "/pages/admin/login.html"
+            window.location.href = cookurl("/pages/admin/login.html")
         }
     }).catch(function(error) {
         console.log(error)

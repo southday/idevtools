@@ -35,7 +35,7 @@ let vmAdminLogin = new Vue({
                 } else {
                     saveAdmin(ret.data)
                     saveAdminToken(resp.headers.token)
-                    window.location.href = "/pages/admin/index.html"
+                    window.location.href = cookurl("/pages/admin/index.html")
                 }
                 vmAdminLogin.changeJCaptcha()
             }).catch(function(error) {
