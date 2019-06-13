@@ -131,6 +131,9 @@ let vmSearchModule = new Vue({
             }).catch(function(error) {
                 console.log(error)
             })
+        },
+        jumpto: function(url) {
+            window.location.href = cookurl(url)
         }
     }
 })

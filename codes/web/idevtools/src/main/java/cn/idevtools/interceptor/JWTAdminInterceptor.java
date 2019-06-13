@@ -36,8 +36,8 @@ public class JWTAdminInterceptor extends HandlerInterceptorAdapter {
         }
         if (!flag) {
             resp.setStatus(401);
-//            resp.sendRedirect("/idevtools/pages/admin/login.html"); // 本地服务器
-            resp.sendRedirect("/pages/admin/login.html"); // 远程服务器
+            resp.sendRedirect("/idevtools/pages/admin/login.html"); // 本地服务器
+//            resp.sendRedirect("/pages/admin/login.html"); // 远程服务器
         }
         return flag;
     }

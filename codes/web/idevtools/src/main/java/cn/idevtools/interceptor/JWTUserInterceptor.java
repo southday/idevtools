@@ -36,8 +36,8 @@ public class JWTUserInterceptor extends HandlerInterceptorAdapter {
         }
         if (!flag) {
             resp.setStatus(401);
-//            resp.sendRedirect("/idevtools/search"); // 本地使用
-            resp.sendRedirect("/search"); // 远程使用
+            resp.sendRedirect("/idevtools/search"); // 本地使用
+//            resp.sendRedirect("/search"); // 远程使用
         }
         return flag;
     }

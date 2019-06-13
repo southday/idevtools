@@ -132,6 +132,9 @@ let vmViewModule = new Vue({
         },
         isShowSelected: function(dirId) {
             return vmViewModule.selectedDirId == dirId
+        },
+        jumpto: function(url) {
+            window.location.href = cookurl(url)
         }
     }
 })
