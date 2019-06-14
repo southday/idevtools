@@ -27,8 +27,7 @@ public class MySimpleImageCaptchaServlet extends HttpServlet implements Servlet 
     private static final Logger logger = LogManager.getLogger(MySimpleImageCaptchaServlet.class);
     public static ImageCaptchaService service = new DefaultManageableImageCaptchaService();
 
-    public MySimpleImageCaptchaServlet() {
-    }
+    public MySimpleImageCaptchaServlet() {}
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         httpServletResponse.setDateHeader("Expires", 0L);
@@ -49,16 +48,12 @@ public class MySimpleImageCaptchaServlet extends HttpServlet implements Servlet 
     }
 
     public static boolean validateResponse(HttpServletRequest request, String userCaptchaResponse) {
-        System.out.println("validateResponse(), request.class: " + request.getClass().getName());
         if (request.getSession(false) == null) {
             return false;
         } else {
             boolean validated = false;
-
             try {
-                logger.info("[before] validateResponse(), validated = " + validated);
                 validated = service.validateResponseForID(request.getSession().getId(), userCaptchaResponse);
-                logger.info("[after] validateResponse(), validated = " + validated);
             } catch (CaptchaServiceException var4) {
                 logger.warn("验证码验证异常：" + ExceptionUtils.getStackTrace(var4));
             }

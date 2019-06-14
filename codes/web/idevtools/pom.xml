@@ -328,6 +328,11 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>com.jfinal</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>2019.3</version>
+    </dependency>
   </dependencies>
 
   <build>

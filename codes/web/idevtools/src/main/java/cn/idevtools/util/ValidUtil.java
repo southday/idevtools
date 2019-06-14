@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * @date 2019/2/27
  */
 public class ValidUtil {
-    private static final Logger logger = LogManager.getLogger(ValidUtil.class);
     private static final Pattern emailPattern;
     static {
         String regx = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
@@ -72,10 +71,7 @@ public class ValidUtil {
      */
     public static boolean isPassCaptcha(HttpServletRequest req) {
         String captchaResp = req.getParameter(CommonConst.JCAPTCHA);
-        logger.info("isPassCaptcha(req), captchaResp = " + captchaResp);
-        boolean result = MySimpleImageCaptchaServlet.validateResponse(req, captchaResp);
-        logger.info("isPassCaptcha(req), return = " + result);
-        return result;
+        return MySimpleImageCaptchaServlet.validateResponse(req, captchaResp);
     }
 
     /**
