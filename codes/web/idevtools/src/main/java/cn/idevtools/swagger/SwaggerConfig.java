@@ -64,7 +64,6 @@ public class SwaggerConfig {
                 .pathProvider(new CustomPathProvider())
                 /* -------- 部署到服务器的配置 -------------- */
                 .apiInfo(apiInfo())
-                .pathMapping("/")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("cn.idevtools.controller"))
                 .paths(PathSelectors.any())

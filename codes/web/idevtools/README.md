@@ -38,14 +38,37 @@ public static String cookurl(String url) {
 }
 ```
 
-2./resources/config/spring-mybatis.xml
+2.cn.idevtools.swagger.SwaggerConfig.java，在用swagger-ui做测试时，测试远程服务器接口使用HTTPS协议，测试本地服务器接口使用HTTP协议。在本地开发测试时，可以把`“部署到服务器的配置”`那部分代码注释。
+```java
+@Bean
+public Docket createRestApi() {
+    ParameterBuilder tokenPar = new ParameterBuilder();
+    List<Parameter> pars = new ArrayList<>();
+    tokenPar.name("token").description("Token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    pars.add(tokenPar.build());
+    return new Docket(DocumentationType.SWAGGER_2)
+            /* -------- 部署到服务器的配置 -------------- */
+            .protocols(new HashSet<>(Arrays.asList("https", "http")))
+            .host("idevtools.cn")
+            .pathProvider(new CustomPathProvider())
+            /* -------- 部署到服务器的配置 -------------- */
+            .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("cn.idevtools.controller"))
+            .paths(PathSelectors.any())
+            .build()
+            .globalOperationParameters(pars);
+}
+```
+
+3./resources/config/spring-mybatis.xml
 ```xml
 <!-- 加载配置文件 -->
 <context:property-placeholder location="classpath:config/jdbc-pe.properties"/> <!-- 远程 -->
 <context:property-placeholder location="classpath:config/jdbc-dev.properties"/> <!-- 本地 -->
 ```
 
-3./webapp/js/my/common.js
+4./webapp/js/my/common.js
 ```js
 function cookurl(url) {
     return url; // 部署到远程服务器上时使用，因为远程服务器中配置了反向代理，可以将项目名idevtools去掉
