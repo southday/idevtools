@@ -16,8 +16,8 @@ public class CommonUtil {
      * @return
      */
     public static String cookurl(String url) {
-//        return url; // 部署到远程服务器上时使用，因为远程服务器中配置了反向代理，可以将项目名idevtools去掉
-        return "/idevtools" + url; // 部署到本地服务器时使用
+        return url; // 部署到远程服务器上时使用，因为远程服务器中配置了反向代理，可以将项目名idevtools去掉
+//        return "/idevtools" + url; // 部署到本地服务器时使用
 //        return 'http://localhost:8080' + url; // 前端单独开发，测试时使用
     }
 }
