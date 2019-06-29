@@ -61,14 +61,53 @@ public Docket createRestApi() {
 }
 ```
 
-3./resources/config/spring-mybatis.xml
+3.cn.idevtools.service.impl.EmailServiceImpl.java，修改激活地址`link`：
+```java
+@Override
+public void sendValidEmail(UserT user) {
+    //截止时间
+    Calendar now = Calendar.getInstance();
+    now.add(Calendar.MINUTE,ACTIVE_DURATION);
+    Date expireDate = now.getTime();
+    try {
+        String userId = String.valueOf(user.getUserId());
+        String expireDateString = MAIL_DATE_FORMAT.format(expireDate);
+        //拼接id与日期并加密 生成激活码
+        String activeCode = DESCipher.getInstance().encrypt(userId + expireDateString);
+        //标题
+        String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
+        // 验证链接，激活码可能会包含/ 因此不用路径获取值，部署到本地服务器上的激活链接
+//            String link = String.format("http://localhost:8080/idevtools/u/active?activeCode=%s",activeCode);
+        // 部署到服务器上的激活链接
+        String link = String.format("https://idevtools.cn/u/active?activeCode=%s",activeCode);
+        //内容
+        String text = "点击本条链接进行验证" + link;
+        //发邮件
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+        helper.setFrom(MAIL_HOST);
+        helper.setTo(user.getEmail());
+        helper.setSubject(subject);
+        helper.setText(text);
+        sendEmail(message);
+    }
+    catch (MessagingException e){
+        e.printStackTrace();
+    }
+    catch (Exception e){
+        e.printStackTrace();
+    }
+}
+```
+
+4./resources/config/spring-mybatis.xml
 ```xml
 <!-- 加载配置文件 -->
 <context:property-placeholder location="classpath:config/jdbc-pe.properties"/> <!-- 远程 -->
 <context:property-placeholder location="classpath:config/jdbc-dev.properties"/> <!-- 本地 -->
 ```
 
-4./webapp/js/my/common.js
+5./webapp/js/my/common.js
 ```js
 function cookurl(url) {
     return url; // 部署到远程服务器上时使用，因为远程服务器中配置了反向代理，可以将项目名idevtools去掉
