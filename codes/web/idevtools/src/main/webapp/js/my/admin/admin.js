@@ -14,13 +14,13 @@ let vmAdminLogin = new Vue({
         adminName: '',
         password: '',
         jcaptcha: '',
-        jcaptchaURL: cookurl('/idevtools/jcaptcha.jpg')
+        jcaptchaURL: cookurl('/jcaptcha.jpg')
     },
     methods: {
         login: function() {
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/a/login'),
+                url: cookurl('/a/login'),
                 params: {
                     adminName: vmAdminLogin.adminName,
                     password: vmAdminLogin.password,
@@ -35,7 +35,7 @@ let vmAdminLogin = new Vue({
                 } else {
                     saveAdmin(ret.data)
                     saveAdminToken(resp.headers.token)
-                    window.location.href = "/idevtools/pages/admin/index.html"
+                    window.location.href = cookurl("/pages/admin/index.html")
                 }
                 vmAdminLogin.changeJCaptcha()
             }).catch(function(error) {
@@ -49,7 +49,7 @@ let vmAdminLogin = new Vue({
         logout: function() {
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/a/logout'),
+                url: cookurl('/a/logout'),
                 headers: {'token': getAdminToken()}
             }).then(function(resp) {
                 let ret = resp.data

@@ -1,6 +1,9 @@
 package cn.idevtools.redis;
 
 import cn.idevtools.common.annotation.PrintExecTime;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
@@ -23,7 +26,7 @@ import java.util.Map;
  */
 @Component
 public class RecommendThread implements Runnable{
-
+    private static final Logger logger = LogManager.getLogger(RecommendThread.class);
 
     //进行推荐算法计算的时间间隔
     private static final long interval = 60*1000;
@@ -71,7 +74,8 @@ public class RecommendThread implements Runnable{
                 //执行推荐算法
                 recommend();
             }catch (Exception e){
-                e.printStackTrace();
+                if (!"dataFile is empty".equals(e.getMessage()))
+                    logger.warn(e);
             }
             try {
                 Thread.sleep(interval);

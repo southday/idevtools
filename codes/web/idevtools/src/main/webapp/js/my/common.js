@@ -7,16 +7,18 @@
 /** url更改器 southday 2019.03.01
  * 1) 前端单独开发，测试时，url前面需要加http://localhost:8080
  * 2) 集成到java web项目中时，url前面不用加http://localhost:8080
- * 该方法是为了方便以上两种情况的相互转换，真正部署时，要取消该方法的调用
+ * 3) 部署到远程服务器时，由于远程服务器中配置了反向代理，可以不写项目名，直接return url就可以
+ * 该方法是为了方便以上3种情况的相互转换
  */
 function cookurl(url) {
-    // return url;
-    return 'http://localhost:8080' + url;
+    return url; // 部署到远程服务器上时使用，因为远程服务器中配置了反向代理，可以将项目名idevtools去掉
+    // return '/idevtools' + url; // 部署到本地服务器时使用
+    // return 'http://localhost:8080' + url; // 前端单独开发，测试时使用
 }
 
 /** 更换验证码 */
 function changeVerifyCode() {
-    return cookurl('/idevtools/jcaptcha.jpg?r=' + (Math.random()))
+    return cookurl('/jcaptcha.jpg?r=' + (Math.random()))
 }
 
 /** code = VALID_ERROR，表单验证失败，提示消息
@@ -116,3 +118,22 @@ Vue.component('idevtools-footer', {
 })
 new Vue({ el: '#idevtools-footer' })
 
+/**
+ * Toastr 提示框配置
+ * southday 2019.06.13
+ */
+toastr.options = {
+    closeButton: false,                      // 是否显示关闭按钮，（提示框右上角关闭按钮）
+    debug: false,                            // 是否使用deBug模式
+    progressBar: true,                       // 是否显示进度条，（设置关闭的超时时间进度条）
+    positionClass: "toast-bottom-right",     // 设置提示款显示的位置
+    onclick: null,                           // 点击消息框自定义事件
+    showDuration: "300",                     // 显示动画的时间
+    hideDuration: "1000",                    // 消失的动画时间
+    timeOut: "2000",                         // 自动关闭超时时间
+    extendedTimeOut: "1000",                 // 加长展示时间
+    showEasing: "swing",                     // 显示时的动画缓冲方式
+    hideEasing: "linear",                    // 消失时的动画缓冲方式
+    showMethod: "fadeIn",                    // 显示时的动画方式
+    hideMethod: "fadeOut"                    // 消失时的动画方式
+}

@@ -7,7 +7,7 @@
 let vmUser = new Vue({
     el: "#user",
     data: {
-        jcaptchaURL: cookurl('/idevtools/jcaptcha.jpg'),
+        jcaptchaURL: cookurl('/jcaptcha.jpg'),
         jcaptcha: '',
         userName: '',
         email: '',
@@ -31,7 +31,7 @@ let vmUser = new Vue({
                 return
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/u/join'),
+                url: cookurl('/u/join'),
                 params: {
                     userName: vmUser.userName,
                     email: vmUser.email,
@@ -64,7 +64,7 @@ let vmUser = new Vue({
                 return
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/u/login'),
+                url: cookurl('/u/login'),
                 params: {
                     userName: vmUser.userName,
                     password: vmUser.password,
@@ -93,7 +93,7 @@ let vmUser = new Vue({
         logout: function() {
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/u/logout'),
+                url: cookurl('/u/logout'),
                 headers: {'token': getUserToken()}
             }).then(function(resp) {
                 let ret = resp.data
@@ -144,7 +144,7 @@ let vmUser = new Vue({
         suggest: function() {
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/u/suggestions'),
+                url: cookurl('/u/suggestions'),
                 params: {
                     content: vmUser.suggestion.content,
                     jcaptcha: vmUser.jcaptcha
@@ -170,7 +170,7 @@ let vmUser = new Vue({
         recommendTool: function() {
             axios({
                 method: 'post',
-                url: cookurl('/idevtools/u/recommendations'),
+                url: cookurl('/u/recommendations'),
                 params: {
                     toolName: vmUser.recommendation.toolName,
                     website: vmUser.recommendation.website,

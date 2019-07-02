@@ -2,7 +2,10 @@ package cn.idevtools.util;
 
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.common.ValidMsg;
+import cn.idevtools.controller.MySimpleImageCaptchaServlet;
 import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -68,7 +71,7 @@ public class ValidUtil {
      */
     public static boolean isPassCaptcha(HttpServletRequest req) {
         String captchaResp = req.getParameter(CommonConst.JCAPTCHA);
-        return SimpleImageCaptchaServlet.validateResponse(req, captchaResp);
+        return MySimpleImageCaptchaServlet.validateResponse(req, captchaResp);
     }
 
     /**

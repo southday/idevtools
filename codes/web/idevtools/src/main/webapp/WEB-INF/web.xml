@@ -69,7 +69,8 @@
   <!-- jcapthca 验证码支持 southday 2019.02.26 -->
   <servlet>
     <servlet-name>jcaptcha</servlet-name>
-    <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+    <!--<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>-->
+    <servlet-class>cn.idevtools.controller.MySimpleImageCaptchaServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>jcaptcha</servlet-name>

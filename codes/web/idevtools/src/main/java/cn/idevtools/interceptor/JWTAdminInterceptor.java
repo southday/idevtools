@@ -2,6 +2,7 @@ package cn.idevtools.interceptor;
 
 import cn.idevtools.common.CommonConst;
 import cn.idevtools.service.AdminService;
+import cn.idevtools.util.CommonUtil;
 import cn.idevtools.util.JWTer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +37,7 @@ public class JWTAdminInterceptor extends HandlerInterceptorAdapter {
         }
         if (!flag) {
             resp.setStatus(401);
-            resp.sendRedirect("/idevtools/pages/admin/login.html");
+            resp.sendRedirect(CommonUtil.cookurl("/pages/admin/login.html"));
         }
         return flag;
     }
