@@ -52,7 +52,24 @@ let vmIndexNavbar = new Vue({
                 vmIndexNavbar.userURL = cookurl('/idevtools/u/' + user.userName)
                 vmIndexNavbar.logined = true
             }
+        },
+        getReommend: function() {
+            axios({
+        method: 'get',
+        url: cookurl('/idevtools/u/recommend/2'),
+        headers: {'token': getUserToken()}
+         }).then(function(resp) {
+        let ret = resp.data
+        if (ret.code == 'FAILURE') {
+            toastr.info("未匹配到工具")
+            vmSearchModule.tools = []
+        } else {
+            vmSearchModule.tools = ret.data
         }
+    }).catch(function(error) {
+        console.log(error)
+    })
+}
     }
 })
 
@@ -132,6 +149,7 @@ let vmSearchModule = new Vue({
                 console.log(error)
             })
         }
+
     }
 })
 
