@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.ToolTagTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.ToolTagT" >
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="parent_tag_id" property="parentTagId" jdbcType="INTEGER" />
+    <result column="tag_code" property="tagCode" jdbcType="VARCHAR" />
+    <result column="tag_meaning" property="tagMeaning" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_ToolTag_List" >
+    tag_id, parent_tag_id, tag_code, tag_meaning, description
+  </sql>
+
+  <!--查询全部标签 王沁宽 2019.03.07-->
+  <select id="selectAllToolTag" resultMap="BaseResultMap">
+    select <include refid="Base_ToolTag_List" /> from tool_tag_t
+  </select>
+
+  <!--插入标签 王沁宽 2019.03.07-->
+  <insert id="insertToolTag">
+    insert into tool_tag_t( parent_tag_id, tag_code, tag_meaning, description )
+    values ( #{parentTagId},#{tagCode},#{tagMeaning},#{description} )
+  </insert>
+
+  <!--根据id删除标签 王沁宽 2019.03.07-->
+  <delete id="deleteToolTagById">
+    delete from tool_tag_t where tag_id = #{tagId}
+  </delete>
+
+  <!--查询标签 王沁宽 2019.03.07-->
+  <select id="selectToolTag" resultMap="BaseResultMap">
+    select <include refid="Base_ToolTag_List"/>
+    from tool_tag_t
+    <where>
+      1=1
+      <if test="tagId != null">
+        and tag_id = #{tagId}
+      </if>
+      <if test="parentTagId != null">
+        and parent_tag_id = #{parentTagId}
+      </if>
+      <if test="tagCode != null and tagCode != ''">
+        and tag_code like concat('%',#{tagCode},'%')
+      </if>
+      <if test="tagMeaning != null and tagMeaning != ''">
+        and tag_meaning like concat('%',#{tagMeaning},'%')
+      </if>
+      <if test="description != null and description != ''">
+        and description like concat('%',#{description},'%')
+      </if>
+    </where>
+  </select>
+
+  <!--更新标签 王沁宽 2019.03.07-->
+  <update id="updateToolTag">
+    update tool_tag_t
+    <set>
+      <if test="parentTagId != null">
+        parent_tag_id = #{parentTagId},
+      </if>
+      <if test="tagCode != null and tagCode != ''">
+        tag_code = #{tagCode},
+      </if>
+      <if test="description != null and description != ''">
+        description = #{description},
+      </if>
+      <if test="tagMeaning != null and tagMeaning != ''">
+        tag_meaning = #{tagMeaning},
+      </if>
+    </set>
+    where tag_id = #{tagId}
+  </update>
+
+  <!-- 根据toolId查询指定工具的标签信息 southday 2019.03.11 -->
+  <select id="selectToolTagsByToolId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_ToolTag_List"/>
+    FROM tool_tag_t u JOIN
+         (SELECT tag_id
+            FROM tool_tag_rel_t
+           WHERE tool_id = #{toolId}) m
+         USING (tag_id)
+  </select>
+</mapper>

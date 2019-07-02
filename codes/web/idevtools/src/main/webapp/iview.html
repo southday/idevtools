@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>IDevTools</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/toastr.min.css">
+    <link rel="stylesheet" href="./css/bootstrap-treeview.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="./css/my/index.css">
+    <link rel="Shortcut Icon" href="./images/idevtoolsico.ico" type="image/x-icon">
+</head>
+
+<body>
+<!-- navbar -->
+<nav id="index-navbar" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a style="font-weight:bold; color:white" class="navbar-brand" href="#">IDevTools</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-recommendation-modal')">推荐工具</a>
+                </li>
+                <li>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-suggestion-modal')">意见反馈</a>
+                </li>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ userName }}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a :href="userURL">个人中心</a></li>
+                        <li><a href="#tools">我的工具</a></li>
+                        <li><a href="#news">我的消息</a></li>
+                        <li><a href="javascript:;" @click="logout">退出</a></li>
+                    </ul>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-login-modal">登录</a>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-join-modal">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- main content -->
+<div id="view-module" class="container">
+    <!-- search & view tab -->
+    <ul class="nav nav-tabs">
+        <li ><a href="javascript:;" @click="jumpto('/search')">Search</a></li>
+        <li class="active">
+            <a href="#">View</a>
+        </li>
+    </ul>
+    <!-- search box -->
+    <div class="navbar-form navbar-middle text-center">
+        <input v-model="wd" class="form-control" type="text" @keyup.enter="search" placeholder="输入关键字">
+        <button class="btn btn-link" @click="search">
+            <i class="glyphicon glyphicon-search"></i>
+        </button>
+    </div>
+    <!-- show dirs info -->
+    <div class="row">
+        <div style="overflow-y:scroll; height:300px;">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>目录名</th>
+                    <th>官网</th>
+                    <th>简介</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="cursor:pointer"
+                    v-if="!$.isEmptyObject(toolDirs)"
+                    v-for="toolDir in toolDirs"
+                    @click="selectRow(toolDir)"
+                    :class="{active: isShowSelected(toolDir.dirId)}">
+                    <td>{{ toolDir.dirName }}</td>
+                    <td><a :href="toolDir.website" target="view_window">{{ toolDir.website }}</a></td>
+                    <td>{{ toolDir.description }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 panel panel-default" style="overflow-x:scroll; overflow-y:scroll; height:500px;">
+            <div id="tree"></div>
+        </div>
+        <div class="col-sm-8 panel panel-default" style="overflow-x:scroll; overflow-y:scroll; height:500px;">
+            <h4 style="text-align: center">基本信息</h4>
+            <div v-if="!$.isEmptyObject(curNode)">
+                <div v-if="curNode.fileType == 'DIR'">
+                    <p>目录名：{{ curNode.text }}</p>
+                    <p>官网：<a :href="curNode.website" target="view_window">{{ curNode.website }}</a></p>
+                    <p>最后更新时间：{{curNode.lastUpdateTime }}</p>
+                </div>
+                <div v-else>
+                    <p>工具名：{{ curNode.toolName }}</p>
+                    <p>版本号：{{ curNode.toolVersion }}</p>
+                    <p>版本代号：{{ curNode.codeName }}</p>
+                    <p>工具描述：{{ curNode.description }}</p>
+                    <p>官网：<a :href="curNode.website" target="view_window">{{ curNode.website }}</a></p>
+                    <p>下载次数：{{ curNode.downloadCount }}</p>
+                    <p>收藏次数：{{ curNode.collectCount }}</p>
+                    <p>下载链接：</p>
+                    <ul v-for="(value, key) in downloadLinks">
+                        <div v-if="!Array.isArray(value)">
+                            <li>{{ key }}：<a :href="value" target="view_window">{{ value }}</a></li>
+                        </div>
+                        <div v-else>
+                            <li>{{ key }}：</li>
+                            <ul v-for="item in value">
+                                <li><a :href="item" target="view_window">{{ item }}</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="user">
+    <!-- 用户登录模态框 -->
+    <div id="user-login-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-login-label" aria-hidden="true">
+        <div class="modal-dialog login-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="user-login-label">用户登录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-6">
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-6">
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-danger btn-block" @click="login">登录</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- form -->
+    </div>
+    <!-- 用户注册模态框 -->
+    <div id="user-join-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-join-label" aria-hidden="true">
+        <div class="modal-dialog join-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="user-join-label">用户注册</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-6">
+                                <input v-model="userName" type="text" class="form-control" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">邮箱</label>
+                            <div class="col-sm-6">
+                                <input v-model="email" type="email" class="form-control" placeholder="邮箱" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-6">
+                                <input v-model="password" type="password" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码确认</label>
+                            <div class="col-sm-6">
+                                <input v-model="password2" type="password" class="form-control" placeholder="密码确认">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img id="jcaptcha" class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="join">注册</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- form -->
+        </div>
+    </div>
+    <!-- 用户意见反馈模态框 southday 2019.05.17 -->
+    <div id="user-suggestion-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-suggestion-label" aria-hidden="true">
+        <div class="modal-dialog suggestion-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="user-suggestion-label">意见反馈</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <textarea v-model="suggestion.content" class="form-control" rows="5" placeholder="您的意见 / 建议"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" type="text" @keyup.enter="suggest" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="suggest">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 用户工具推荐模态框 southday 2019.05.17 -->
+    <div id="user-recommendation-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-recommendation-label" aria-hidden="true">
+        <div class="modal-dialog recommendation-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="user-recommendation-label">工具推荐</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工具名</label>
+                            <div class="col-sm-6">
+                                <input v-model="recommendation.toolName" type="text" class="form-control" placeholder="工具名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">官网</label>
+                            <div class="col-sm-6">
+                                <input v-model="recommendation.website" type="text" class="form-control" placeholder="官网">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推荐理由</label>
+                            <div class="col-sm-8">
+                                <textarea v-model="recommendation.reason" class="form-control" rows="3" placeholder="推荐理由"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">验证码</label>
+                            <div class="col-sm-4">
+                                <input v-model="jcaptcha" @keyup.enter="recommendTool" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                            <img class="sol-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="recommendTool">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<idevtools-footer id="idevtools-footer"></idevtools-footer>
+
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/bootstrap-treeview.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/vue.min.js"></script>
+<script src="./js/toastr.min.js"></script>
+<!-- my js -->
+<script src="./js/my/common.js"></script>
+<script src="./js/my/index.js"></script>
+<script src="./js/my/iview.js"></script>
+<script src="./js/my/user.js"></script>
+<script src="./js/my/date.js"></script>
+</body>
+</html>

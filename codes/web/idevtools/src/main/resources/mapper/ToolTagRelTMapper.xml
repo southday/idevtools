@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.ToolTagRelTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.ToolTagRelT" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="tool_id" property="toolId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, tag_id, tool_id
+  </sql>
+</mapper>

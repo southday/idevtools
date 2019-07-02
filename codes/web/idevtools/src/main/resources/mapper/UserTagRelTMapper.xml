@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.UserTagRelTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.UserTagRelT" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, tag_id, user_id
+  </sql>
+
+  <!--不重复地插入user_tag_rel_t 王沁宽 2019.02.27-->
+  <insert id="insertUserTagRel">
+    insert into user_tag_rel_t(tag_id,user_id)
+    select #{tagId},#{userId}
+    from DUAL
+    where not exists
+    (select * from user_tag_rel_t
+     where tag_id=#{tagId} and user_id=#{userId})
+  </insert>
+
+  <!--根据userId与tagId 为用户删除标签 王沁宽 2019.02.27-->
+  <delete id="deleteUserTagRelByTagIdAndUserId">
+    delete from user_tag_rel_t
+    where tag_id=#{tagId} and user_id=#{userId}
+  </delete>
+</mapper>

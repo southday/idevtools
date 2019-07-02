@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.MessageTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.MessageT" >
+    <id column="msg_id" property="msgId" jdbcType="INTEGER" />
+    <result column="reply_id" property="replyId" jdbcType="INTEGER" />
+    <result column="sender_id" property="senderId" jdbcType="INTEGER" />
+    <result column="receiver_id" property="receiverId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="read" property="read" jdbcType="TINYINT" />
+  </resultMap>
+
+  <sql id="Base_Message_List" >
+    msg_id, reply_id, sender_id, receiver_id, title, content, msg_type,
+    send_time, read
+  </sql>
+
+  <!-- 插入一条意见反馈记录到messge_t表中 southday 2019.03.18 -->
+  <select id="insertSuggestionMsg" parameterType="cn.idevtools.po.SuggestionsT" resultType="java.lang.Integer" statementType="CALLABLE">
+    CALL proc_submit_suggestion(#{userId}, #{content})
+  </select>
+
+  <!-- 插入一条工具推荐目录到message_t表中 southday 2019.03.18 -->
+  <select id="insertToolRecommendationMsg" parameterType="cn.idevtools.po.RecommendationsT" resultType="java.lang.Integer" statementType="CALLABLE">
+    CALL proc_recommend_tool(#{userId}, #{toolName}, #{website}, #{reason})
+  </select>
+</mapper>

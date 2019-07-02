@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.AdminTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.AdminT" >
+    <id column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="intro" property="intro" jdbcType="VARCHAR" />
+    <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Admin_List" >
+    admin_id, admin_name, email, intro, agent_id, agent_name
+  </sql>
+
+  <!-- 根据adminName查询指定管理员 southday 2019.02.26 -->
+  <select id="selectAdminByAdminName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Admin_List"/>
+      FROM admin_t
+     WHERE admin_name = #{adminName}
+      LIMIT 1
+  </select>
+
+  <!-- 根据adminId查询指定管理员 southday 2019.05.17 -->
+  <select id="selectAdminByAdminId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Admin_List"/>
+      FROM admin_t
+     WHERE admin_id = #{adminId}
+  </select>
+
+  <!-- 根据adminName查询指定管理的数目 southday 2019.03.01 -->
+  <select id="selectAdminCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM admin_t
+     WHERE admin_name = #{adminName}
+  </select>
+
+  <!-- 根据adminName和password查询指定管理员 southday 2019.02.26 -->
+  <select id="selectAdminByNamePassword" parameterType="cn.idevtools.po.AdminT" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Admin_List"/>
+      FROM admin_t
+     WHERE admin_name = #{adminName}
+       AND password = #{password}
+  </select>
+</mapper>

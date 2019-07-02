@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.idevtools.mapper.UserTMapper" >
+  <resultMap id="BaseResultMap" type="cn.idevtools.po.UserT" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="intro" property="intro" jdbcType="VARCHAR" />
+    <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
+    <result column="actived" property="actived" jdbcType="TINYINT" />
+    <result column="valid" property="valid" jdbcType="TINYINT" />
+  </resultMap>
+  <!-- 附带标签信息的用户结果集，对应UserTagVO类 southday 2019.03.11 -->
+  <resultMap id="UserTagVOResultMap" type="cn.idevtools.po.UserTagVO" >
+    <association property="user" resultMap="BaseResultMap" />
+    <collection property="userTags" column="user_id" ofType="cn.idevtools.po.UserTagT" select="cn.idevtools.mapper.UserTagTMapper.selectUserTagsByUserId" />
+  </resultMap>
+
+  <!--用户基本信息 王沁宽 2019.02.27-->
+  <sql id="Base_User_List" >
+    user_id, user_name, email, actived, valid
+  </sql>
+  <!--标签的基本属性 王沁宽 2019.02.27-->
+  <sql id="Tag_List" >
+    tag_id, parent_tag_id, tag_code, tag_meaning, description
+  </sql>
+
+  <!--查询用户基本信息 王沁宽 2019.02.27-->
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_User_List"/>
+    from user_t
+  </select>
+
+  <!--调用存储过程，根据页面号与每页显示的数量查询user信息 王沁宽 2019.02.27-->
+  <select id="selectUserPage" resultMap="BaseResultMap" statementType="CALLABLE">
+    {
+      call proc_select_user_page(
+        #{pageNum,mode=IN},
+        #{pageSize,mode=IN},
+        #{total,mode=OUT,jdbcType=BIGINT}
+      )
+    }
+  </select>
+  
+  <!--根据用户id，将用户的valid字段设置为0，表示该用户已经被删除 王沁宽 2019.02.27-->
+  <update id="updateUserValidById">
+    update user_t
+    set valid=0
+    where user_id=#{userId}
+  </update>
+  
+  <!--查询符合条件的用户的基本信息 王沁宽 2019.02.27-->
+  <select id="selectUsers" resultMap="BaseResultMap">
+    select
+    <include refid="Base_User_List"/>
+    from user_t
+    <where>
+        1=1
+      <if test="userId != null">
+        and user_id=#{userId}
+      </if>
+      <if test="userName != null and userName != ''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="email != null and email != ''">
+        and email like concat('%',#{email},'%')
+      </if>
+      <if test="password != null and password != ''">
+        and password like concat('%',#{password},'%')
+      </if>
+      <if test="actived != null">
+        and actived=#{actived}
+      </if>
+      <if test="valid != null">
+        and valid=#{valid}
+      </if>
+    </where>
+  </select>
+
+  <!--根据userId更新用户基本信息,userId与userName不能更新 王沁宽 2019.02.27-->
+  <update id="updateUser">
+    update user_t
+    <set>
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="actived != null" >
+        actived = #{actived},
+      </if>
+      <if test="valid != null" >
+        valid = #{valid},
+      </if>
+    </set>
+    where user_id = #{userId}
+  </update>
+
+  <!-- 查询某用户详细信息(附带标签信息) southday 2019.03.11 -->
+  <select id="selectUserDetailWithTagById" parameterType="java.lang.Integer" resultMap="UserTagVOResultMap">
+    SELECT <include refid="Base_User_List" />
+      FROM user_t
+     WHERE user_id = #{userId}
+  </select>
+
+  <!-- 根据userName查询指定用户的数目 southday 2019.03.01 -->
+  <select id="selectUserCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM user_t
+     WHERE user_name = #{uesrName}
+  </select>
+
+  <!-- 根据email查询指定用户的数目 southday 2019.03.01 -->
+  <select id="selectUserCountByEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1)
+      FROM user_t
+     WHERE email = #{email}
+  </select>
+
+  <!-- 根据userName和password查询指定用户(valid=1) southday 2019.02.28 -->
+  <select id="selectUserByNamePassword" parameterType="cn.idevtools.po.UserT" resultMap="BaseResultMap">
+    SELECT <include refid="Base_User_List"/>
+      FROM user_t
+     WHERE user_name = #{userName}
+       AND password = #{password}
+       AND valid = 1
+  </select>
+
+  <!-- 插入一条用户记录，并且插入后获取自增主键 southday 2019.02.28 -->
+  <insert id="insertUser" parameterType="cn.idevtools.po.UserT">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO user_t(user_name, email, password)
+    VALUES(#{userName}, #{email}, #{password})
+  </insert>
+
+  <!-- 根据userId查询指定用户 southday 2019.03.04 -->
+  <select id="selectUserByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT <include refid="Base_User_List"/>
+    FROM user_t
+    WHERE user_id = #{userId}
+  </select>
+
+  <!--根据userId激活用户 王沁宽 2019.03.09 -->
+  <update id="updateActiveByUserId" parameterType="java.lang.Integer">
+    update user_t
+    set actived = 1
+    where user_id = #{userId}
+  </update>
+</mapper>

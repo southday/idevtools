@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>IDevTools 管理员登录</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.min.css">
+    <link rel="Shortcut Icon" href="../../images/idevtoolsico.ico" type="image/x-icon">
+</head>
+<body style="background-color: #f5f5f5;">
+<div class="container" style="padding-top: 100px;">
+    <div class="col-sm-4 col-sm-offset-4">
+        <h4 class="text-center" style="padding-bottom: 10px;">管理员登录</h4>
+        <div id="admin-login" class="form-horizontal thumbnail" style="background-color: #ffffff; box-shadow:0 0 1px 1px #dddddd;">
+            <div class="form-group" style="padding-top: 20px">
+                <label class="col-sm-3 control-label">用户名</label>
+                <div class="col-sm-7">
+                    <input v-model="adminName" type="text" class="form-control" placeholder="用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">密码</label>
+                <div class="col-sm-7">
+                    <input v-model="password" type="password" class="form-control" placeholder="密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">验证码</label>
+                <div class="col-sm-4">
+                    <input v-model="jcaptcha" @keyup.enter="login" type="text" class="form-control" placeholder="验证码">
+                </div>
+                <img class="col-sm-5" data-content="点击更换验证码" @click="changeJCaptcha" :src="jcaptchaURL">
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <button class="btn btn-success btn-block" @click="login">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../js/jquery-3.3.1.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/axios.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/toastr.min.js"></script>
+<!-- my js -->
+<script src="../../js/my/common.js"></script>
+<script src="../../js/my/admin/admin.js"></script>
+</body>
+</html>

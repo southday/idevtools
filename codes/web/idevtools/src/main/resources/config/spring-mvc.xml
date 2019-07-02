@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!-- 启用spring的一些annotation -->
+    <context:annotation-config/>
+    <!-- 注册驱动 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!-- 配置Fastjson支持 -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list><value>text/html;charset=UTF-8</value></list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--  自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器  -->
+    <context:component-scan base-package="cn.idevtools.controller, cn.idevtools.swagger">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
+    <!--aop配置与扫描-->
+    <context:component-scan base-package="cn.idevtools.aop" />
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 配置视图解析器 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+    </bean>
+    <!-- 静态资源访问 -->
+    <mvc:default-servlet-handler />
+    <!-- cors跨域支持 开发页面时使用，开发完后除去该配置 -->
+    <!--<mvc:cors>-->
+        <!--<mvc:mapping path="/**" />-->
+    <!--</mvc:cors>-->
+    
+    <!--&lt;!&ndash; 拦截器配置 southday 2019.02.26 &ndash;&gt;-->
+    <mvc:interceptors>
+        <!-- JWT 身份验证拦截器，针对用户需要先进行登陆后才能操作的请求进行拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/u/**"/>
+            <mvc:exclude-mapping path="/u/login"/>
+            <mvc:exclude-mapping path="/u/join"/>
+            <mvc:exclude-mapping path="/u/userInfo"/>
+            <mvc:exclude-mapping path="/u/active"/>
+            <bean class="cn.idevtools.interceptor.JWTUserInterceptor"/>
+        </mvc:interceptor>
+        <!-- JWT 身份验证拦截器，针对管理员需要先进行登陆后才能操作的请求进行拦截 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/a/**"/>
+            <mvc:exclude-mapping path="/a/login"/>
+            <mvc:exclude-mapping path="/a/adminInfo"/>
+            <!-- 2019.5.13 测试分页demo添加的 exclude-mapping -->
+            <!--<mvc:exclude-mapping path="/a/users/pages/{pageId}"/>-->
+            <bean class="cn.idevtools.interceptor.JWTAdminInterceptor"/>
+        </mvc:interceptor>
+        <!-- 验证码拦截器 southday 2019.05.17 -->
+        <mvc:interceptor>
+            <!-- user -->
+            <mvc:mapping path="/u/login"/>
+            <mvc:mapping path="/u/join"/>
+            <mvc:mapping path="/u/suggestions"/>
+            <mvc:mapping path="/u/recommendations"/>
+            <!-- admin -->
+            <mvc:mapping path="/a/login"/>
+            <bean class="cn.idevtools.interceptor.JCaptchaInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>
