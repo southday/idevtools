@@ -1,8 +1,8 @@
 package cn.idevtools.interceptor;
 
 import cn.idevtools.common.CommonConst;
-import cn.idevtools.service.AdminService;
 import cn.idevtools.service.UserService;
+import cn.idevtools.util.CommonUtil;
 import cn.idevtools.util.JWTer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +36,7 @@ public class JWTUserInterceptor extends HandlerInterceptorAdapter {
         }
         if (!flag) {
             resp.setStatus(401);
-            resp.sendRedirect("/idevtools/search");
+            resp.sendRedirect(CommonUtil.cookurl("/search"));
         }
         return flag;
     }

@@ -71,8 +71,10 @@ public class EmailServiceImpl implements EmailService {
             String activeCode = DESCipher.getInstance().encrypt(userId + expireDateString);
             //标题
             String subject = "用户" + user.getUserName() + "注册idevtools的验证邮件";
-            //验证链接，激活码可能会包含/ 因此不用路径获取值
-            String link = String.format("http://localhost:8080/idevtools/u/active?activeCode=%s",activeCode);
+            // 验证链接，激活码可能会包含/ 因此不用路径获取值，部署到本地服务器上的激活链接
+//            String link = String.format("http://localhost:8080/idevtools/u/active?activeCode=%s",activeCode);
+            // 部署到服务器上的激活链接
+            String link = String.format("https://idevtools.cn/u/active?activeCode=%s",activeCode);
             //内容
             String text = "点击本条链接进行验证" + link;
             //发邮件

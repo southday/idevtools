@@ -11,7 +11,7 @@ public class JWTerTest {
 
     @Test
     public void createTokenTest() {
-//        String jws = JWTer.createLoginedToken(1, "test", CommonConst.USER_TYPE_USER);
+//        String jws = JWTer.createLoginedToken(75, "uuu", CommonConst.USER_TYPE_USER);
         String jws = JWTer.createLoginedToken(1, "southday", CommonConst.USER_TYPE_ADMIN);
         System.out.println(jws);
     }

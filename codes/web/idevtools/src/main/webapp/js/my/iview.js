@@ -54,7 +54,7 @@ function showSelectNode(event, node) {
     // 如果fileType是TOOL的话，从后端获取数据
     axios({
         method: 'get',
-        url: cookurl('/idevtools/c/tools/' + node.toolId)
+        url: cookurl('/c/tools/' + node.toolId)
     }).then(function(resp) {
         let ret = resp.data
         if (ret == 'FAILURE')
@@ -75,7 +75,7 @@ function showSelectNode(event, node) {
 function loaddata(node, func) {
     axios({
         method: 'get',
-        url: cookurl('/idevtools/c/view/toolDirs/sub/' + node.dirId)
+        url: cookurl('/c/view/toolDirs/sub/' + node.dirId)
     }).then(function(resp) {
         if (resp.data.code == 'FAILURE')
             return;
@@ -109,7 +109,7 @@ let vmViewModule = new Vue({
         search: function() {
             axios({
                 method: 'get',
-                url: cookurl('/idevtools/c/view/search'),
+                url: cookurl('/c/view/search'),
                 params: {
                     wd: vmViewModule.wd
                 }
@@ -132,6 +132,9 @@ let vmViewModule = new Vue({
         },
         isShowSelected: function(dirId) {
             return vmViewModule.selectedDirId == dirId
+        },
+        jumpto: function(url) {
+            window.location.href = cookurl(url)
         }
     }
 })

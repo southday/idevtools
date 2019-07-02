@@ -17,7 +17,7 @@
 $(function() {
     axios({
         method: 'get',
-        url: cookurl('/idevtools/u/userInfo'),
+        url: cookurl('/u/userInfo'),
         headers: {'token': getUserToken()}
     }).then(function(resp) {
         let ret = resp.data
@@ -49,7 +49,7 @@ let vmIndexNavbar = new Vue({
         fillUser: function(user) {
             if (!$.isEmptyObject(user)) {
                 vmIndexNavbar.userName = user.userName
-                vmIndexNavbar.userURL = cookurl('/idevtools/u/' + user.userName)
+                vmIndexNavbar.userURL = cookurl('/u/' + user.userName)
                 vmIndexNavbar.logined = true
             }
         }
@@ -99,7 +99,7 @@ let vmSearchModule = new Vue({
         showToolInfo: function(toolId) {
             axios({
                 method: 'get',
-                url: cookurl('/idevtools/c/tools/' + toolId)
+                url: cookurl('/c/tools/' + toolId)
             }).then(function(resp) {
                 let ret = resp.data
                 if (ret == 'FAILURE')
@@ -116,7 +116,7 @@ let vmSearchModule = new Vue({
         search: function() {
             axios({
                 method: 'get',
-                url: cookurl('/idevtools/c/search/search'),
+                url: cookurl('/c/search/search'),
                 params: {
                     wd: vmSearchModule.wd
                 }
@@ -131,6 +131,9 @@ let vmSearchModule = new Vue({
             }).catch(function(error) {
                 console.log(error)
             })
+        },
+        jumpto: function(url) {
+            window.location.href = cookurl(url)
         }
     }
 })
