@@ -52,9 +52,9 @@
     <!-- 静态资源访问 -->
     <mvc:default-servlet-handler />
     <!-- cors跨域支持 开发页面时使用，开发完后除去该配置 -->
-    <!--<mvc:cors>-->
-        <!--<mvc:mapping path="/**" />-->
-    <!--</mvc:cors>-->
+    <mvc:cors>
+        <mvc:mapping path="/**" />
+    </mvc:cors>
     
     <!--&lt;!&ndash; 拦截器配置 southday 2019.02.26 &ndash;&gt;-->
     <mvc:interceptors>

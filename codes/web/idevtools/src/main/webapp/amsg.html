@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>IDevTools</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/toastr.min.css">
+    <!-- my css -->
+    <link rel="stylesheet" href="./css/my/index.css">
+</head>
+
+<body>
+<!-- navbar -->
+<nav id="index-navbar" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a style="font-weight:bold; color:white" class="navbar-brand" href="#">IDevTools</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-recommendation-modal')">推荐工具</a>
+                </li>
+                <li>
+                    <a href="javascript:;" @click="showModalNeedLogined('#user-suggestion-modal')">意见反馈</a>
+                </li>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        系统管理<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a aref="./itool.htmlL">工具管理</a></li>
+                        <li><a href="./amsg.html">消息管理</a></li>
+                        <li><a href="./log.html">日志管理</a></li>
+
+                    </ul>
+                </li>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ userName }}<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a :href="userURL">个人中心</a></li>
+                        <li><a href="#tools">我的工具</a></li>
+                        <li><a href="./umsg.html">我的消息</a></li>
+                        <li><a href="javascript:;" @click="logout">退出</a></li>
+                    </ul>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-login-modal">登录</a>
+                </li>
+                <li v-if="!logined">
+                    <a href="javascript:;" data-toggle="modal" data-target="#user-join-modal">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- main content -->
+<div id="amsg-module" class="container">
+    <!-- search box -->
+    <div class="navbar-form navbar-middle text-center">
+        <!--input v-model="name" class="form-control" type="text" @keyup.enter="searchlog" placeholder="输入关键字"-->
+        <button class="btn btn-link" @click="getRe">
+            查看推荐
+            <!--i class="glyphicon glyphicon-search"></i-->
+        </button>
+        <button class="btn btn-link" @click="getSug">
+            查看意见
+            <!--i class="glyphicon glyphicon-search"></i-->
+        </button>
+    </div>
+    <!-- show tools info -->
+    <div style="overflow-y:auto; height:600px;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>发送方id</th>
+                <th>标题</th>
+                <th>内容</th>
+                <th>发送时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in msg.data.data">
+                <!-- 给toolName添加<a>，点击后弹出div显示工具详情 -->
+                <td>{{l.msgId}}</td>
+                <td>{{l.senderId}}</td>
+                <td>{{l.title}}</td>
+                <td>{{l.content}}</td>
+                <td>{{l.sendTime}}</td>
+                <td v-if = 'l.replyId == 0'>未处理</td>
+                <td v-else>已处理</td>
+                <td v-if = 'l.replyId == 0'><a href="javascript:;" @click="showModalNeedLoginedWithId('#reply-modal',l.senderId,l.msgId)">回复</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div id="reply-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="user-suggestion-label" aria-hidden="true">
+        <div class="modal-dialog suggestion-frame">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title" id="user-suggestion-label">意见回复</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <textarea v-model="content" class="form-control" rows="5" placeholder="反馈内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <button class="btn btn-success btn-block" @click="reply">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/vue.min.js"></script>
+<script src="./js/toastr.min.js"></script>
+<script src="./js/my/common.js"></script>
+<script src="./js/my/index.js"></script>
+<script src="./js/my/user.js"></script>
+<script>
+    new Vue({
+        el: '#amsg-module',
+        data () {
+            return {
+                msg:'',
+                content:'',
+                senderId:'',
+                msgId:''
+            }
+        },
+        mounted () {
+           axios
+               .get('http://localhost:8080/idevtools/m/sug')
+               .then(response => (this.msg = response))
+        },
+        methods: {
+            getRe: function() {
+                axios
+                    .get('http://localhost:8080/idevtools/m/re')
+                    .then(response => (this.msg = response));
+           },
+            getSug: function(){
+                axios
+                    .get('http://localhost:8080/idevtools/m/sug')
+                    .then(response => (this.msg = response));
+            },
+            reply: function(){
+                console.log('re');
+                axios({
+                    method: 'post',
+                    url: cookurl('/m/reply'),
+                    params: {
+                        senderId:this.senderId,
+                        content: this.content,
+                        msgId: this.msgId
+                    },
+                    headers: {'token': getUserToken()}
+                }).then(function(resp) {
+                    this.content = '';
+                    toastr.success(resp.data.msg)
+                    $("#user-suggestion-modal").modal("hide")
+                    }
+                )
+            },
+            showModalNeedLoginedWithId:function(modalId,sid,mid){
+                // $(modalId).modal("show")
+                if (getUser() == null) {
+                    toastr.info("请先登录")
+                    $("#user-login-modal").modal("show")
+                } else {
+                    $(modalId).modal("show");
+                    this.senderId = sid;
+                    this.msgId = mid;
+                    console.log(this.senderId);
+                    console.log(this.msgId);
+
+                }
+            }
+
+        }
+
+    })
+
+
+</script>
+<!-- my js -->
+
+
+</html>
+

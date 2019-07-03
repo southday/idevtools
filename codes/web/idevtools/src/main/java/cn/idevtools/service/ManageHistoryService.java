@@ -2,6 +2,8 @@ package cn.idevtools.service;
 
 import cn.idevtools.po.ManageHistoryT;
 
+import java.util.List;
+
 /**
  * 你懂的 管理记录模块 {大家懂才是真的懂 :-)}
  * @see cn.idevtools.service.impl.ManageHistoryServiceImpl
@@ -14,4 +16,8 @@ public interface ManageHistoryService {
      * @return
      */
     int addManageHistory(ManageHistoryT manageHistory);
+
+    List<ManageHistoryT> getAllLog();
+
+    List<ManageHistoryT> searchLogByName(String name);
 }

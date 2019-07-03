@@ -7,6 +7,7 @@ import cn.idevtools.common.StatusCode;
 import cn.idevtools.po.*;
 import cn.idevtools.redis.Recommend;
 import cn.idevtools.redis.RedisUtil;
+import cn.idevtools.service.CommonService;
 import cn.idevtools.service.EmailService;
 import cn.idevtools.service.UserService;
 import cn.idevtools.service.impl.EmailServiceImpl;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,9 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private CommonService commonService;
 
     /**
      * 用户登陆 southday 2019.02.28
@@ -265,7 +270,7 @@ public class UserController {
      * @return
      */
     @ResponseJSONP
-    @PostMapping("/recommend/{toolId}")
+    @GetMapping("/recommend/{toolId}")
     public Message<?> recommendToUser(@PathVariable Integer toolId){
         //要推送几个
         int n = 5;
@@ -274,7 +279,11 @@ public class UserController {
             return new Message<>(CodeMsgE.INSERT_FAILURE);
         try {
             List<RecommendedItem> recommendedItemList = Recommend.recommender.recommendedBecause(jwter.getId(),toolId,n);
-            return new Message<>(CodeMsgE.QUERY_SUCCESS,recommendedItemList);
+            List<ToolT> tools = new ArrayList<>();
+            for(RecommendedItem item: recommendedItemList){
+                tools.add(commonService.getToolByToolId((int)item.getItemID()));
+            }
+            return new Message<>(CodeMsgE.QUERY_SUCCESS,tools);
         }catch (Exception e){
             e.printStackTrace();
         }

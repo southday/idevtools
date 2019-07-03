@@ -31,8 +31,8 @@ public class RecommendThread implements Runnable{
     //进行推荐算法计算的时间间隔
     private static final long interval = 60*1000;
     //用于分析的文件路径 如果涉及到mvc的测试，要把这句注释掉
-    public static final String dataPath = Recommend.class.getClassLoader().getResource("/data/ratings.dat").getPath();
-    //public static final String dataPath = "E:\\ratings.dat";
+    //public static final String dataPath = Recommend.class.getClassLoader().getResource("/data/ratings.dat").getPath();
+    public static final String dataPath = "E:\\ratings.dat";
 
     @Autowired
     RedisUtil redisUtil;

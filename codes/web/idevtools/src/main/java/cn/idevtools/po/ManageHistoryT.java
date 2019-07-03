@@ -1,5 +1,7 @@
 package cn.idevtools.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class ManageHistoryT {
@@ -15,6 +17,7 @@ public class ManageHistoryT {
 
     private String actionDesc;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date procTime;
 
     public Integer getHistoryId() {

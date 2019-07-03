@@ -1,7 +1,11 @@
 package cn.idevtools.mapper;
 
+import cn.idevtools.po.MessageT;
 import cn.idevtools.po.RecommendationsT;
 import cn.idevtools.po.SuggestionsT;
+import io.swagger.models.auth.In;
+
+import java.util.List;
 
 public interface MessageTMapper {
 
@@ -18,4 +22,26 @@ public interface MessageTMapper {
      * @return
      */
     Integer insertToolRecommendationMsg(RecommendationsT recommendation);
+
+    List<MessageT> selectRecommendationNoReply();
+    List<MessageT> selectSuggestionNoReply();
+
+    List<MessageT> selectRecommendationReplyed();
+    List<MessageT> selectSuggestionReplyed();
+
+    List<MessageT> selectRecommendationNoReplyByUid(Integer uid);
+    List<MessageT> selectSuggestionNoReplyByUid(Integer uid);
+
+    List<MessageT> selectRecommendationReplyedByUid(Integer uid);
+    List<MessageT> selectSuggestionReplyedByUid(Integer uid);
+
+    int setReply(Integer msgId);
+
+    List<MessageT> selectRecommendationByUid(Integer uid);
+    List<MessageT> selectSuggestionByUid(Integer uid);
+    List<MessageT> selectSuggestion();
+    List<MessageT> selectRecommendation();
+
+
+
 }

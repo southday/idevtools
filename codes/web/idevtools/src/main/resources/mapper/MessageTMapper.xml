@@ -27,4 +27,59 @@
   <select id="insertToolRecommendationMsg" parameterType="cn.idevtools.po.RecommendationsT" resultType="java.lang.Integer" statementType="CALLABLE">
     CALL proc_recommend_tool(#{userId}, #{toolName}, #{website}, #{reason})
   </select>
+
+  <select id="selectRecommendationNoReply" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION' and reply_id = 0
+  </select>
+
+  <select id="selectSuggestionNoReply" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION' and reply_id = 0
+  </select>
+
+
+  <select id="selectRecommendationReplyed" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION' and reply_id = 1
+  </select>
+
+  <select id="selectSuggestionReplyed" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION' and reply_id = 1
+  </select>
+
+
+  <select id="selectRecommendationNoReplyByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION' and reply_id = 0 and sender_id = #{uid}
+  </select>
+
+  <select id="selectSuggestionNoReplyByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION' and reply_id = 0 and sender_id = #{uid}
+  </select>
+
+
+  <select id="selectRecommendationReplyedByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION' and reply_id = 1 and sender_id = #{uid}
+  </select>
+
+  <select id="selectSuggestionReplyedByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION' and reply_id = 1 and sender_id = #{uid}
+  </select>
+
+  <update id="setReply">
+    update message_t set reply_id = 1 where msg_id = #{msgId}
+  </update>
+
+  <select id="selectRecommendationByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION' and sender_id = #{uid}
+  </select>
+
+  <select id="selectSuggestionByUid" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION' and sender_id = #{uid}
+  </select>
+
+  <select id="selectRecommendation" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'TOOL_RECOMMENDATION'
+  </select>
+
+  <select id="selectSuggestion" resultMap="BaseResultMap">
+    select * from message_t where msg_type = 'SUGGESTION'
+  </select>
 </mapper>

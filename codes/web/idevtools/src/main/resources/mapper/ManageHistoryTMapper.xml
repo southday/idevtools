@@ -19,4 +19,12 @@
     insert into manage_history_t(admin_id, admin_name, action_type, action_target, action_desc, proc_time)
     value (#{adminId},#{adminName},#{actionType},#{actionTarget},#{actionDesc},now())
   </insert>
+
+  <select id="selectAllLog" resultMap="BaseResultMap">
+    select * from manage_history_t
+  </select>
+
+  <select id="selectLogByName" resultMap="BaseResultMap">
+    select * from manage_history_t where admin_name like concat('%',#{adminName},'%')
+  </select>
 </mapper>

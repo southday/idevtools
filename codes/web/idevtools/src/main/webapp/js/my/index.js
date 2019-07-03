@@ -52,9 +52,24 @@ let vmIndexNavbar = new Vue({
                 vmIndexNavbar.userURL = cookurl('/u/' + user.userName)
                 vmIndexNavbar.logined = true
             }
-        }
+        },getReommend: function() {
+            axios({
+                method: 'get',
+                url: 'http://localhost:8080/idevtools/u/recommend/2',
+                headers: {'token': getUserToken()}
+            }).then(function(resp) {
+                let ret = resp.data
+                if (ret.code == 'FAILURE') {
+                    toastr.info("未匹配到工具")
+                    vmSearchModule.tools = []
+                } else {
+                    vmSearchModule.tools = ret.data
+                }
+            }).catch(function(error) {
+                console.log(error)
+            })
     }
-})
+}})
 
 /**
  * 对搜索到的工具进行排序， southday 2019.03.12
@@ -91,9 +106,9 @@ let vmSearchModule = new Vue({
         tools: []
     },
     computed: {
-      sortedTools: function() {
-          return sortTools(this.tools)
-      }
+        sortedTools: function() {
+            return sortTools(this.tools)
+        }
     },
     methods: {
         showToolInfo: function(toolId) {

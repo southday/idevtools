@@ -1,5 +1,7 @@
 package cn.idevtools.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class MessageT {
@@ -16,7 +18,7 @@ public class MessageT {
     private String content;
 
     private String msgType;
-
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date sendTime;
 
     private Boolean read;
