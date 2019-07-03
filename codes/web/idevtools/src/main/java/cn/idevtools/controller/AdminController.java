@@ -70,6 +70,7 @@ public class AdminController {
      */
     @ResponseJSONP
     @PostMapping("/logout")
+    @AddManageHistory(ACTION_DESC = "登出")
     public Message<?> logout() {
         return adminService.logout();
     }
@@ -145,7 +146,7 @@ public class AdminController {
      */
     @ResponseJSONP
     @PrintExecTime
-    @AddManageHistory(ACTION_DESC = "王无敌到此一游")
+    @AddManageHistory(ACTION_DESC = "给用户贴标签")
     @GetMapping("/usersWithTags/{userId}")
     public Message<UserTagVO> getUserDetailWithTagById(@PathVariable Integer userId){
         return new Message<>(

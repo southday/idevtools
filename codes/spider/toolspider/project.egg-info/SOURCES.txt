@@ -1,0 +1,17 @@
+setup.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
+toolspider/__init__.py
+toolspider/begin.py
+toolspider/items.py
+toolspider/middlewares.py
+toolspider/pipelines.py
+toolspider/settings.py
+toolspider/test.py
+toolspider/util.py
+toolspider/spiders/__init__.py
+toolspider/spiders/sdk.py
+toolspider/spiders/spider.py

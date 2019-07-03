@@ -30,12 +30,23 @@
                 </li>
                 <li v-if="logined" class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        系统管理<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a :href="userURL">工具管理</a></li>
+                        <li><a href="./amsg.html">消息管理</a></li>
+                        <li><a href="./log.html">日志管理</a></li>
+
+                    </ul>
+                </li>
+                <li v-if="logined" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         {{ userName }}<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a :href="userURL">个人中心</a></li>
                         <li><a href="#tools">我的工具</a></li>
-                        <li><a href="#news">我的消息</a></li>
+                        <li><a href="./umsg.html">我的消息</a></li>
                         <li><a href="javascript:;" @click="logout">退出</a></li>
                     </ul>
                 </li>
@@ -199,7 +210,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">验证码</label>
                             <div class="col-sm-4">
-                               <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
+                                <input v-model="jcaptcha" @keyup.enter="join" type="text" class="form-control" placeholder="验证码">
                             </div>
                             <img class="col-sm-5" @click="changeJCaptcha" :src="jcaptchaURL">
                         </div>
@@ -305,4 +316,3 @@
 <script src="./js/my/user.js"></script>
 </body>
 </html>
-
